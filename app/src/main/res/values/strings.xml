@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Project</string>
+    <string name="app_name">Sapientia-Android2020-Project</string>
+    <string name="api_url">https://opentable.herokuapp.com/api/</string>
+    <string name="recycle_view_item_restaurant_image_description">Image of the restaurant</string>
+    <string name="bottom_nav_item_list">Restaurants</string>
+    <string name="bottom_nav_item_add">Add</string>
+    <string name="bottom_nav_item_profile">Profile</string>
 </resources>
