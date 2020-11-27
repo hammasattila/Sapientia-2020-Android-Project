@@ -5,4 +5,18 @@
     <string name="bottom_nav_item_list">Restaurants</string>
     <string name="bottom_nav_item_add">Add</string>
     <string name="bottom_nav_item_profile">Profile</string>
+    <string name="filter_title">Filters</string>
+    <string name="floating_action_button_filter">Clipart for filtering.</string>
+    <string name="restaurant_text_price">Price:</string>
+    <string name="restaurant_text_address">Address:</string>
+    <string name="restaurant_text_city">City:</string>
+    <string name="restaurant_text_area">Area:</string>
+    <string name="restaurant_text_state">State</string>
+    <string name="restaurant_text_zip">Postal code:</string>
+    <string name="restaurant_text_phone">Phone:</string>
+    <string name="restaurant_text_coordinates">Coordinates:</string>
+    <string name="restaurant_text_web">Webpage:</string>
+    <string name="restaurant_text_web_mobile">Mobile page:</string>
+    <string name="restaurant_text_price_transition">restaurant_text_price</string>
+    <string name="restaurant_image_transition">restaurant_image</string>
 </resources>

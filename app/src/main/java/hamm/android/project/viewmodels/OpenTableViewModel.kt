@@ -1,10 +1,9 @@
-package hamm.android.project.data
+package hamm.android.project.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hamm.android.project.model.Cities
+import hamm.android.project.data.OpenTableRepository
 import hamm.android.project.model.Restaurant
 import kotlinx.coroutines.launch
 

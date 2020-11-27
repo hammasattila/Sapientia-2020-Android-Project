@@ -15,5 +15,4 @@ object RetrofitInstance {
     val api: OpenTableAPI by lazy {
         retrofit.create(OpenTableAPI::class.java)
     }
-
 }

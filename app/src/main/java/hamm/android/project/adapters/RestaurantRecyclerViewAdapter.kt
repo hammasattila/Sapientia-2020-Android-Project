@@ -15,14 +15,13 @@ class RestaurantRecyclerViewAdapter (private val listener: Listener) :  Recycler
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
 
         init {
-//            view.setOnClickListener(this)
+            view.setOnClickListener(this)
 //            view.setOnLongClickListener(this)
         }
 
         override fun onClick(v: View?) {
-            val position: Int = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick()
+            if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                listener.onItemClick(v, data[adapterPosition])
             }
         }
 
@@ -38,7 +37,7 @@ class RestaurantRecyclerViewAdapter (private val listener: Listener) :  Recycler
     }
 
     interface Listener {
-        fun onItemClick()
+        fun onItemClick(v: View, d: Restaurant)
         fun onItemLongClick()
     }
 
@@ -56,6 +55,11 @@ class RestaurantRecyclerViewAdapter (private val listener: Listener) :  Recycler
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.view.item_restaurant_text_title.text = data[position].name
+
+        holder.view.item_restaurant_image.transitionName = "${holder.itemView.context.getString(R.string.restaurant_image_transition)}_${data[position].id}"
+
+        holder.view.item_restaurant_text_price.text = "${holder.itemView.context.getString(R.string.restaurant_text_price)} ${data[position].value}"
+        holder.view.item_restaurant_text_price.transitionName = "${holder.itemView.context.getString(R.string.restaurant_text_price_transition)}_${data[position].id}"
     }
 
     override fun getItemCount(): Int {

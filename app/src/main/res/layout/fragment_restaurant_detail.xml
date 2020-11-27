@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RestaurantDetailFragment">
+
+    <ImageView
+        android:id="@+id/item_restaurant_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/recycle_view_item_restaurant_image_description"
+        android:cropToPadding="false"
+
+        android:src="@drawable/placeholder_restaurant"
+        android:transitionName="food_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_title" />
+
+
+    <TextView
+        android:id="@+id/item_restaurant_text_price"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_price"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_account_balance_wallet_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_image" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_address"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_address"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_navigation_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_price" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_city"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_city"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_location_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_address" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_area"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_area"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_explore_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_city" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_state"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_state"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_map_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_area" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_zip"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_zip"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_email_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_state" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_phone"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_phone"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_contact_phone_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_zip" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_coordinates"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_coordinates"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_gps_location_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_phone" />
+
+    <TextView
+        android:id="@+id/item_restaurant_text_web"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_web"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_language_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_coordinates" />
+
+
+
+    <TextView
+        android:id="@+id/item_restaurant_text_web_mobile"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/restaurant_text_web_mobile"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/ic_twotone_book_online_24"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_restaurant_text_web" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

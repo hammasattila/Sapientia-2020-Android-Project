@@ -1,7 +1,8 @@
 package hamm.android.project.model
 
-import android.text.SpannableStringBuilder
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+
 
 data class Restaurant(
     val id: Int,
@@ -23,4 +24,7 @@ data class Restaurant(
     val urlMobileReserve: String,
     @SerializedName("image_url")
     val urlImage: String
-)
+): Serializable {
+    val value: String
+        get() = "$".repeat(price)
+}

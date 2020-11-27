@@ -9,7 +9,7 @@ class OpenTableRepository {
         return RetrofitInstance.api.getCities()
     }
 
-    suspend fun getRestaurants(state: String): Restaurants {
-        return RetrofitInstance.api.getRestaurants(state)
+    suspend fun getRestaurants(state: String, page: Int = 1): Restaurants {
+        return RetrofitInstance.api.getRestaurants(state, page)
     }
 }

@@ -7,7 +7,35 @@
 
     <fragment
         android:id="@+id/restaurantListFragment"
-        android:name="hamm.android.project.RestaurantListFragment"
-        android:label="fragment_restaurant_list"
-        tools:layout="@layout/fragment_restaurant_list" />
+        android:name="hamm.android.project.fragments.RestaurantListFragment"
+        android:label="Restaurants"
+        tools:layout="@layout/fragment_restaurant_list" >
+        <action
+            android:id="@+id/restaurantFilter"
+            app:destination="@id/restaurantFilterFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit" />
+        <action
+            android:id="@+id/restaurantDetail"
+            app:destination="@id/restaurantDetailFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/restaurantFilterFragment"
+        android:name="hamm.android.project.fragments.RestaurantFilterFragment"
+        android:label="Filter"
+        tools:layout="@layout/fragment_restaurant_filter" />
+    <fragment
+        android:id="@+id/restaurantDetailFragment"
+        android:name="hamm.android.project.RestaurantDetailFragment"
+        tools:layout="@layout/fragment_restaurant_detail" >
+        <argument
+            android:name="restaurant"
+            app:argType="hamm.android.project.model.Restaurant" />
+    </fragment>
 </navigation>

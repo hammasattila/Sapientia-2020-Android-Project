@@ -13,6 +13,7 @@ interface OpenTableAPI {
 
     @GET("restaurants")
     suspend fun getRestaurants(
-        @Query("state") state: String
+        @Query("state") state: String,
+        @Query("page") page: Int
     ): Restaurants
 }

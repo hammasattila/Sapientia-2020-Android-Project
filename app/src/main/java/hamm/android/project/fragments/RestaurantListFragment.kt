@@ -1,4 +1,4 @@
-package hamm.android.project
+package hamm.android.project.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,19 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
+import hamm.android.project.R
 import hamm.android.project.adapters.RestaurantRecyclerViewAdapter
 import hamm.android.project.data.OpenTableRepository
-import hamm.android.project.data.OpenTableViewModel
-import hamm.android.project.data.OpenTableViewModelFactory
-import kotlinx.android.synthetic.main.fragment_restaurant_list.*
+import hamm.android.project.viewmodels.OpenTableViewModel
+import hamm.android.project.viewmodels.OpenTableViewModelFactory
+import hamm.android.project.model.Restaurant
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
+import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
 
 class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listener {
 
     private lateinit var mViewModel: OpenTableViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +39,11 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         val restaurantRecyclerViewAdapter = RestaurantRecyclerViewAdapter(this)
         view.recycler_view_restaurants.layoutManager = LinearLayoutManager(context)
         view.recycler_view_restaurants.adapter = restaurantRecyclerViewAdapter
+        postponeEnterTransition()
+        view.recycler_view_restaurants.viewTreeObserver.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
+        }
 
         val r = OpenTableRepository()
         val vm = OpenTableViewModelFactory(r)
@@ -70,11 +84,24 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
 //            mRecyclerViewAdapter.setData(food)
 //        })
 
+        view.floating_action_button_filter.setOnClickListener {
+            findNavController().navigate(
+                RestaurantListFragmentDirections.restaurantFilter(), FragmentNavigatorExtras(
+                    view.floating_action_button_filter to "fab_filter"
+                )
+            )
+        }
+
         return view
     }
 
-    override fun onItemClick() {
-        TODO("Not yet implemented")
+    override fun onItemClick(v: View, d: Restaurant) {
+        findNavController().navigate(
+            RestaurantListFragmentDirections.restaurantDetail(d), FragmentNavigatorExtras(
+                v.item_restaurant_image to "${getString(R.string.restaurant_image_transition)}_${d.id}",
+                v.item_restaurant_text_price to "${getString(R.string.restaurant_text_price_transition)}_${d.id}"
+            )
+        )
     }
 
     override fun onItemLongClick() {
