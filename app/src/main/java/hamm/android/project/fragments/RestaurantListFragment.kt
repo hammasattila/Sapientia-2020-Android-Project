@@ -97,7 +97,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
 
     override fun onItemClick(v: View, d: Restaurant) {
         findNavController().navigate(
-            RestaurantListFragmentDirections.restaurantDetail(d), FragmentNavigatorExtras(
+            RestaurantListFragmentDirections.restaurantDetail(d, d.name), FragmentNavigatorExtras(
                 v.item_restaurant_image to "${getString(R.string.restaurant_image_transition)}_${d.id}",
                 v.item_restaurant_text_price to "${getString(R.string.restaurant_text_price_transition)}_${d.id}"
             )
