@@ -2,10 +2,12 @@ package hamm.android.project
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import hamm.android.project.viewmodels.OpenTableViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +42,16 @@ class MainActivity : AppCompatActivity() {
 //        })
 //
 //        multi_auto_complete_text_view_cities.setAdapter(ad)
+
+        mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when(destination.id) {
+                R.id.restaurantListFragment -> bottom_nav.visibility = View.VISIBLE
+                // R.id.restaurantListFragment -> bottom_nav.visibility = View.VISIBLE
+                else -> bottom_nav.visibility = View.GONE
+            }
+        }
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
