@@ -14,7 +14,7 @@ import hamm.android.project.R
 import hamm.android.project.adapters.RestaurantRecyclerViewAdapter
 import hamm.android.project.data.RestaurantRepository
 import hamm.android.project.viewmodels.RestaurantViewModel
-import hamm.android.project.viewmodels.OpenTableViewModelFactory
+import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import hamm.android.project.model.Restaurant
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
 import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
@@ -47,7 +47,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         }
 
         val r = RestaurantRepository()
-        val vm = OpenTableViewModelFactory(r)
+        val vm = RestaurantViewModelFactory(r)
         mViewModel = ViewModelProvider(requireActivity(), vm).get(RestaurantViewModel::class.java)
         mViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
             restaurantRecyclerViewAdapter.setData(restaurants)

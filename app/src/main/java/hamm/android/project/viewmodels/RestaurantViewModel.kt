@@ -1,12 +1,10 @@
 package hamm.android.project.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hamm.android.project.data.RestaurantRepository
 import hamm.android.project.model.Restaurant
-import hamm.android.project.utils.Constants
 import hamm.android.project.utils.Helpers
 import kotlinx.coroutines.launch
 
@@ -91,15 +89,15 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
         )
         val states = mapOfStates.values.toList()
 
-        fun getStateCode(state: String): String? {
-            var res: String? = null
+        fun getStateCode(state: String?): String? {
+            if (state.isNullOrBlank()) {
+                return null
+            }
             try {
-                if (state.isNotBlank()) {
-                    res = mapOfStates.filterValues { it == state }.keys.elementAt(0)
-                }
+                return mapOfStates.filterValues { it == state }.keys.elementAt(0)
             } catch (e: IndexOutOfBoundsException) {
             } finally {
-                return res
+                return null
             }
         }
     }
@@ -114,15 +112,7 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
     var country: String? = "US"
         private set
     var state: String? = null
-        set(state) {
-            synchronized(this) {
-                field = when (mapOfStates.containsKey(state)) {
-                    true -> state
-                    else -> field
-                }
-                getRestaurants()
-            }
-        }
+        private set
     var city: String? = null
         private set
     var zip: String? = null
@@ -135,12 +125,11 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
     // Options
     var page: Int = 1
     var perPage: Int = numberOfRestaurantsPerPage[0]
-        set(perPage) {
+        private set(perPage) {
             field = when (numberOfRestaurantsPerPage.contains(perPage)) {
                 true -> perPage
                 else -> Helpers.getClosestInt(perPage, numberOfRestaurantsPerPage)
             }
-            getRestaurants()
         }
 
 
@@ -149,47 +138,86 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
         getCities()
     }
 
-    fun curateState(s: String): String {
+    fun curateCountry(c: String): String? {
+        if (c.isNullOrBlank()) {
+            return null
+        }
+
+        return Helpers.getClosestString(c, countries)
+    }
+
+    fun curateState(s: String): String? {
         if (s.isNullOrBlank()) {
-            return ""
+            return null
         }
 
         return Helpers.getClosestString(s, states)
     }
 
+    @Deprecated("It is useless. The api will return at non complete queries as well.")
+    fun curateCity(c: String): String? {
+        if (c.isNullOrBlank()) {
+            return null
+        }
+
+        return Helpers.getClosestString(c, cities)
+    }
+
     fun setFilters(
-        name: String,
-        address: String,
-        state: String,
-        city: String,
-        zip: String,
-        country: String,
-        n: Int
+        country: String?,
+        state: String?,
+        city: String?,
+        zip: String?,
+        address: String?,
+        name: String?,
+        perPage: Int = this.perPage
     ): Boolean {
-        checkFilters(name, address, state, city, zip, country, n)
+        // TODO("Clean the texts from white characters. For now it does the job.")
+        if (!checkFilters(name, address, state, city, zip, country)) {
+            return false
+        }
+
+        this.country = country
+        this.state = state
+        this.city = city
+        this.zip = zip
+        this.address = address
+        this.name = name
+        this.perPage = perPage
+        this.page = 1
+
+        getRestaurants()
 
         return true
     }
 
     private fun checkFilters(
-        name: String,
-        address: String,
-        state: String,
-        city: String,
-        zip: String,
-        country: String,
-        n: Int
+        name: String?,
+        address: String?,
+        state: String?,
+        city: String?,
+        zip: String?,
+        country: String?
     ): Boolean {
-        if (numberOfRestaurantsPerPage.contains(n) && (name.isNotBlank() || address.isNotBlank() || state.isNotBlank() || city.isNotBlank() || zip.isNotBlank() || country.isNotBlank())) {
-            return true
+        if (name.isNullOrBlank() && address.isNullOrBlank() && state.isNullOrBlank() && city.isNullOrBlank() && zip.isNullOrBlank() && country.isNullOrBlank()) {
+            return false
         }
 
-        return false
+        return true
     }
 
     private fun getRestaurants() {
         viewModelScope.launch {
-            val response = repository.getRestaurants(country = country, state = state, city = city, zip = zip, address = address, name = name, page = page, perPage = perPage)
+            val response = repository.getRestaurants(
+                country = country,
+                state = state,
+                city = city,
+                zip = zip,
+                address = address,
+                name = name,
+                page = page,
+                perPage = perPage
+            )
             restaurants.value = response.restaurants
         }
     }

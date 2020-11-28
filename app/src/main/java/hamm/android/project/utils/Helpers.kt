@@ -35,6 +35,13 @@ import kotlin.math.abs
             return if (a == b) 0 else 1
         }
 
+        /*
+        *
+        * In this article, we describe the Levenshtein distance, alternatively known as the Edit distance.
+        * https://www.baeldung.com/java-levenshtein-distance
+        * The algorithm explained here was devised by a Russian scientist, Vladimir Levenshtein, in 1965.
+        *
+        * */
         fun calculateLevenshteinDistance(a: String, b: String): Int {
             val dp = Array(a.length + 1) { IntArray(b.length + 1) }
             for (i in 0..a.length) {
