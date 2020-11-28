@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
@@ -38,6 +39,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
 
         val restaurantRecyclerViewAdapter = RestaurantRecyclerViewAdapter(this)
         view.recycler_view_restaurants.layoutManager = LinearLayoutManager(context)
+        // view.recycler_view_restaurants.layoutManager = GridLayoutManager(context, 3)
         view.recycler_view_restaurants.adapter = restaurantRecyclerViewAdapter
         postponeEnterTransition()
         view.recycler_view_restaurants.viewTreeObserver.addOnPreDrawListener {

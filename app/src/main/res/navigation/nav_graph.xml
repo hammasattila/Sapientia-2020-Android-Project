@@ -43,4 +43,9 @@
             app:argType="string"
             android:defaultValue="Restaurant" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="hamm.android.project.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

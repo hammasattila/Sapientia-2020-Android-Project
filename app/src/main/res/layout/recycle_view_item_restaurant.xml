@@ -4,12 +4,11 @@
     android:id="@+id/item_food_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="24dp"
-    android:layout_marginVertical="8dp"
+    android:layout_margin="8dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
 
-    app:cardCornerRadius="24dp">
+    app:cardCornerRadius="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,6 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,12 +31,12 @@
         <ImageView
             android:id="@+id/item_restaurant_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="128dp"
+            android:layout_height="128dp"
             android:layout_marginVertical="8dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/recycle_view_item_restaurant_image_description"
             android:cropToPadding="false"
+            android:scaleType="centerCrop"
 
             android:src="@drawable/placeholder_restaurant"
             android:transitionName="food_image"
@@ -46,12 +47,8 @@
 
         <TextView
             android:id="@+id/item_restaurant_text_price"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            style="@style/item_restaurant_text"
             android:text="@string/restaurant_text_price"
-            android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/ic_twotone_account_balance_wallet_24"
 
             app:layout_constraintEnd_toEndOf="parent"

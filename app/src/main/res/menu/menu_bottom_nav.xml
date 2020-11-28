@@ -5,7 +5,7 @@
         android:icon="@drawable/ic_round_list_24"
         android:title="@string/bottom_nav_item_list" />
     <item
-        android:id="@+id/informationFragment"
+        android:id="@+id/profileFragment"
         android:icon="@drawable/ic_round_person_24"
         android:title="@string/bottom_nav_item_profile" />
 </menu>
