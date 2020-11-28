@@ -10,6 +10,7 @@ import androidx.transition.TransitionInflater
 import hamm.android.project.R
 import hamm.android.project.fragments.RestaurantDetailFragmentArgs
 import hamm.android.project.utils.Constants
+import hamm.android.project.viewmodels.RestaurantViewModel
 import kotlinx.android.synthetic.main.fragment_restaurant_detail.view.*
 
 class RestaurantDetailFragment : Fragment() {
@@ -36,7 +37,7 @@ class RestaurantDetailFragment : Fragment() {
         view.item_restaurant_text_address.text = "${getString(R.string.restaurant_text_address)} ${restaurant.address}"
         view.item_restaurant_text_city.text = "${getString(R.string.restaurant_text_city)} ${restaurant.city}"
         view.item_restaurant_text_area.text = "${getString(R.string.restaurant_text_area)} ${restaurant.area}"
-        view.item_restaurant_text_state.text = "${getString(R.string.restaurant_text_state)} ${Constants.states[restaurant.state]}"
+        view.item_restaurant_text_state.text = "${getString(R.string.restaurant_text_state)} ${RestaurantViewModel.mapOfStates[restaurant.state]}"
         view.item_restaurant_text_zip.text = "${getString(R.string.restaurant_text_zip)} ${restaurant.postalCode}"
         view.item_restaurant_text_phone.text = "${getString(R.string.restaurant_text_phone)} ${restaurant.phone}"
         view.item_restaurant_text_coordinates.text = "${getString(R.string.restaurant_text_coordinates)} {${restaurant.lat}, ${restaurant.lng}}"

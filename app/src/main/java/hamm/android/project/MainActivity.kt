@@ -2,19 +2,18 @@ package hamm.android.project
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import hamm.android.project.viewmodels.OpenTableViewModel
+import hamm.android.project.viewmodels.RestaurantViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mViewModel: OpenTableViewModel
+    private lateinit var mViewModel: RestaurantViewModel
     private lateinit var mNavController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {

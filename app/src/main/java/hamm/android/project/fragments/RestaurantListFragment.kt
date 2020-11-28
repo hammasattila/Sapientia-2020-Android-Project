@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
 import hamm.android.project.adapters.RestaurantRecyclerViewAdapter
-import hamm.android.project.data.OpenTableRepository
-import hamm.android.project.viewmodels.OpenTableViewModel
+import hamm.android.project.data.RestaurantRepository
+import hamm.android.project.viewmodels.RestaurantViewModel
 import hamm.android.project.viewmodels.OpenTableViewModelFactory
 import hamm.android.project.model.Restaurant
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
@@ -22,7 +21,7 @@ import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
 
 class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listener {
 
-    private lateinit var mViewModel: OpenTableViewModel
+    private lateinit var mViewModel: RestaurantViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,44 +46,12 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
             true
         }
 
-        val r = OpenTableRepository()
+        val r = RestaurantRepository()
         val vm = OpenTableViewModelFactory(r)
-        mViewModel = ViewModelProvider(requireActivity(), vm).get(OpenTableViewModel::class.java)
-//        mViewModel.getCities()
-//        mViewModel.getRestaurants()
-//        val ad = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ArrayList<String>())
-//        mViewModel.cities.observe(this, { cities ->
-//            ad.clear()
-//            ad.addAll(cities)
-//            Log.d("Cities", cities.size.toString() )
-//            Log.d("Cities", cities.joinToString(", "))
-//        })
-//
+        mViewModel = ViewModelProvider(requireActivity(), vm).get(RestaurantViewModel::class.java)
         mViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
             restaurantRecyclerViewAdapter.setData(restaurants)
         })
-//
-//        multi_auto_complete_text_view_cities.setAdapter(ad)
-
-//        // Animation
-//        sharedElementEnterTransition =
-//            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-//        postponeEnterTransition()
-//        mRecyclerView.viewTreeObserver.addOnPreDrawListener {
-//            startPostponedEnterTransition()
-//            true
-//        }
-//
-//        // ViewModel
-//        activity?.let { activity ->
-//            mFoodViewModel =
-//                ViewModelProvider(this, FoodViewModelFactory(activity.application)).get(
-//                    FoodViewModel::class.java
-//                )
-//        }
-//        mFoodViewModel.allFoods.observe(viewLifecycleOwner, Observer { food ->
-//            mRecyclerViewAdapter.setData(food)
-//        })
 
         view.floating_action_button_filter.setOnClickListener {
             findNavController().navigate(
