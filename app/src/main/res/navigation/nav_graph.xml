@@ -32,7 +32,7 @@
         tools:layout="@layout/fragment_restaurant_filter" />
     <fragment
         android:id="@+id/restaurantDetailFragment"
-        android:name="hamm.android.project.RestaurantDetailFragment"
+        android:name="hamm.android.project.fragments.RestaurantDetailFragment"
         tools:layout="@layout/fragment_restaurant_detail" >
         <argument
             android:name="restaurant"

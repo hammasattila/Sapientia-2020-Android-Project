@@ -47,9 +47,9 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
 
         val r = OpenTableRepository()
         val vm = OpenTableViewModelFactory(r)
-        mViewModel = ViewModelProvider(this, vm).get(OpenTableViewModel::class.java)
+        mViewModel = ViewModelProvider(requireActivity(), vm).get(OpenTableViewModel::class.java)
 //        mViewModel.getCities()
-        mViewModel.getRestaurants("WY")
+//        mViewModel.getRestaurants()
 //        val ad = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ArrayList<String>())
 //        mViewModel.cities.observe(this, { cities ->
 //            ad.clear()
