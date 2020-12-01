@@ -1,5 +1,6 @@
 package hamm.android.project.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -96,7 +97,6 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
             try {
                 return mapOfStates.filterValues { it == state }.keys.elementAt(0)
             } catch (e: IndexOutOfBoundsException) {
-            } finally {
                 return null
             }
         }

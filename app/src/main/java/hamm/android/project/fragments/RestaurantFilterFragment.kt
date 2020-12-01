@@ -96,7 +96,7 @@ class RestaurantFilterFragment : Fragment() {
         view.floating_action_button_filter.setOnClickListener { v ->
             val country = mViewModel.curateCountry(view.spinner_country.selectedItem.toString())
             view.spinner_country.setSelection(
-                RestaurantViewModel.numberOfRestaurantsPerPage.indexOf(
+                RestaurantViewModel.countries.indexOf(
                     mViewModel.country
                 )
             )
