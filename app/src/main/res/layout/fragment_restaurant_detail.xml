@@ -23,13 +23,41 @@
                 android:id="@+id/item_restaurant_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="256dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/recycle_view_item_restaurant_image_description"
                 android:cropToPadding="false"
+                android:maxHeight="256dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/placeholder_restaurant"
                 android:transitionName="food_image" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open in using maps"
+                android:layout_gravity="center_horizontal"
+                app:icon="@drawable/ic_round_directions_24" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add to favorites"
+                android:layout_gravity="center_horizontal"
+                app:icon="@drawable/ic_round_favorite_border_24" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove image"
+                android:layout_gravity="center_horizontal"
+                app:icon="@drawable/ic_round_delete_24" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add image"
+                android:layout_gravity="center_horizontal"
+                app:icon="@drawable/ic_round_add_24" />
 
             <TextView
                 android:id="@+id/item_restaurant_text_price"

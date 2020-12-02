@@ -34,7 +34,10 @@ class RestaurantFilterFragment : Fragment() {
 
         // Get ViewModel.
         mViewModel =
-            ViewModelProvider(requireActivity(), RestaurantViewModelFactory(RestaurantRepository()))
+            ViewModelProvider(
+                requireActivity(),
+                RestaurantViewModelFactory(requireActivity().application)
+            )
                 .get(RestaurantViewModel::class.java)
 
         // Init filters.

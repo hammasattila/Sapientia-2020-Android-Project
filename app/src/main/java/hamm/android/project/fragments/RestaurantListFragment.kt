@@ -46,9 +46,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
             true
         }
 
-        val r = RestaurantRepository()
-        val vm = RestaurantViewModelFactory(r)
-        mViewModel = ViewModelProvider(requireActivity(), vm).get(RestaurantViewModel::class.java)
+        mViewModel = ViewModelProvider(requireActivity(), RestaurantViewModelFactory(requireActivity().application)).get(RestaurantViewModel::class.java)
         mViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
             restaurantRecyclerViewAdapter.setData(restaurants)
         })

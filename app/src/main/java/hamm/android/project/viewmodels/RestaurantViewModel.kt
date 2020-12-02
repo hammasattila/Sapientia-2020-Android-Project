@@ -1,15 +1,20 @@
 package hamm.android.project.viewmodels
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hamm.android.project.data.RestaurantDatabase
 import hamm.android.project.data.RestaurantRepository
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.Helpers
 import kotlinx.coroutines.launch
 
-class RestaurantViewModel(private val repository: RestaurantRepository) : ViewModel() {
+class RestaurantViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: RestaurantRepository
 
     // Constants
     companion object {
@@ -134,6 +139,8 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
 
 
     init {
+        val restaurantDao = RestaurantDatabase.getDatabase(application).restaurantDao()
+        repository = RestaurantRepository(restaurantDao)
         getRestaurants()
         getCities()
     }
