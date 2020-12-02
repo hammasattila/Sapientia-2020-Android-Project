@@ -235,4 +235,17 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
             cities = response.cities
         }
     }
+
+    fun toggleFavorites(restaurant: Restaurant) {
+        restaurants.value?.let {
+            for (i in 0 until it.size) {
+                if(restaurant.id == it[i].id) {
+                    it[i] = restaurant
+                }
+            }
+            viewModelScope.launch {
+                repository.toggleFavorite(restaurant)
+            }
+        }
+    }
 }

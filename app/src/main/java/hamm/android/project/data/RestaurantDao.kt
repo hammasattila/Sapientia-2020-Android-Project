@@ -10,7 +10,7 @@ import hamm.android.project.model.Restaurant
 @Dao
 interface RestaurantDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRestaurant(restaurant: Restaurant)
 
     @Query("SELECT * FROM restaurant_table WHERE id = :id")

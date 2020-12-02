@@ -27,7 +27,7 @@ data class Restaurant(
     val urlMobileReserve: String,
     @SerializedName("image_url")
     val urlImage: String,
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean = false
 ): Serializable {
     val value: String
         get() = "$".repeat(price)

@@ -40,11 +40,21 @@
                 app:icon="@drawable/ic_round_directions_24" />
 
             <Button
+                android:id="@+id/button_set_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add to favorites"
+                android:text="@string/restaurant_button_set_favorite"
                 android:layout_gravity="center_horizontal"
                 app:icon="@drawable/ic_round_favorite_border_24" />
+
+            <Button
+                android:id="@+id/button_unset_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/restaurant_button_unset_favorite"
+                android:layout_gravity="center_horizontal"
+                app:icon="@drawable/ic_round_favorite_24" />
+
 
             <Button
                 android:layout_width="wrap_content"

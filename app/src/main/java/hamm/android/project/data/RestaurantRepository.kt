@@ -2,6 +2,7 @@ package hamm.android.project.data
 
 import hamm.android.project.api.RetrofitInstance
 import hamm.android.project.model.Cities
+import hamm.android.project.model.Restaurant
 import hamm.android.project.model.Restaurants
 
 class RestaurantRepository(private val restaurantDao: RestaurantDao) {
@@ -19,5 +20,9 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         }
 
         return restaurants
+    }
+
+    suspend fun toggleFavorite(restaurant: Restaurant) {
+        restaurantDao.insertRestaurant(restaurant)
     }
 }
