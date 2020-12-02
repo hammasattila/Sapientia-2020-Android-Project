@@ -1,17 +1,19 @@
 package hamm.android.project.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
-import hamm.android.project.fragments.RestaurantDetailFragmentArgs
-import hamm.android.project.utils.Constants
 import hamm.android.project.viewmodels.RestaurantViewModel
 import kotlinx.android.synthetic.main.fragment_restaurant_detail.view.*
+import java.util.*
+
 
 class RestaurantDetailFragment : Fragment() {
 
@@ -40,11 +42,27 @@ class RestaurantDetailFragment : Fragment() {
         view.item_restaurant_text_state.text = "${getString(R.string.restaurant_text_state)} ${RestaurantViewModel.mapOfStates[restaurant.state]}"
         view.item_restaurant_text_zip.text = "${getString(R.string.restaurant_text_zip)} ${restaurant.postalCode}"
         view.item_restaurant_text_phone.text = "${getString(R.string.restaurant_text_phone)} ${restaurant.phone}"
-        view.item_restaurant_text_coordinates.text = "${getString(R.string.restaurant_text_coordinates)} {${restaurant.lat}, ${restaurant.lng}}"
+        view.item_restaurant_text_coordinates.text = "${getString(R.string.restaurant_text_coordinates)} (${restaurant.lat}, ${restaurant.lng})"
         view.item_restaurant_text_web.text = "${getString(R.string.restaurant_text_web)} ${restaurant.urlReserve}"
         view.item_restaurant_text_web_mobile.text = "${getString(R.string.restaurant_text_web_mobile)} ${restaurant.urlMobileReserve}"
 
+        // Click listeners
+        view.button_open_maps.setOnClickListener { openMaps() }
+
         return view
+    }
+
+    private fun openMaps() {
+        val uri: String = java.lang.String.format(
+            Locale.ENGLISH,
+            "http://maps.google.com/maps?q=loc:%f,%f",
+            args.restaurant.lat,
+            args.restaurant.lng
+
+        )
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        startActivity(intent)
+        args.restaurant.lng
     }
 
 }

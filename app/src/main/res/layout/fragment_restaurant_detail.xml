@@ -32,6 +32,7 @@
                 android:transitionName="food_image" />
 
             <Button
+                android:id="@+id/button_open_maps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Open in using maps"
