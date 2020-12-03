@@ -32,13 +32,11 @@ class MainActivity : AppCompatActivity() {
         bottom_nav.setupWithNavController(mNavController)
         mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
-                R.id.restaurantListFragment -> bottom_nav.animate().translationY(0.0F).duration = 300//bottom_nav.visibility = View.VISIBLE
-                R.id.profileFragment -> bottom_nav.animate().translationY(0.0F).duration = 300//bottom_nav.visibility = View.VISIBLE
-                else -> bottom_nav.animate().translationY(bottom_nav.height.toFloat()).duration = 300//bottom_nav.visibility = View.GONE
+                R.id.restaurantListFragment -> bottom_nav.animate().translationY(0.0F).setDuration(300).withStartAction { bottom_nav.visibility = View.VISIBLE }
+                R.id.profileFragment -> bottom_nav.animate().translationY(0.0F).setDuration(300).withStartAction { bottom_nav.visibility = View.VISIBLE }
+                else -> bottom_nav.animate().translationY(bottom_nav.height.toFloat()).setDuration(300).withEndAction { bottom_nav.visibility = View.GONE }
             }
         }
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
