@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import hamm.android.project.data.RestaurantDatabase
 import hamm.android.project.data.RestaurantRepository
 import hamm.android.project.model.Restaurant
-import hamm.android.project.utils.Helpers
+import hamm.android.project.utils.getClosestInt
+import hamm.android.project.utils.getClosestString
+
 import kotlinx.coroutines.launch
 
 class RestaurantViewModel(application: Application) : AndroidViewModel(application) {
@@ -133,7 +135,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
         private set(perPage) {
             field = when (numberOfRestaurantsPerPage.contains(perPage)) {
                 true -> perPage
-                else -> Helpers.getClosestInt(perPage, numberOfRestaurantsPerPage)
+                else -> getClosestInt(perPage, numberOfRestaurantsPerPage)
             }
         }
 
@@ -150,7 +152,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
             return null
         }
 
-        return Helpers.getClosestString(c, countries)
+        return getClosestString(c, countries)
     }
 
     fun curateState(s: String): String? {
@@ -158,7 +160,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
             return null
         }
 
-        return Helpers.getClosestString(s, states)
+        return getClosestString(s, states)
     }
 
     @Deprecated("It is useless. The api will return at non complete queries as well.")
@@ -167,7 +169,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
             return null
         }
 
-        return Helpers.getClosestString(c, cities)
+        return getClosestString(c, cities)
     }
 
     fun setFilters(

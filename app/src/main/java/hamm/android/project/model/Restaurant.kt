@@ -1,14 +1,14 @@
 package hamm.android.project.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 @Entity(tableName = "restaurant_table")
 data class Restaurant(
-    @PrimaryKey(autoGenerate = false)
-    val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: Int,
     val name: String,
     val address: String,
     val city: String,
@@ -27,8 +27,8 @@ data class Restaurant(
     val urlMobileReserve: String,
     @SerializedName("image_url")
     val urlImage: String,
-    var isFavorite: Boolean = false
-): Serializable {
+    var isFavorite: Boolean = false,
+) : Serializable {
     val value: String
         get() = "$".repeat(price)
 }

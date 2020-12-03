@@ -36,7 +36,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
 
 
-        val restaurantRecyclerViewAdapter = RestaurantRecyclerViewAdapter(this)
+        val restaurantRecyclerViewAdapter = RestaurantRecyclerViewAdapter(requireActivity(), this)
         view.recycler_view_restaurants.layoutManager = LinearLayoutManager(context)
         // view.recycler_view_restaurants.layoutManager = GridLayoutManager(context, 3)
         view.recycler_view_restaurants.adapter = restaurantRecyclerViewAdapter

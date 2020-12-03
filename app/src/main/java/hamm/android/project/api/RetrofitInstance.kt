@@ -1,5 +1,7 @@
 package hamm.android.project.api
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import hamm.android.project.R
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,7 +16,7 @@ object RetrofitInstance {
 
         Retrofit.Builder()
             .baseUrl("https://opentable.herokuapp.com/api/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(/*GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()*/))
             .client(okHttp)
             .build()
     }

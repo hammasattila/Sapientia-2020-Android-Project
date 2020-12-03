@@ -70,11 +70,11 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.9'
 
     //// Coil
-    implementation "io.coil-kt:coil:1.1.0"
+    // implementation "io.coil-kt:coil:1.1.0"
 
     //// Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     //// Testing
     // testImplementation 'junit:junit:4.13.1'

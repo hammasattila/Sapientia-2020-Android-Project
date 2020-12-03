@@ -1,5 +1,11 @@
 package hamm.android.project.fragments
 
+//import coil.Coil
+//import coil.ImageLoader
+//import coil.load
+//import coil.memory.MemoryCache
+//import coil.request.CachePolicy
+//import coil.request.ImageRequest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
+import hamm.android.project.utils.load
 import hamm.android.project.viewmodels.RestaurantDetailViewModel
 import hamm.android.project.viewmodels.RestaurantViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
@@ -43,7 +50,24 @@ class RestaurantDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_restaurant_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_restaurant_detail, container, false)
+
+        postponeEnterTransition()
+        view.item_restaurant_image.load(mRestaurantDetailViewModel.restaurant.urlImage) {
+            startPostponedEnterTransition()
+        }
+
+
+        //view.item_restaurant_image.load(mRestaurantDetailViewModel.restaurant.urlImage) {
+        //    crossfade(true)
+        //    memoryCachePolicy(CachePolicy.READ_ONLY)
+        //    placeholderMemoryCacheKey(mRestaurantDetailViewModel.restaurant.memoryKey)
+        //    placeholder(R.drawable.placeholder_restaurant)
+        //    allowHardware(false)
+        //    listener(onStart = { startPostponedEnterTransition() }).build()
+        //}
+
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

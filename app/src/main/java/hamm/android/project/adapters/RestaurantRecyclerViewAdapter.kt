@@ -3,12 +3,22 @@ package hamm.android.project.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+//import coil.ImageLoader
+//import coil.load
+//import coil.request.CachePolicy
+//import coil.request.ImageRequest
+//import coil.request.SuccessResult
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
+import hamm.android.project.utils.load
+import kotlinx.android.synthetic.main.fragment_restaurant_detail.view.*
 import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
+import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.item_restaurant_image
+import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.item_restaurant_text_price
 
-class RestaurantRecyclerViewAdapter (private val listener: Listener) :  RecyclerView.Adapter<RestaurantRecyclerViewAdapter.ViewHolder>(){
+class RestaurantRecyclerViewAdapter(private val activity: FragmentActivity, private val listener: Listener) : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.ViewHolder>() {
 
     private var data: ArrayList<Restaurant> = ArrayList()
 
@@ -41,7 +51,7 @@ class RestaurantRecyclerViewAdapter (private val listener: Listener) :  Recycler
         fun onItemLongClick()
     }
 
-    fun setData(restaurants: ArrayList<Restaurant>){
+    fun setData(restaurants: ArrayList<Restaurant>) {
         data = restaurants
         notifyDataSetChanged()
     }
@@ -56,10 +66,12 @@ class RestaurantRecyclerViewAdapter (private val listener: Listener) :  Recycler
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.view.item_restaurant_text_title.text = data[position].name
 
+        holder.view.item_restaurant_image.load(data[position].urlImage)
         holder.view.item_restaurant_image.transitionName = "${holder.itemView.context.getString(R.string.restaurant_image_transition)}_${data[position].id}"
 
         holder.view.item_restaurant_text_price.text = "${holder.itemView.context.getString(R.string.restaurant_text_price)} ${data[position].value}"
-        holder.view.item_restaurant_text_price.transitionName = "${holder.itemView.context.getString(R.string.restaurant_text_price_transition)}_${data[position].id}"
+        holder.view.item_restaurant_text_price.transitionName =
+            "${holder.itemView.context.getString(R.string.restaurant_text_price_transition)}_${data[position].id}"
     }
 
     override fun getItemCount(): Int {
