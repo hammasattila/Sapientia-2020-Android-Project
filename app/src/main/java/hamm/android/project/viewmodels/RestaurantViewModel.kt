@@ -1,10 +1,8 @@
 package hamm.android.project.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hamm.android.project.data.RestaurantDatabase
 import hamm.android.project.data.RestaurantRepository
@@ -113,6 +111,8 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
         private set
 
     // Members
+    @Volatile
+    private var loading: Boolean = true
     val restaurants: MutableLiveData<ArrayList<Restaurant>> = MutableLiveData()
 
     // Filter values
@@ -143,7 +143,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
     init {
         val restaurantDao = RestaurantDatabase.getDatabase(application).restaurantDao()
         repository = RestaurantRepository(restaurantDao)
-        getRestaurants()
+        loadRestaurants()
         getCities()
     }
 
@@ -195,7 +195,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
         this.perPage = perPage
         this.page = 1
 
-        getRestaurants()
+        loadRestaurants()
 
         return true
     }
@@ -215,7 +215,12 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
         return true
     }
 
-    private fun getRestaurants() {
+    private fun loadRestaurants() {
+        synchronized(this.loading) {
+            if (!loading) {
+                loading = true
+            }
+        }
         viewModelScope.launch {
             val response = repository.getRestaurants(
                 country = country,
@@ -227,7 +232,39 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
                 page = page,
                 perPage = perPage
             )
-            restaurants.value = response.restaurants
+
+            synchronized(restaurants) {
+                restaurants.value = response.restaurants
+            }
+            loading = false
+        }
+    }
+
+    fun getRestaurants() {
+        synchronized(this.loading) {
+            if (!loading) {
+                loading = true
+            }
+        }
+        ++page
+        viewModelScope.launch {
+            val response = repository.getRestaurants(
+                country = country,
+                state = state,
+                city = city,
+                zip = zip,
+                address = address,
+                name = name,
+                page = page,
+                perPage = perPage
+            )
+
+            synchronized(restaurants) {
+                val tmp: ArrayList<Restaurant> = restaurants.value ?: ArrayList()
+                tmp.addAll(response.restaurants)
+                restaurants.value = tmp
+            }
+            loading = false
         }
     }
 
@@ -241,7 +278,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
     fun toggleFavorites(restaurant: Restaurant) {
         restaurants.value?.let {
             for (i in 0 until it.size) {
-                if(restaurant.id == it[i].id) {
+                if (restaurant.id == it[i].id) {
                     it[i] = restaurant
                 }
             }
@@ -250,4 +287,5 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
             }
         }
     }
+
 }

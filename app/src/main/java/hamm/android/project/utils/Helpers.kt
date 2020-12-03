@@ -1,8 +1,10 @@
 package hamm.android.project.utils
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -12,6 +14,19 @@ import com.bumptech.glide.request.target.Target
 import hamm.android.project.R
 import kotlinx.android.synthetic.main.fragment_restaurant_detail.view.*
 import kotlin.math.abs
+
+
+fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
+    this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (!recyclerView.canScrollVertically(1)) {
+                paginationCallback()
+            }
+        }
+    })
+}
+
 
 fun ImageView.load(url: String, onLoadingFinished: () -> Unit = {}) {
     Glide.with(this)
