@@ -28,10 +28,17 @@ class MainActivity : AppCompatActivity() {
             mNavController,
             AppBarConfiguration(setOf(R.id.restaurantListFragment, R.id.profileFragment))
         )
+        mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.splashFragment -> supportActionBar?.hide()
+                else -> supportActionBar?.show()
+            }
+        }
 
         bottom_nav.setupWithNavController(mNavController)
         mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
+                R.id.splashFragment -> bottom_nav.animate().translationY(bottom_nav.height.toFloat()).setDuration(300).withStartAction { bottom_nav.visibility = View.INVISIBLE }
                 R.id.restaurantListFragment -> bottom_nav.animate().translationY(0.0F).setDuration(300).withStartAction { bottom_nav.visibility = View.VISIBLE }
                 R.id.profileFragment -> bottom_nav.animate().translationY(0.0F).setDuration(300).withStartAction { bottom_nav.visibility = View.VISIBLE }
                 else -> bottom_nav.animate().translationY(bottom_nav.height.toFloat()).setDuration(300).withEndAction { bottom_nav.visibility = View.GONE }

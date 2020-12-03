@@ -112,7 +112,8 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
 
     // Members
     @Volatile
-    private var loading: Boolean = true
+    var loading: Boolean = true
+        private set
     val restaurants: MutableLiveData<ArrayList<Restaurant>> = MutableLiveData()
 
     // Filter values
@@ -131,7 +132,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
 
     // Options
     var page: Int = 1
-    var perPage: Int = numberOfRestaurantsPerPage[0]
+    var perPage: Int = 50
         private set(perPage) {
             field = when (numberOfRestaurantsPerPage.contains(perPage)) {
                 true -> perPage

@@ -41,7 +41,6 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
     ): View? {
         val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
 
-        view.recycler_view_restaurants.initForRestaurants(this)
         view.floating_action_button_filter.setOnClickListener {
             findNavController().navigate(
                 RestaurantListFragmentDirections.restaurantFilter(), FragmentNavigatorExtras(
@@ -51,6 +50,11 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         }
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        view?.recycler_view_restaurants?.initForRestaurants(this)
     }
 
     override fun onItemClick(v: View, d: Restaurant) {
