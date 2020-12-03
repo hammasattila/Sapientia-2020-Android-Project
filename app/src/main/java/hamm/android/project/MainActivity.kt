@@ -1,24 +1,27 @@
 package hamm.android.project
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import hamm.android.project.viewmodels.RestaurantViewModel
+import hamm.android.project.databinding.ActivityMainBinding
+import hamm.android.project.utils.viewBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mViewModel: RestaurantViewModel
+
+    private val binding by viewBinding(ActivityMainBinding::inflate)
     private lateinit var mNavController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         // setupActionBarWithNavController(findNavController(R.id.fragment_nav_host))
         // TODO("Ez miert nem megy de a masik igen?")

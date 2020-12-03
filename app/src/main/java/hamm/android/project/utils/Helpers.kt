@@ -1,7 +1,6 @@
 package hamm.android.project.utils
 
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +11,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import hamm.android.project.R
-import kotlinx.android.synthetic.main.fragment_restaurant_detail.view.*
 import kotlin.math.abs
 
 
@@ -43,14 +41,21 @@ fun ImageView.load(url: String, onLoadingFinished: () -> Unit = {}) {
                 return false
             }
         })
-        .into(this.item_restaurant_image)
+        .into(this)
 }
 
 fun ImageView.load(url: String) {
     Glide.with(this)
         .load(url)
         .apply(RequestOptions.placeholderOf(R.drawable.placeholder_restaurant))
-        .into(this.item_restaurant_image)
+        .into(this)
+}
+
+fun ImageView.load(id: Int) {
+    Glide.with(this)
+        .load(id)
+        .apply(RequestOptions.placeholderOf(R.drawable.placeholder_restaurant))
+        .into(this)
 }
 
 fun getClosestInt(to: Int, `in`: List<Int>): Int {
