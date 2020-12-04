@@ -114,6 +114,9 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
     @Volatile
     var loading: Boolean = true
         private set
+    @Volatile
+    var restaurantCount: Int = 0
+        private set
     val restaurants: MutableLiveData<ArrayList<Restaurant>> = MutableLiveData()
 
     // Filter values
@@ -235,6 +238,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
             )
 
             synchronized(restaurants) {
+                restaurantCount = response.count
                 restaurants.value = response.restaurants
             }
             loading = false
@@ -242,6 +246,10 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun getRestaurants() {
+        restaurants.value?.let {
+            if (restaurantCount <= it.size)
+                return
+        }
         synchronized(this.loading) {
             if (!loading) {
                 loading = true

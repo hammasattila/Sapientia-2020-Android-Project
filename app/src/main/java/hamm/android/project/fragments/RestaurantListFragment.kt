@@ -96,7 +96,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         }
 
         mViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
-            restaurantRecyclerViewAdapter.setData(restaurants)
+            restaurantRecyclerViewAdapter.setData(mViewModel.restaurantCount, restaurants)
         })
     }
 }

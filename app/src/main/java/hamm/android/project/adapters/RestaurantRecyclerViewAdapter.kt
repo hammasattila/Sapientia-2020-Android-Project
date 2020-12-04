@@ -25,6 +25,7 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
         val VIEW_TYPE_RESTAURANT = 2
     }
 
+    private var dataCount: Int = 0
     private var data: ArrayList<Restaurant> = ArrayList()
 
     inner class RestaurantViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
@@ -58,7 +59,8 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
         fun onItemLongClick()
     }
 
-    fun setData(restaurants: ArrayList<Restaurant>) {
+    fun setData(count: Int, restaurants: ArrayList<Restaurant>) {
+        dataCount = count
         data = restaurants
         notifyDataSetChanged()
     }
@@ -86,7 +88,9 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
     }
 
     override fun getItemCount(): Int {
-        return data.size + 1
+        return data.size + when{
+            dataCount <= data.size -> 0
+            else -> 1}
     }
 
     override fun getItemViewType(position: Int): Int {
