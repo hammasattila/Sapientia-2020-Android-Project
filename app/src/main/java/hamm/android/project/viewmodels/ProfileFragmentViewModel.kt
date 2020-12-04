@@ -5,10 +5,12 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import hamm.android.project.data.RestaurantDatabase
 import hamm.android.project.data.RestaurantRepository
 import hamm.android.project.model.Restaurant
 import hamm.android.project.model.User
+import kotlinx.coroutines.launch
 
 class ProfileFragmentViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: RestaurantRepository
@@ -43,6 +45,13 @@ class ProfileFragmentViewModel(application: Application) : AndroidViewModel(appl
             editor.putString("user_phone", user?.phone)
             editor.putString("user_email", user?.email)
             editor.commit()
+        }
+    }
+
+    fun removeFromFavorites(restaurant: Restaurant) {
+        restaurant.isFavorite = false
+        viewModelScope.launch {
+            repository.toggleFavorite(restaurant)
         }
     }
 }

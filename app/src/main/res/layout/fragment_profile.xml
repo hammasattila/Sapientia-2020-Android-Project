@@ -11,6 +11,7 @@
     </data>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view_profile_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.ProfileFragment">
@@ -28,7 +29,7 @@
                 android:layout_margin="32dp"
                 android:breakStrategy="balanced"
                 android:maxLines="1"
-                android:text="Hi VERYLONGLONGUSERNAME!"
+                android:text='@{"Hi " + viewModel.user.name + "!"}'
                 android:textSize="128dp"
 
                 app:autoSizeTextType="uniform"
@@ -96,7 +97,7 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:inputType="textPostalAddress"
-                            android:text="@={viewModel.user.address}"/>
+                            android:text="@={viewModel.user.address}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout

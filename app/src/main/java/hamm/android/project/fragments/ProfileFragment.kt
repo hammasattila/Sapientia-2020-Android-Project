@@ -5,20 +5,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionInflater
 import hamm.android.project.R
-import hamm.android.project.adapters.FavoriteListAdapter
+import hamm.android.project.adapters.FavoritesListAdapter
 import hamm.android.project.databinding.FragmentProfileBinding
+import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.load
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.ProfileFragmentViewModel
+import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,13 +50,29 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initFavoriteList() {
-        val adapter = FavoriteListAdapter()
+        val adapter = FavoritesListAdapter(this@ProfileFragment)
         binding.recyclerViewRestaurants?.adapter = adapter
         binding.recyclerViewRestaurants?.layoutManager = LinearLayoutManager(context)
-        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites ->
-            adapter.submitList(favorites)
-        })
+//        binding.recyclerViewRestaurants?.viewTreeObserver.addOnPreDrawListener { startPostponedEnterTransition(); true }
+        waitForTransition(binding.recyclerViewRestaurants)
+        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites -> adapter.submitList(favorites) })
     }
 
+    override fun onItemClick(element: View, restaurant: Restaurant) {
+        findNavController().navigate(
+            ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.name), FragmentNavigatorExtras(
+                element.item_restaurant_image to "${getString(R.string.restaurant_image_transition)}_${restaurant.id}",
+                element.item_restaurant_text_price to "${getString(R.string.restaurant_text_price_transition)}_${restaurant.id}"
+            )
+        )
+    }
 
+    override fun onItemLongClick(element: View, restaurant: Restaurant) {
+        binding.viewModel?.removeFromFavorites(restaurant)
+    }
+
+    fun waitForTransition(targetView: View) {
+        postponeEnterTransition()
+        targetView.doOnPreDraw { startPostponedEnterTransition() }
+    }
 }
