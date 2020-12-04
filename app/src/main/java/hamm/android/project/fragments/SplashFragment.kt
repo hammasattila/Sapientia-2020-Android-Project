@@ -17,6 +17,7 @@ import hamm.android.project.viewmodels.RestaurantViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import hamm.android.project.utils.delayedCheckForLoading
 
 class SplashFragment : Fragment() {
 
@@ -42,20 +43,16 @@ class SplashFragment : Fragment() {
     }
 
     private fun loading() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (!mViewModel.loading) {
-                findNavController().navigate(
-                    SplashFragmentDirections.restaurantListFragment(),
-                    NavOptions.Builder()
-                        .setPopUpTo(R.id.splashFragment, true)
-                        .setEnterAnim(R.anim.anim_enter_from_right)
-                        .setExitAnim(R.anim.anim_exit_to_left)
-                        .build()
-                )
-            } else {
-                this.loading()
-            }
-        }, 5000)
+        delayedCheckForLoading(mViewModel, 5000L) {
+            findNavController().navigate(
+                SplashFragmentDirections.restaurantListFragment(),
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.splashFragment, true)
+                    .setEnterAnim(R.anim.anim_enter_from_right)
+                    .setExitAnim(R.anim.anim_exit_to_left)
+                    .build()
+            )
+        }
     }
 
 }

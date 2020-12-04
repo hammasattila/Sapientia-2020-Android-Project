@@ -1,8 +1,13 @@
 package hamm.android.project.utils
 
+import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -11,9 +16,12 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import hamm.android.project.R
+import hamm.android.project.fragments.SplashFragmentDirections
+import hamm.android.project.viewmodels.RestaurantViewModel
 import kotlin.math.abs
 
 
+// TODO move it to list fragment
 fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
     this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -25,6 +33,17 @@ fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
     })
 }
 
+fun delayedCheckForLoading(viewModel: RestaurantViewModel?, delay: Long = 2000, action: () -> Unit = {}) {
+    viewModel?.let {
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (!it.loading) {
+                action()
+            } else {
+                delayedCheckForLoading(it, delay, action)
+            }
+        }, delay)
+    }
+}
 
 fun ImageView.load(url: String, onLoadingFinished: () -> Unit = {}) {
     Glide.with(this)
@@ -36,6 +55,7 @@ fun ImageView.load(url: String, onLoadingFinished: () -> Unit = {}) {
                 onLoadingFinished()
                 return false
             }
+
             override fun onResourceReady(p0: Drawable?, p1: Any?, p2: Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
                 onLoadingFinished()
                 return false

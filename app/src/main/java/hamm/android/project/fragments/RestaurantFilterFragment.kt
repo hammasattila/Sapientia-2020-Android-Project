@@ -11,8 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
 import hamm.android.project.data.RestaurantRepository
+import hamm.android.project.utils.delayedCheckForLoading
 import hamm.android.project.viewmodels.RestaurantViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_restaurant_filter.view.*
 
 class RestaurantFilterFragment : Fragment() {
@@ -119,7 +121,24 @@ class RestaurantFilterFragment : Fragment() {
 
             val perPage: Int = view.spinner_per_page.selectedItem as Int
 
+            view.floating_action_button_filter.animate()
+                .alpha(0.0F)
+                .scaleX(0.0F)
+                .scaleY(0.0F)
+                .setDuration(100)
+                .withStartAction { view.lottie_loading.visibility = View.VISIBLE }
+                .withEndAction { view.floating_action_button_filter.visibility = View.INVISIBLE }
+
             mViewModel.setFilters(country, stateCode, city, zip, address, name, perPage)
+            delayedCheckForLoading(mViewModel) {
+                view.floating_action_button_filter.animate()
+                    .alpha(1.0F)
+                    .scaleX(1.0F)
+                    .scaleY(1.0F)
+                    .setDuration(100)
+                    .withStartAction { view.floating_action_button_filter.visibility = View.VISIBLE }
+                    .withEndAction { findNavController().popBackStack() }
+            }
         }
 
         return view

@@ -100,5 +100,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_loading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/floating_action_button_filter"
+        app:layout_constraintEnd_toEndOf="@+id/floating_action_button_filter"
+        app:layout_constraintStart_toStartOf="@+id/floating_action_button_filter"
+        app:layout_constraintTop_toTopOf="@+id/floating_action_button_filter"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/bouncing_shapes_loader_9036" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
