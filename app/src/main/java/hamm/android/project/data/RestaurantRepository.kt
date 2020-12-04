@@ -1,5 +1,6 @@
 package hamm.android.project.data
 
+import androidx.lifecycle.LiveData
 import hamm.android.project.api.RetrofitInstance
 import hamm.android.project.model.Cities
 import hamm.android.project.model.Restaurant
@@ -24,5 +25,9 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
 
     suspend fun toggleFavorite(restaurant: Restaurant) {
         restaurantDao.insertRestaurant(restaurant)
+    }
+
+    fun getFavorites(): LiveData<List<Restaurant>> {
+        return restaurantDao.getFavorites()
     }
 }

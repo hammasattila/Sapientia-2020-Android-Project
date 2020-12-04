@@ -31,4 +31,23 @@ data class Restaurant(
 ) : Serializable {
     val value: String
         get() = "$".repeat(price)
+
+    override fun equals(other: Any?): Boolean {
+        return (other is Restaurant) &&
+                id == other.id &&
+                name == other.name &&
+                city == other.city &&
+                state == other.state &&
+                area == other.area &&
+                postalCode == other.postalCode &&
+                country == other.country &&
+                phone == other.phone &&
+                lat == other.lat &&
+                lng == other.lng &&
+                price == other.price &&
+                urlReserve == other.urlReserve &&
+                urlMobileReserve == other.urlMobileReserve &&
+                urlImage == other.urlImage &&
+                isFavorite == other.isFavorite
+    }
 }

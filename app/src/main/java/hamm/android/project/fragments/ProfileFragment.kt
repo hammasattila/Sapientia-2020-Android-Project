@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import hamm.android.project.R
+import hamm.android.project.adapters.FavoriteListAdapter
 import hamm.android.project.databinding.FragmentProfileBinding
 import hamm.android.project.utils.load
 import hamm.android.project.utils.viewBinding
@@ -30,10 +32,20 @@ class ProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         binding.viewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
-        binding.viewModel?.settings = requireActivity().getSharedPreferences(getString(R.string.shared_preferences_name), MODE_PRIVATE)
+        binding.viewModel?.settings = activity?.getSharedPreferences(getString(R.string.shared_preferences_name), MODE_PRIVATE)
         binding.imageViewProfileAvatar.load(R.drawable.placeholder_avatar)
+
+        initFavoriteList()
     }
 
+    private fun initFavoriteList() {
+        val adapter = FavoriteListAdapter()
+        binding.recyclerViewRestaurants?.adapter = adapter
+        binding.recyclerViewRestaurants?.layoutManager = LinearLayoutManager(context)
+        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites ->
+            adapter.submitList(favorites)
+        })
+    }
 
 
 }
