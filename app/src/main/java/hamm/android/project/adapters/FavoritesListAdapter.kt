@@ -3,36 +3,40 @@ package hamm.android.project.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.load
-import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
+import kotlinx.android.synthetic.main.item_restaurant.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 
 class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, FavoritesListAdapter.RestaurantHolder>(DIFF_CALLBACK) {
-    inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
+    inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         init {
             view.setOnClickListener(this)
-            view.setOnLongClickListener(this)
+            view.button_set_favorite.setOnClickListener(this)
+            view.button_unset_favorite.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
-            if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
-                listener.onItemClick(v, getItem(adapterPosition))
+            when (v) {
+                is CardView -> {
+                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                        listener.onItemClick(v, getItem(adapterPosition))
+                    }
+                }
+                is Button -> {
+                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                        listener.onToggleFavorite(v, getItem(adapterPosition))
+                    }
+                }
             }
-        }
-
-        override fun onLongClick(v: View?): Boolean {
-            if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
-                listener.onItemLongClick(v, getItem(adapterPosition))
-
-                return true
-            }
-
-            return false
         }
 
 
@@ -41,7 +45,7 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Fav
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            else -> RestaurantHolder(layoutInflater.inflate(R.layout.recycle_view_item_restaurant, parent, false))
+            else -> RestaurantHolder(layoutInflater.inflate(R.layout.item_restaurant, parent, false))
         }
     }
 
@@ -49,20 +53,17 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Fav
         if (holder is RestaurantHolder) {
             val restaurant = getItem(position)
             holder.itemView.item_restaurant_text_title.text = restaurant.name
-
             holder.itemView.item_restaurant_image.load(restaurant.urlImage)
-            holder.itemView.item_restaurant_image.transitionName = "${holder.itemView.context.getString(R.string.restaurant_image_transition)}_${restaurant.id}"
-
-            holder.itemView.item_restaurant_text_price.text = "${holder.itemView.context.getString(R.string.restaurant_text_price)} ${restaurant.value}"
-            holder.itemView.item_restaurant_text_price.transitionName =
-                "${holder.itemView.context.getString(R.string.restaurant_text_price_transition)}_${restaurant.id}"
+            restaurant.setBasicTextContent(holder.itemView)
+            restaurant.setTransitionNames(holder.itemView)
+            restaurant.setFavoriteButton(holder.itemView)
         }
     }
 
 
     interface Listener {
         fun onItemClick(element: View, restaurant: Restaurant)
-        fun onItemLongClick(element: View, restaurant: Restaurant)
+        fun onToggleFavorite(element: View, restaurant: Restaurant)
     }
 
     companion object {

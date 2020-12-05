@@ -32,7 +32,7 @@ class ProfileFragmentViewModel(application: Application) : AndroidViewModel(appl
     init {
         val restaurantDao = RestaurantDatabase.getDatabase(application).restaurantDao()
         repository = RestaurantRepository(restaurantDao)
-        favoriteRestaurants = repository.getFavorites()
+        favoriteRestaurants = repository.getFavoritesAsync()
     }
 
     fun saveProfile() {
@@ -48,10 +48,10 @@ class ProfileFragmentViewModel(application: Application) : AndroidViewModel(appl
         }
     }
 
-    fun removeFromFavorites(restaurant: Restaurant) {
-        restaurant.isFavorite = false
+    fun toggleFavorite(restaurant: Restaurant) {
+        restaurant.isFavorite = !restaurant.isFavorite
         viewModelScope.launch {
-            repository.toggleFavorite(restaurant)
+            repository.toggleFavoriteSync(restaurant)
         }
     }
 }

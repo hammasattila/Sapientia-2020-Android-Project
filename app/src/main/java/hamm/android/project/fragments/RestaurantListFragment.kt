@@ -1,7 +1,6 @@
 package hamm.android.project.fragments
 
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import hamm.android.project.utils.initPagination
 import hamm.android.project.viewmodels.RestaurantViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
-import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 
 class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listener {
@@ -58,16 +57,11 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
     }
 
     override fun onItemClick(v: View, d: Restaurant) {
-        findNavController().navigate(
-            RestaurantListFragmentDirections.restaurantDetail(d, d.name), FragmentNavigatorExtras(
-                v.item_restaurant_image to "${getString(R.string.restaurant_image_transition)}_${d.id}",
-                v.item_restaurant_text_price to "${getString(R.string.restaurant_text_price_transition)}_${d.id}"
-            )
-        )
+        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.name), d.transitionExtras(v))
     }
 
-    override fun onItemLongClick() {
-        TODO("Not yet implemented")
+    override fun toggleFavorite(restaurant: Restaurant) {
+        mViewModel.toggleFavorites(restaurant)
     }
 
     private fun RecyclerView.initForRestaurants(listener: RestaurantRecyclerViewAdapter.Listener, spanCount: Int = 2) {

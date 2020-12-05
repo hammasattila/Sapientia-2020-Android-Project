@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:itemCount="10"
-        tools:listitem="@layout/recycle_view_item_restaurant" />
+        tools:listitem="@layout/item_restaurant" />
 
 
 

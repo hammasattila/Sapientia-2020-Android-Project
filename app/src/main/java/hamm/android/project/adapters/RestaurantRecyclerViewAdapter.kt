@@ -1,10 +1,10 @@
 package hamm.android.project.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
+import android.widget.Button
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 //import coil.ImageLoader
 //import coil.load
@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.load
-import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
+import kotlinx.android.synthetic.main.item_restaurant.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 class RestaurantRecyclerViewAdapter(private val listener: Listener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -28,35 +30,38 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
     private var dataCount: Int = 0
     private var data: ArrayList<Restaurant> = ArrayList()
 
-    inner class RestaurantViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
+    inner class RestaurantViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         init {
             view.setOnClickListener(this)
-//            view.setOnLongClickListener(this)
+            view.button_set_favorite.setOnClickListener(this)
+            view.button_unset_favorite.setOnClickListener(this)
+
         }
 
         override fun onClick(v: View?) {
-            if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
-                listener.onItemClick(v, data[adapterPosition])
-            }
-        }
+            when (v) {
+                is CardView -> {
+                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                        listener.onItemClick(v, data[adapterPosition])
+                    }
+                }
+                is Button -> {
+                    val restaurant = data[adapterPosition]
+                    restaurant.isFavorite = !restaurant.isFavorite
+                    data[adapterPosition].setFavoriteButton(v.parent as View)
 
-        override fun onLongClick(v: View?): Boolean {
-            val position: Int = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onItemLongClick()
-                return true
+                    listener.toggleFavorite(restaurant)
+                }
             }
-
-            return false
         }
     }
 
     inner class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     interface Listener {
-        fun onItemClick(v: View, d: Restaurant)
-        fun onItemLongClick()
+        fun onItemClick(v: View, restaurant: Restaurant)
+        fun toggleFavorite(restaurant: Restaurant)
     }
 
     fun setData(count: Int, restaurants: ArrayList<Restaurant>) {
@@ -69,28 +74,27 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
 
         val layoutInflater = LayoutInflater.from(viewGroup.context)
         return when (viewType) {
-            VIEW_TYPE_LOADING -> LoadingViewHolder(layoutInflater.inflate(R.layout.recycle_view_item_loading, viewGroup, false))
-            else -> RestaurantViewHolder(layoutInflater.inflate(R.layout.recycle_view_item_restaurant, viewGroup, false))
+            VIEW_TYPE_LOADING -> LoadingViewHolder(layoutInflater.inflate(R.layout.item_loading, viewGroup, false))
+            else -> RestaurantViewHolder(layoutInflater.inflate(R.layout.item_restaurant, viewGroup, false))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is RestaurantViewHolder) {
             holder.view.item_restaurant_text_title.text = data[position].name
-
             holder.view.item_restaurant_image.load(data[position].urlImage)
-            holder.view.item_restaurant_image.transitionName = "${holder.itemView.context.getString(R.string.restaurant_image_transition)}_${data[position].id}"
+            data[position].setBasicTextContent(holder.view)
 
-            holder.view.item_restaurant_text_price.text = "${holder.itemView.context.getString(R.string.restaurant_text_price)} ${data[position].value}"
-            holder.view.item_restaurant_text_price.transitionName =
-                "${holder.itemView.context.getString(R.string.restaurant_text_price_transition)}_${data[position].id}"
+            data[position].setTransitionNames(holder.view)
+            data[position].setFavoriteButton(holder.view)
         }
     }
 
     override fun getItemCount(): Int {
-        return data.size + when{
+        return data.size + when {
             dataCount <= data.size -> 0
-            else -> 1}
+            else -> 1
+        }
     }
 
     override fun getItemViewType(position: Int): Int {

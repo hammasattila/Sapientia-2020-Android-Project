@@ -226,7 +226,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
             }
         }
         viewModelScope.launch {
-            val response = repository.getRestaurants(
+            val response = repository.getRestaurantsSync(
                 country = country,
                 state = state,
                 city = city,
@@ -257,7 +257,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
         }
         ++page
         viewModelScope.launch {
-            val response = repository.getRestaurants(
+            val response = repository.getRestaurantsSync(
                 country = country,
                 state = state,
                 city = city,
@@ -279,7 +279,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
 
     private fun getCities() {
         viewModelScope.launch {
-            val response = repository.getCities()
+            val response = repository.getCitiesSync()
             cities = response.cities
         }
     }
@@ -292,7 +292,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
                 }
             }
             viewModelScope.launch {
-                repository.toggleFavorite(restaurant)
+                repository.toggleFavoriteSync(restaurant)
             }
         }
     }

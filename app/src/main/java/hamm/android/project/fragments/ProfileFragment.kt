@@ -19,7 +19,8 @@ import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.load
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.ProfileFragmentViewModel
-import kotlinx.android.synthetic.main.recycle_view_item_restaurant.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
+import kotlinx.android.synthetic.main.item_restaurant.view.*
 
 
 class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
@@ -67,8 +68,8 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
         )
     }
 
-    override fun onItemLongClick(element: View, restaurant: Restaurant) {
-        binding.viewModel?.removeFromFavorites(restaurant)
+    override fun onToggleFavorite(element: View, restaurant: Restaurant) {
+        binding.viewModel?.toggleFavorite(restaurant)
     }
 
     fun waitForTransition(targetView: View) {

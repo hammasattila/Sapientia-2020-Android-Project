@@ -21,7 +21,10 @@ import hamm.android.project.utils.load
 import hamm.android.project.viewmodels.RestaurantDetailViewModel
 import hamm.android.project.viewmodels.RestaurantViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
-import kotlinx.android.synthetic.main.fragment_restaurant_detail.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_actions_detailed.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_information_detailed.view.*
 import java.util.*
 
 
@@ -50,24 +53,7 @@ class RestaurantDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_restaurant_detail, container, false)
-
-        postponeEnterTransition()
-        view.item_restaurant_image.load(mRestaurantDetailViewModel.restaurant.urlImage) {
-            startPostponedEnterTransition()
-        }
-
-
-        //view.item_restaurant_image.load(mRestaurantDetailViewModel.restaurant.urlImage) {
-        //    crossfade(true)
-        //    memoryCachePolicy(CachePolicy.READ_ONLY)
-        //    placeholderMemoryCacheKey(mRestaurantDetailViewModel.restaurant.memoryKey)
-        //    placeholder(R.drawable.placeholder_restaurant)
-        //    allowHardware(false)
-        //    listener(onStart = { startPostponedEnterTransition() }).build()
-        //}
-
-        return view
+        return inflater.inflate(R.layout.fragment_restaurant_detail, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -75,49 +61,26 @@ class RestaurantDetailFragment : Fragment() {
 
         view?.let {
             val restaurant = mRestaurantDetailViewModel.restaurant
-            it.item_restaurant_image.transitionName =
-                "${getString(R.string.restaurant_image_transition)}_${restaurant.id}"
-            it.item_restaurant_text_price.text =
-                "${getString(R.string.restaurant_text_price)} ${restaurant.value}"
-            it.item_restaurant_text_price.transitionName =
-                "${getString(R.string.restaurant_text_price_transition)}_${restaurant.id}"
-            it.item_restaurant_text_address.text =
-                "${getString(R.string.restaurant_text_address)} ${restaurant.address}"
-            it.item_restaurant_text_city.text =
-                "${getString(R.string.restaurant_text_city)} ${restaurant.city}"
-            it.item_restaurant_text_area.text =
-                "${getString(R.string.restaurant_text_area)} ${restaurant.area}"
-            it.item_restaurant_text_state.text =
-                "${getString(R.string.restaurant_text_state)} ${RestaurantViewModel.mapOfStates[restaurant.state]}"
-            it.item_restaurant_text_zip.text =
-                "${getString(R.string.restaurant_text_zip)} ${restaurant.postalCode}"
-            it.item_restaurant_text_phone.text =
-                "${getString(R.string.restaurant_text_phone)} ${restaurant.phone}"
-            it.item_restaurant_text_coordinates.text =
-                "${getString(R.string.restaurant_text_coordinates)} (${restaurant.lat}, ${restaurant.lng})"
-            it.item_restaurant_text_web.text =
-                "${getString(R.string.restaurant_text_web)} ${restaurant.urlReserve}"
-            it.item_restaurant_text_web_mobile.text =
-                "${getString(R.string.restaurant_text_web_mobile)} ${restaurant.urlMobileReserve}"
 
-            setFavoriteButton()
+            postponeEnterTransition()
+            it.item_restaurant_image.load(restaurant.urlImage) { startPostponedEnterTransition() }
+            restaurant.setBasicTextContent(it)
+            it.item_restaurant_text_city.text = "${getString(R.string.restaurant_text_city)} ${restaurant.city}"
+            it.item_restaurant_text_area.text = "${getString(R.string.restaurant_text_area)} ${restaurant.area}"
+            it.item_restaurant_text_state.text = "${getString(R.string.restaurant_text_state)} ${RestaurantViewModel.mapOfStates[restaurant.state]}"
+            it.item_restaurant_text_zip.text = "${getString(R.string.restaurant_text_zip)} ${restaurant.postalCode}"
+            it.item_restaurant_text_phone.text = "${getString(R.string.restaurant_text_phone)} ${restaurant.phone}"
+            it.item_restaurant_text_coordinates.text = "${getString(R.string.restaurant_text_coordinates)} (${restaurant.lat}, ${restaurant.lng})"
+            it.item_restaurant_text_web.text = "${getString(R.string.restaurant_text_web)} ${restaurant.urlReserve}"
+            it.item_restaurant_text_web_mobile.text = "${getString(R.string.restaurant_text_web_mobile)} ${restaurant.urlMobileReserve}"
+
+            restaurant.setTransitionNames(it)
+            restaurant.setFavoriteButton(it)
 
             // Click listeners
             it.button_open_maps.setOnClickListener { openMaps() }
             it.button_set_favorite.setOnClickListener { togaeFavorites() }
             it.button_unset_favorite.setOnClickListener { togaeFavorites() }
-        }
-    }
-
-    private fun setFavoriteButton() {
-        view?.let {
-            if (mRestaurantDetailViewModel.restaurant.isFavorite) {
-                it.button_set_favorite.visibility = View.GONE
-                it.button_unset_favorite.visibility = View.VISIBLE
-            } else {
-                it.button_set_favorite.visibility = View.VISIBLE
-                it.button_unset_favorite.visibility = View.GONE
-            }
         }
     }
 
@@ -135,10 +98,9 @@ class RestaurantDetailFragment : Fragment() {
     }
 
     private fun togaeFavorites() {
-        mRestaurantDetailViewModel.restaurant.isFavorite =
-            !mRestaurantDetailViewModel.restaurant.isFavorite
+        mRestaurantDetailViewModel.restaurant.isFavorite = !mRestaurantDetailViewModel.restaurant.isFavorite
         mRestaurantViewModel.toggleFavorites(mRestaurantDetailViewModel.restaurant)
-        setFavoriteButton()
+        mRestaurantDetailViewModel.restaurant.setFavoriteButton(view)
     }
 
 }

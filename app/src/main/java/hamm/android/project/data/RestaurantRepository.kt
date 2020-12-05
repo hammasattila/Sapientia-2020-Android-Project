@@ -7,11 +7,12 @@ import hamm.android.project.model.Restaurant
 import hamm.android.project.model.Restaurants
 
 class RestaurantRepository(private val restaurantDao: RestaurantDao) {
-    suspend fun getCities(): Cities {
+    suspend fun getCitiesSync(): Cities {
         return RetrofitInstance.api.getCities()
     }
 
-    suspend fun getRestaurants(country: String?, state: String?, city: String?, zip: String?, address: String?, name: String?, perPage: Int? = null, page: Int? = null): Restaurants {
+
+    suspend fun getRestaurantsSync(country: String?, state: String?, city: String?, zip: String?, address: String?, name: String?, perPage: Int? = null, page: Int? = null): Restaurants {
         val restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, perPage, page)
         for (i in 0 until restaurants.restaurants.size) {
             val rLocal = restaurantDao.findRestaurantById(restaurants.restaurants[i].id)
@@ -23,11 +24,11 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         return restaurants
     }
 
-    suspend fun toggleFavorite(restaurant: Restaurant) {
+    suspend fun toggleFavoriteSync(restaurant: Restaurant) {
         restaurantDao.insertRestaurant(restaurant)
     }
 
-    fun getFavorites(): LiveData<List<Restaurant>> {
+    fun getFavoritesAsync(): LiveData<List<Restaurant>> {
         return restaurantDao.getFavorites()
     }
 }
