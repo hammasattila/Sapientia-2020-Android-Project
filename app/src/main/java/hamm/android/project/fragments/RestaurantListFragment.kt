@@ -18,7 +18,6 @@ import hamm.android.project.utils.initPagination
 import hamm.android.project.viewmodels.RestaurantViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 
 class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listener {

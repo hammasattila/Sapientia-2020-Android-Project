@@ -5,20 +5,21 @@
     android:layout_height="match_parent">
 
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/button_set_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
         android:text="@string/restaurant_button_set_favorite"
         app:icon="@drawable/ic_round_favorite_border_24" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/button_unset_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
         android:text="@string/restaurant_button_unset_favorite"
         app:icon="@drawable/ic_round_favorite_24" />
+
 
 </merge>

@@ -5,26 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/button_open_maps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open in using maps"
-        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
         app:icon="@drawable/ic_round_directions_24" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/button_open_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remove image"
-        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        app:icon="@drawable/ic_round_local_phone_24" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/button_unset_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone"
         app:icon="@drawable/ic_round_delete_24" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/button_set_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add image"
-        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
         app:icon="@drawable/ic_round_add_24" />
 
 </merge>

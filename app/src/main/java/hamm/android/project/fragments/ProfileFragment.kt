@@ -60,12 +60,7 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
     }
 
     override fun onItemClick(element: View, restaurant: Restaurant) {
-        findNavController().navigate(
-            ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.name), FragmentNavigatorExtras(
-                element.item_restaurant_image to "${getString(R.string.restaurant_image_transition)}_${restaurant.id}",
-                element.item_restaurant_text_price to "${getString(R.string.restaurant_text_price_transition)}_${restaurant.id}"
-            )
-        )
+        findNavController().navigate(ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.name), restaurant.transitionExtras(element))
     }
 
     override fun onToggleFavorite(element: View, restaurant: Restaurant) {

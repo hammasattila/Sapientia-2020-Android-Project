@@ -4,11 +4,11 @@ import android.view.View
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import hamm.android.project.R
 import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
+import kotlinx.android.synthetic.main.layout_restaurant_actions_detailed.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 import java.io.Serializable
 
@@ -72,6 +72,12 @@ data class Restaurant(
                 v?.button_unset_favorite?.visibility = View.GONE
             }
         }
+    }
+
+    fun setDetailActions(v: View?) {
+        v?.button_set_favorite?.shrink()
+        v?.button_unset_favorite?.shrink()
+        v?.button_unset_photo?.visibility = View.GONE
     }
 
 

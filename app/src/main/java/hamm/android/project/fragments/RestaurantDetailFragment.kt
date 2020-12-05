@@ -76,25 +76,27 @@ class RestaurantDetailFragment : Fragment() {
 
             restaurant.setTransitionNames(it)
             restaurant.setFavoriteButton(it)
+            restaurant.setDetailActions(it)
 
             // Click listeners
             it.button_open_maps.setOnClickListener { openMaps() }
+            it.button_open_phone.setOnClickListener { dialNumber() }
             it.button_set_favorite.setOnClickListener { togaeFavorites() }
             it.button_unset_favorite.setOnClickListener { togaeFavorites() }
         }
     }
 
-    private fun openMaps() {
-        val uri: String = java.lang.String.format(
-            Locale.ENGLISH,
-            "http://maps.google.com/maps?q=loc:%f,%f",
-            args.restaurant.lat,
-            args.restaurant.lng
+    private fun dialNumber() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:${mRestaurantDetailViewModel.restaurant.phone}")))
+    }
 
+    private fun openMaps() {
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?q=loc:${mRestaurantDetailViewModel.restaurant.lat},${mRestaurantDetailViewModel.restaurant.lng}")
+            )
         )
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        startActivity(intent)
-        args.restaurant.lng
     }
 
     private fun togaeFavorites() {
