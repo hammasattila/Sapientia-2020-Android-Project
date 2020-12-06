@@ -14,8 +14,17 @@ interface RestaurantDao {
     @Query("SELECT * FROM restaurant_table ORDER BY area ASC")
     fun getAllRestaurants(): LiveData<List<Restaurant>>
 
+    @Transaction
     @Query("SELECT * FROM restaurant_table WHERE id = :id")
     fun getRestaurantById(id: Int): LiveData<Restaurant>
+
+    @Transaction
+    @Query("SELECT * FROM restaurant_table JOIN restaurant_extension_table ON id = restaurantId WHERE isFavorite = 1 ORDER BY name ASC")
+    fun getFavorites(): LiveData<List<Restaurant>>
+
+
+
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllRestaurants(restaurants: List<RestaurantBase>)
@@ -25,23 +34,4 @@ interface RestaurantDao {
 
     @Update
     suspend fun updateRestaurantExt(ext: RestaurantExtension)
-
-
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertRestaurant(restaurant: Restaurant)
-
-//    @Query("SELECT * FROM restaurant_table WHERE id = :id")
-//    suspend fun findRestaurantById(id: Int): Restaurant?
-
-//    @Query("SELECT * FROM restaurant_table WHERE isFavorite = 1 ORDER BY NAME ASC")
-//    fun getFavorites() :LiveData<List<Restaurant>>
-
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun toggleFavorite(food: Restaurant)
-//
-//    @Query("SELECT * FROM restaurant_table ORDER BY name ASC")
-//    fun getAllFoods(): LiveData<List<Food>>
-
-//    @Query("SELECT * FROM restaurant_table WHERE id = :id")
-//    suspend fun getFood(id: Int): Restaurant
 }

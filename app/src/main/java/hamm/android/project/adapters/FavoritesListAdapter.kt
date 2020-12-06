@@ -55,8 +55,8 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Fav
     override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
         if (holder is RestaurantHolder) {
             val restaurant = getItem(position)
-//            holder.itemView.item_restaurant_text_title.text = restaurant.name
-//            holder.itemView.item_restaurant_image.load(restaurant.urlImage)
+            holder.itemView.item_restaurant_text_title.text = restaurant.info.name
+            holder.itemView.item_restaurant_image.load(restaurant.info.urlImage)
             restaurant.setBasicTextContent(holder.itemView)
             restaurant.setTransitionNames(holder.itemView)
             restaurant.setFavoriteButton(holder.itemView)

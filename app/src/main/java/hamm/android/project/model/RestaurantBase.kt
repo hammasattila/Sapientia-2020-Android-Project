@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import hamm.android.project.data.RestaurantRepository
+import java.io.Serializable
 
 @Entity(tableName = "restaurant_table")
 data class RestaurantBase(
@@ -26,7 +27,7 @@ data class RestaurantBase(
     val urlMobileReserve: String,
     @SerializedName("image_url")
     var urlImage: String
-) {
+) : Serializable {
     val value: String
         get() = "$".repeat(price)
 

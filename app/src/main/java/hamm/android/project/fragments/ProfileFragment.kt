@@ -54,10 +54,8 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
         val adapter = FavoritesListAdapter(this)
         binding.recyclerViewRestaurants?.adapter = adapter
         binding.recyclerViewRestaurants?.layoutManager = LinearLayoutManager(context)
-//        binding.recyclerViewRestaurants?.viewTreeObserver.addOnPreDrawListener { startPostponedEnterTransition(); true }
         waitForTransition(binding.recyclerViewRestaurants)
-//        TODO
-//        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites -> adapter.submitList(favorites) })
+        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites -> adapter.submitList(favorites) })
     }
 
     override fun onItemClick(element: View, restaurant: Restaurant) {
@@ -68,7 +66,7 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
         binding.viewModel?.toggleFavorite(restaurant)
     }
 
-    fun waitForTransition(targetView: View) {
+    private fun waitForTransition(targetView: View) {
         postponeEnterTransition()
         targetView.doOnPreDraw { startPostponedEnterTransition() }
     }

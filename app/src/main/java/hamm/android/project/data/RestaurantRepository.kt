@@ -53,9 +53,9 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         return restaurantDao.getRestaurantById(id)
     }
 
-//    fun getFavoritesAsync(): LiveData<List<Restaurant>> {
-////        return restaurantDao.getFavorites()
-//    }
+    fun getFavoritesAsync(): LiveData<List<Restaurant>> {
+        return restaurantDao.getFavorites()
+    }
 
 
     companion object {
