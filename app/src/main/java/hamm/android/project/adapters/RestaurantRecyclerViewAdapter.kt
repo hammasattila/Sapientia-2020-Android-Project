@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 //import coil.request.SuccessResult
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
-import hamm.android.project.utils.load
+import hamm.android.project.utils.*
 import kotlinx.android.synthetic.main.item_restaurant.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
@@ -28,7 +28,7 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
     }
 
     private var dataCount: Int = 0
-    private var data: ArrayList<Restaurant> = ArrayList()
+    private var data: List<Restaurant> = listOf()
 
     inner class RestaurantViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -47,11 +47,11 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
                     }
                 }
                 is Button -> {
-                    val restaurant = data[adapterPosition]
-                    restaurant.isFavorite = !restaurant.isFavorite
-                    data[adapterPosition].setFavoriteButton(v.parent as View)
-
-                    listener.toggleFavorite(restaurant)
+                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                        val restaurant = data[adapterPosition]
+                        restaurant.toggleFavorite()
+                        listener.toggleFavorite(restaurant)
+                    }
                 }
             }
         }
@@ -64,7 +64,7 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
         fun toggleFavorite(restaurant: Restaurant)
     }
 
-    fun setData(count: Int, restaurants: ArrayList<Restaurant>) {
+    fun setData(count: Int, restaurants: List<Restaurant>) {
         dataCount = count
         data = restaurants
         notifyDataSetChanged()
@@ -81,8 +81,8 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is RestaurantViewHolder) {
-            holder.view.item_restaurant_text_title.text = data[position].name
-            holder.view.item_restaurant_image.load(data[position].urlImage)
+            holder.view.item_restaurant_text_title.text = data[position].information.name
+            holder.view.item_restaurant_image.load(data[position].information.urlImage)
             data[position].setBasicTextContent(holder.view)
 
             data[position].setTransitionNames(holder.view)

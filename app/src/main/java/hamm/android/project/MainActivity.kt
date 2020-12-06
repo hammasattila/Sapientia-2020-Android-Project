@@ -9,7 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import hamm.android.project.viewmodels.RestaurantViewModel
+import hamm.android.project.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,14 +17,14 @@ class MainActivity : AppCompatActivity() {
 
     // private val binding by viewBinding(ActivityMainBinding::inflate)
     private lateinit var mNavController: NavController
-    private lateinit var mViewModel: RestaurantViewModel
+    private lateinit var mMainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // setContentView(binding.root)
 
-        mViewModel = ViewModelProvider(this).get(RestaurantViewModel::class.java)
+        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         mNavController = (supportFragmentManager.findFragmentById(R.id.fragment_nav_host) as NavHostFragment).navController
         setupActionBarWithNavController(mNavController, AppBarConfiguration(setOf(R.id.restaurantListFragment, R.id.profileFragment)))
         mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -58,13 +58,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (!mViewModel.loading) {
+        if (!mMainActivityViewModel.loading) {
             super.onBackPressed()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (!mViewModel.loading) {
+        if (!mMainActivityViewModel.loading) {
             return mNavController.navigateUp() || super.onSupportNavigateUp()
         }
 

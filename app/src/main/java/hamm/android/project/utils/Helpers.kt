@@ -1,13 +1,10 @@
 package hamm.android.project.utils
 
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -16,25 +13,11 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import hamm.android.project.R
-import hamm.android.project.fragments.SplashFragmentDirections
-import hamm.android.project.viewmodels.RestaurantViewModel
+import hamm.android.project.viewmodels.MainActivityViewModel
 import kotlin.math.abs
 
-
-// TODO move it to list fragment
-fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
-    this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (!recyclerView.canScrollVertically(1)) {
-                paginationCallback()
-            }
-        }
-    })
-}
-
-fun delayedCheckForLoading(viewModel: RestaurantViewModel?, delay: Long = 2000, action: () -> Unit = {}) {
-    viewModel?.let {
+fun delayedCheckForLoading(mMainActivityViewModel: MainActivityViewModel?, delay: Long = 2000, action: () -> Unit = {}) {
+    mMainActivityViewModel?.let {
         Handler(Looper.getMainLooper()).postDelayed({
             if (!it.loading) {
                 action()

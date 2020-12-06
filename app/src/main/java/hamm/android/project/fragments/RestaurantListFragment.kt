@@ -14,15 +14,15 @@ import androidx.transition.TransitionInflater
 import hamm.android.project.R
 import hamm.android.project.adapters.RestaurantRecyclerViewAdapter
 import hamm.android.project.model.Restaurant
-import hamm.android.project.utils.initPagination
-import hamm.android.project.viewmodels.RestaurantViewModel
+import hamm.android.project.utils.transitionExtras
+import hamm.android.project.viewmodels.MainActivityViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
 
 
 class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listener {
 
-    private lateinit var mViewModel: RestaurantViewModel
+    private lateinit var mMainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
-        mViewModel = ViewModelProvider(requireActivity(), RestaurantViewModelFactory(requireActivity().application)).get(RestaurantViewModel::class.java)
+        mMainActivityViewModel = ViewModelProvider(requireActivity(), RestaurantViewModelFactory(requireActivity().application)).get(MainActivityViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -56,11 +56,11 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
     }
 
     override fun onItemClick(v: View, d: Restaurant) {
-        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.name), d.transitionExtras(v))
+        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.information.name), d.transitionExtras(v))
     }
 
     override fun toggleFavorite(restaurant: Restaurant) {
-        mViewModel.toggleFavorites(restaurant)
+        mMainActivityViewModel.updateRestaurant(restaurant)
     }
 
     private fun RecyclerView.initForRestaurants(listener: RestaurantRecyclerViewAdapter.Listener, spanCount: Int = 2) {
@@ -81,15 +81,26 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         }
         this.layoutManager = layoutManager
 
-        this.initPagination() { mViewModel.getRestaurants() }
+        this.initPagination() { mMainActivityViewModel.getRestaurants() }
         postponeEnterTransition()
         this.viewTreeObserver.addOnPreDrawListener {
             startPostponedEnterTransition()
             true
         }
 
-        mViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
-            restaurantRecyclerViewAdapter.setData(mViewModel.restaurantCount, restaurants)
+        mMainActivityViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
+            restaurantRecyclerViewAdapter.setData(mMainActivityViewModel.restaurantCount, restaurants)
+        })
+    }
+
+    fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
+        this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    paginationCallback()
+                }
+            }
         })
     }
 }

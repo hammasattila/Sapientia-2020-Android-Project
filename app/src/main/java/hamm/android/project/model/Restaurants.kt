@@ -7,5 +7,5 @@ data class Restaurants(
     val count: Int,
     @SerializedName("per_page")
     val pageSize: Int,
-    val restaurants: ArrayList<Restaurant>
+    val restaurants: List<RestaurantBase>
 )

@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class ProfileFragmentViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: RestaurantRepository
-    val favoriteRestaurants: LiveData<List<Restaurant>>
+//    TODO
+//    val favoriteRestaurants: LiveData<List<Restaurant>>
     var settings: SharedPreferences? = null
         set(settings) {
             settings?.let {
@@ -32,7 +33,8 @@ class ProfileFragmentViewModel(application: Application) : AndroidViewModel(appl
     init {
         val restaurantDao = RestaurantDatabase.getDatabase(application).restaurantDao()
         repository = RestaurantRepository(restaurantDao)
-        favoriteRestaurants = repository.getFavoritesAsync()
+        // TODO
+//        favoriteRestaurants = repository.getFavoritesAsync()
     }
 
     fun saveProfile() {
@@ -49,7 +51,8 @@ class ProfileFragmentViewModel(application: Application) : AndroidViewModel(appl
     }
 
     fun toggleFavorite(restaurant: Restaurant) {
-        restaurant.isFavorite = !restaurant.isFavorite
+//        TODO
+//        restaurant.isFavorite = !restaurant.isFavorite
         viewModelScope.launch {
             repository.toggleFavoriteSync(restaurant)
         }

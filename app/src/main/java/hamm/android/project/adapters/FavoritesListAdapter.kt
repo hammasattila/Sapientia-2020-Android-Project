@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.load
+import hamm.android.project.utils.setBasicTextContent
+import hamm.android.project.utils.setFavoriteButton
+import hamm.android.project.utils.setTransitionNames
 import kotlinx.android.synthetic.main.item_restaurant.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
@@ -52,8 +55,8 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Fav
     override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
         if (holder is RestaurantHolder) {
             val restaurant = getItem(position)
-            holder.itemView.item_restaurant_text_title.text = restaurant.name
-            holder.itemView.item_restaurant_image.load(restaurant.urlImage)
+//            holder.itemView.item_restaurant_text_title.text = restaurant.name
+//            holder.itemView.item_restaurant_image.load(restaurant.urlImage)
             restaurant.setBasicTextContent(holder.itemView)
             restaurant.setTransitionNames(holder.itemView)
             restaurant.setFavoriteButton(holder.itemView)
@@ -69,7 +72,7 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Fav
     companion object {
         private object DIFF_CALLBACK : DiffUtil.ItemCallback<Restaurant>() {
             override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.information.id == newItem.information.id
             }
 
             override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {

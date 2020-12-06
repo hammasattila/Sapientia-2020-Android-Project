@@ -1,24 +1,36 @@
 package hamm.android.project.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 import hamm.android.project.model.Restaurant
+import hamm.android.project.model.RestaurantBase
+import hamm.android.project.model.RestaurantExtension
 
 @Dao
 interface RestaurantDao {
 
+    @Transaction
+    @Query("SELECT * FROM restaurant_table")
+    fun getAllRestaurants(): LiveData<List<Restaurant>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRestaurant(restaurant: Restaurant)
+    suspend fun insertAllRestaurants(restaurants: List<RestaurantBase>)
 
-    @Query("SELECT * FROM restaurant_table WHERE id = :id")
-    suspend fun findRestaurantById(id: Int): Restaurant?
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRestaurantExt(ext: RestaurantExtension)
 
-    @Query("SELECT * FROM restaurant_table WHERE isFavorite = 1 ORDER BY NAME ASC")
-    fun getFavorites() :LiveData<List<Restaurant>>
+    @Update
+    suspend fun updateRestaurantExt(ext: RestaurantExtension)
+
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertRestaurant(restaurant: Restaurant)
+
+//    @Query("SELECT * FROM restaurant_table WHERE id = :id")
+//    suspend fun findRestaurantById(id: Int): Restaurant?
+
+//    @Query("SELECT * FROM restaurant_table WHERE isFavorite = 1 ORDER BY NAME ASC")
+//    fun getFavorites() :LiveData<List<Restaurant>>
 
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    suspend fun toggleFavorite(food: Restaurant)

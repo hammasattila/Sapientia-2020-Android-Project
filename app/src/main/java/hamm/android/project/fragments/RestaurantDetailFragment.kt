@@ -20,21 +20,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
-import hamm.android.project.utils.IMAGE_REQUEST_CODE
-import hamm.android.project.utils.load
+import hamm.android.project.utils.*
 import hamm.android.project.viewmodels.RestaurantDetailViewModel
-import hamm.android.project.viewmodels.RestaurantViewModel
+import hamm.android.project.viewmodels.MainActivityViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_actions_detailed.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_information_detailed.view.*
 
 
 class RestaurantDetailFragment : Fragment() {
 
     private val args: RestaurantDetailFragmentArgs by navArgs()
-    private lateinit var mRestaurantViewModel: RestaurantViewModel
+    private lateinit var mMainActivityViewModel: MainActivityViewModel
     private lateinit var mRestaurantDetailViewModel: RestaurantDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +40,10 @@ class RestaurantDetailFragment : Fragment() {
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
-        mRestaurantViewModel = ViewModelProvider(
+        mMainActivityViewModel = ViewModelProvider(
             requireActivity(),
             RestaurantViewModelFactory(requireActivity().application)
-        ).get(RestaurantViewModel::class.java)
+        ).get(MainActivityViewModel::class.java)
         mRestaurantDetailViewModel =
             ViewModelProvider(this).get(RestaurantDetailViewModel::class.java)
         mRestaurantDetailViewModel.restaurant = args.restaurant
@@ -66,16 +64,16 @@ class RestaurantDetailFragment : Fragment() {
             val restaurant = mRestaurantDetailViewModel.restaurant
 
             postponeEnterTransition()
-            it.item_restaurant_image.load(restaurant.urlImage) { startPostponedEnterTransition() }
+            it.item_restaurant_image.load(restaurant.information.urlImage) { startPostponedEnterTransition() }
             restaurant.setBasicTextContent(it)
-            it.item_restaurant_text_city.text = "${getString(R.string.restaurant_text_city)} ${restaurant.city}"
-            it.item_restaurant_text_area.text = "${getString(R.string.restaurant_text_area)} ${restaurant.area}"
-            it.item_restaurant_text_state.text = "${getString(R.string.restaurant_text_state)} ${RestaurantViewModel.mapOfStates[restaurant.state]}"
-            it.item_restaurant_text_zip.text = "${getString(R.string.restaurant_text_zip)} ${restaurant.postalCode}"
-            it.item_restaurant_text_phone.text = "${getString(R.string.restaurant_text_phone)} ${restaurant.phone}"
-            it.item_restaurant_text_coordinates.text = "${getString(R.string.restaurant_text_coordinates)} (${restaurant.lat}, ${restaurant.lng})"
-            it.item_restaurant_text_web.text = "${getString(R.string.restaurant_text_web)} ${restaurant.urlReserve}"
-            it.item_restaurant_text_web_mobile.text = "${getString(R.string.restaurant_text_web_mobile)} ${restaurant.urlMobileReserve}"
+//            it.item_restaurant_text_city.text = "${getString(R.string.restaurant_text_city)} ${restaurant.city}"
+//            it.item_restaurant_text_area.text = "${getString(R.string.restaurant_text_area)} ${restaurant.area}"
+//            it.item_restaurant_text_state.text = "${getString(R.string.restaurant_text_state)} ${MainActivityViewModel.mapOfStates[restaurant.state]}"
+//            it.item_restaurant_text_zip.text = "${getString(R.string.restaurant_text_zip)} ${restaurant.postalCode}"
+//            it.item_restaurant_text_phone.text = "${getString(R.string.restaurant_text_phone)} ${restaurant.phone}"
+//            it.item_restaurant_text_coordinates.text = "${getString(R.string.restaurant_text_coordinates)} (${restaurant.lat}, ${restaurant.lng})"
+//            it.item_restaurant_text_web.text = "${getString(R.string.restaurant_text_web)} ${restaurant.urlReserve}"
+//            it.item_restaurant_text_web_mobile.text = "${getString(R.string.restaurant_text_web_mobile)} ${restaurant.urlMobileReserve}"
 
             restaurant.setTransitionNames(it)
             restaurant.setFavoriteButton(it)
@@ -95,21 +93,21 @@ class RestaurantDetailFragment : Fragment() {
     }
 
     private fun dialNumber() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:${mRestaurantDetailViewModel.restaurant.phone}")))
+//        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:${mRestaurantDetailViewModel.restaurant.phone}")))
     }
 
     private fun openMaps() {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("http://maps.google.com/maps?q=loc:${mRestaurantDetailViewModel.restaurant.lat},${mRestaurantDetailViewModel.restaurant.lng}")
+//                Uri.parse("http://maps.google.com/maps?q=loc:${mRestaurantDetailViewModel.restaurant.lat},${mRestaurantDetailViewModel.restaurant.lng}")
             )
         )
     }
 
     private fun togaeFavorites() {
-        mRestaurantDetailViewModel.restaurant.isFavorite = !mRestaurantDetailViewModel.restaurant.isFavorite
-        mRestaurantViewModel.toggleFavorites(mRestaurantDetailViewModel.restaurant)
+//        mRestaurantDetailViewModel.restaurant.isFavorite = !mRestaurantDetailViewModel.restaurant.isFavorite
+        mMainActivityViewModel.updateRestaurant(mRestaurantDetailViewModel.restaurant)
         mRestaurantDetailViewModel.restaurant.setFavoriteButton(view)
     }
 
@@ -119,8 +117,8 @@ class RestaurantDetailFragment : Fragment() {
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
             data?.dataString?.let { imageUrl ->
                 view?.item_restaurant_image?.load(imageUrl)
-                mRestaurantDetailViewModel.restaurant.urlImage = imageUrl
-                mRestaurantViewModel.toggleFavorites(mRestaurantDetailViewModel.restaurant)
+//                mRestaurantDetailViewModel.restaurant.urlImage = imageUrl
+                mMainActivityViewModel.updateRestaurant(mRestaurantDetailViewModel.restaurant)
             }
         }
     }

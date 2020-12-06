@@ -17,6 +17,7 @@ import hamm.android.project.adapters.FavoritesListAdapter
 import hamm.android.project.databinding.FragmentProfileBinding
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.load
+import hamm.android.project.utils.transitionExtras
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.ProfileFragmentViewModel
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
@@ -56,11 +57,12 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
         binding.recyclerViewRestaurants?.layoutManager = LinearLayoutManager(context)
 //        binding.recyclerViewRestaurants?.viewTreeObserver.addOnPreDrawListener { startPostponedEnterTransition(); true }
         waitForTransition(binding.recyclerViewRestaurants)
-        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites -> adapter.submitList(favorites) })
+//        TODO
+//        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites -> adapter.submitList(favorites) })
     }
 
     override fun onItemClick(element: View, restaurant: Restaurant) {
-        findNavController().navigate(ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.name), restaurant.transitionExtras(element))
+        findNavController().navigate(ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.information.name), restaurant.transitionExtras(element))
     }
 
     override fun onToggleFavorite(element: View, restaurant: Restaurant) {
