@@ -51,7 +51,7 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
     }
 
     private fun initFavoriteList() {
-        val adapter = FavoritesListAdapter(this@ProfileFragment)
+        val adapter = FavoritesListAdapter(this)
         binding.recyclerViewRestaurants?.adapter = adapter
         binding.recyclerViewRestaurants?.layoutManager = LinearLayoutManager(context)
 //        binding.recyclerViewRestaurants?.viewTreeObserver.addOnPreDrawListener { startPostponedEnterTransition(); true }

@@ -3,6 +3,7 @@ package hamm.android.project.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import hamm.android.project.data.RestaurantRepository
 
 @Entity(tableName = "restaurant_table")
 data class RestaurantBase(
@@ -28,6 +29,9 @@ data class RestaurantBase(
 ) {
     val value: String
         get() = "$".repeat(price)
+
+    val stateName: String
+        get() = RestaurantRepository.mapOfStates[state] ?: ""
 
     override fun equals(other: Any?): Boolean {
         return (other is RestaurantBase) &&

@@ -49,8 +49,8 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         return restaurants.count
     }
 
-    suspend fun toggleFavoriteSync(restaurant: Restaurant) {
-//        restaurantDao.insertRestaurant(restaurant)
+    fun getRestaurantByIdAsync(id: Int): LiveData<Restaurant> {
+        return restaurantDao.getRestaurantById(id)
     }
 
 //    fun getFavoritesAsync(): LiveData<List<Restaurant>> {

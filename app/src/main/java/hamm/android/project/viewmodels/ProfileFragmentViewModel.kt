@@ -54,7 +54,7 @@ class ProfileFragmentViewModel(application: Application) : AndroidViewModel(appl
 //        TODO
 //        restaurant.isFavorite = !restaurant.isFavorite
         viewModelScope.launch {
-            repository.toggleFavoriteSync(restaurant)
+            repository.updateRestaurantSync(restaurant)
         }
     }
 }

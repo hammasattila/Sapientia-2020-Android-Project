@@ -11,8 +11,11 @@ import hamm.android.project.model.RestaurantExtension
 interface RestaurantDao {
 
     @Transaction
-    @Query("SELECT * FROM restaurant_table")
+    @Query("SELECT * FROM restaurant_table ORDER BY area ASC")
     fun getAllRestaurants(): LiveData<List<Restaurant>>
+
+    @Query("SELECT * FROM restaurant_table WHERE id = :id")
+    fun getRestaurantById(id: Int): LiveData<Restaurant>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllRestaurants(restaurants: List<RestaurantBase>)
@@ -22,6 +25,7 @@ interface RestaurantDao {
 
     @Update
     suspend fun updateRestaurantExt(ext: RestaurantExtension)
+
 
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    suspend fun insertRestaurant(restaurant: Restaurant)

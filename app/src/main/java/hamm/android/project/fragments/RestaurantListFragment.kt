@@ -19,7 +19,6 @@ import hamm.android.project.viewmodels.MainActivityViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
 
-
 class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
 
     private lateinit var mMainActivityViewModel: MainActivityViewModel
@@ -59,7 +58,7 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.info.name), d.transitionExtras(v))
     }
 
-    override fun toggleFavorite(restaurant: Restaurant) {
+    override fun onItemToggleFavorite(restaurant: Restaurant) {
         mMainActivityViewModel.updateRestaurant(restaurant)
     }
 
@@ -81,7 +80,9 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         }
         this.layoutManager = layoutManager
 
-        this.initPagination() { mMainActivityViewModel.getRestaurants() }
+        this.initPagination() {
+            mMainActivityViewModel.getRestaurants()
+        }
         postponeEnterTransition()
         this.viewTreeObserver.addOnPreDrawListener {
             startPostponedEnterTransition()

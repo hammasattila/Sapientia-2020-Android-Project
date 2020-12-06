@@ -1,6 +1,5 @@
 package hamm.android.project.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +21,7 @@ import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restaurant, RecyclerView.ViewHolder>(Restaurant.DIFF_CALLBACK) {
 
-    companion object {
-        val VIEW_TYPE_LOADING = 0
-        val VIEW_TYPE_CONTROL = 1
-        val VIEW_TYPE_RESTAURANT = 2
-    }
+    private var isLoading: Boolean = false;
 
     inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -48,7 +43,7 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
                     if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
                         val restaurant = getItem(adapterPosition)
                         restaurant.toggleFavorite()
-                        listener.toggleFavorite(restaurant)
+                        listener.onItemToggleFavorite(restaurant)
                     }
                 }
             }
@@ -59,15 +54,14 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
 
     interface Listener {
         fun onItemClick(v: View, restaurant: Restaurant)
-        fun toggleFavorite(restaurant: Restaurant)
+        fun onItemToggleFavorite(restaurant: Restaurant)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
         val layoutInflater = LayoutInflater.from(viewGroup.context)
-        return when (viewType) {
-            VIEW_TYPE_LOADING -> LoadingHolder(layoutInflater.inflate(R.layout.item_loading, viewGroup, false))
-            else -> RestaurantHolder(layoutInflater.inflate(R.layout.item_restaurant, viewGroup, false))
+        return when(viewType) {
+            VIEW_TYPE_RESTAURANT -> RestaurantHolder(layoutInflater.inflate(R.layout.item_restaurant, viewGroup, false))
+            else -> LoadingHolder(layoutInflater.inflate(R.layout.item_loading, viewGroup, false))
         }
     }
 
@@ -81,18 +75,6 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
                 restaurant.setTransitionNames(holder.itemView)
                 restaurant.setFavoriteButton(holder.itemView)
             }
-            is LoadingHolder -> {
-                Log.e("Load test", "Fired")
-                //listener.getMoreData()
-            }
-        }
-    }
-
-    override fun getItemCount(): Int {
-
-        return currentList.size + when {
-//            dataCount <= data.size -> 0
-            else -> 1
         }
     }
 
@@ -102,4 +84,23 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
             else -> VIEW_TYPE_RESTAURANT
         }
     }
+
+    override fun getItemCount(): Int {
+        // TODO
+        return super.getItemCount() + when (true) {
+            true -> 1
+            false -> 0
+        }
+    }
+
+    override fun submitList(list: List<Restaurant>?) {
+        super.submitList(list)
+    }
+
+    companion object {
+        val VIEW_TYPE_LOADING = 0
+        val VIEW_TYPE_CONTROL = 1
+        val VIEW_TYPE_RESTAURANT = 2
+    }
+
 }
