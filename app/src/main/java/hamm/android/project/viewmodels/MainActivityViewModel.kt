@@ -154,6 +154,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             synchronized(restaurantCount) {
                 restaurantCount = count
             }
+
+            ++page
             loading = false
         }
     }

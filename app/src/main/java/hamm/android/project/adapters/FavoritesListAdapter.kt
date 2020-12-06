@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 
-class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, FavoritesListAdapter.RestaurantHolder>(DIFF_CALLBACK) {
+class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, FavoritesListAdapter.RestaurantHolder>(Restaurant.DIFF_CALLBACK) {
     inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         init {
             view.setOnClickListener(this)
@@ -67,18 +67,5 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Fav
     interface Listener {
         fun onItemClick(element: View, restaurant: Restaurant)
         fun onToggleFavorite(element: View, restaurant: Restaurant)
-    }
-
-    companion object {
-        private object DIFF_CALLBACK : DiffUtil.ItemCallback<Restaurant>() {
-            override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
-                return oldItem.information.id == newItem.information.id
-            }
-
-            override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
-                return oldItem == newItem
-            }
-
-        }
     }
 }

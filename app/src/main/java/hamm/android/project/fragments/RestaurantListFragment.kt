@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
-import hamm.android.project.adapters.RestaurantRecyclerViewAdapter
+import hamm.android.project.adapters.RestaurantListAdapter
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.transitionExtras
 import hamm.android.project.viewmodels.MainActivityViewModel
@@ -20,7 +20,7 @@ import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
 
 
-class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listener {
+class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
 
     private lateinit var mMainActivityViewModel: MainActivityViewModel
 
@@ -56,24 +56,24 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
     }
 
     override fun onItemClick(v: View, d: Restaurant) {
-        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.information.name), d.transitionExtras(v))
+        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.info.name), d.transitionExtras(v))
     }
 
     override fun toggleFavorite(restaurant: Restaurant) {
         mMainActivityViewModel.updateRestaurant(restaurant)
     }
 
-    private fun RecyclerView.initForRestaurants(listener: RestaurantRecyclerViewAdapter.Listener, spanCount: Int = 2) {
+    private fun RecyclerView.initForRestaurants(listener: RestaurantListAdapter.Listener, spanCount: Int = 2) {
 
-        val restaurantRecyclerViewAdapter = RestaurantRecyclerViewAdapter(listener)
+        val restaurantRecyclerViewAdapter = RestaurantListAdapter(listener)
         this.adapter = restaurantRecyclerViewAdapter
 
         val layoutManager = GridLayoutManager(context, spanCount)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (restaurantRecyclerViewAdapter.getItemViewType(position)) {
-                    RestaurantRecyclerViewAdapter.VIEW_TYPE_CONTROL -> spanCount
-                    RestaurantRecyclerViewAdapter.VIEW_TYPE_LOADING -> spanCount
+                    RestaurantListAdapter.VIEW_TYPE_CONTROL -> spanCount
+                    RestaurantListAdapter.VIEW_TYPE_LOADING -> spanCount
                     else -> 1
                 }
             }
@@ -89,7 +89,7 @@ class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listene
         }
 
         mMainActivityViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
-            restaurantRecyclerViewAdapter.setData(mMainActivityViewModel.restaurantCount, restaurants)
+            restaurantRecyclerViewAdapter.submitList(restaurants)
         })
     }
 

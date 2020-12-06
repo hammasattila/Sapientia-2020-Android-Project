@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
@@ -62,7 +61,7 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
     }
 
     override fun onItemClick(element: View, restaurant: Restaurant) {
-        findNavController().navigate(ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.information.name), restaurant.transitionExtras(element))
+        findNavController().navigate(ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.info.name), restaurant.transitionExtras(element))
     }
 
     override fun onToggleFavorite(element: View, restaurant: Restaurant) {

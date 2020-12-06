@@ -64,7 +64,7 @@ class RestaurantDetailFragment : Fragment() {
             val restaurant = mRestaurantDetailViewModel.restaurant
 
             postponeEnterTransition()
-            it.item_restaurant_image.load(restaurant.information.urlImage) { startPostponedEnterTransition() }
+            it.item_restaurant_image.load(restaurant.info.urlImage) { startPostponedEnterTransition() }
             restaurant.setBasicTextContent(it)
 //            it.item_restaurant_text_city.text = "${getString(R.string.restaurant_text_city)} ${restaurant.city}"
 //            it.item_restaurant_text_area.text = "${getString(R.string.restaurant_text_area)} ${restaurant.area}"

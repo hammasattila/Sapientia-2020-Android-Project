@@ -12,25 +12,25 @@ import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 fun Restaurant.transitionExtras(v: View): FragmentNavigator.Extras {
     return FragmentNavigatorExtras(
-        v.item_restaurant_image to "restaurant_image_${information.id}",
-        v.item_restaurant_text_price to "restaurant_text_price_${information.id}",
-        v.item_restaurant_text_address to "restaurant_text_address_${information.id}",
-        v.button_set_favorite to "restaurant_button_set_favorite_${information.id}",
-        v.button_unset_favorite to "restaurant_button_unset_favorite_${information.id}"
+        v.item_restaurant_image to "restaurant_image_${info.id}",
+        v.item_restaurant_text_price to "restaurant_text_price_${info.id}",
+        v.item_restaurant_text_address to "restaurant_text_address_${info.id}",
+        v.button_set_favorite to "restaurant_button_set_favorite_${info.id}",
+        v.button_unset_favorite to "restaurant_button_unset_favorite_${info.id}"
     )
 }
 
 fun Restaurant.setTransitionNames(v: View?) {
-    v?.item_restaurant_image?.transitionName = "restaurant_image_${information.id}"
-    v?.item_restaurant_text_price?.transitionName = "restaurant_text_price_${information.id}"
-    v?.item_restaurant_text_address?.transitionName = "restaurant_text_address_${information.id}"
-    v?.button_set_favorite?.transitionName = "restaurant_button_set_favorite_${information.id}"
-    v?.button_unset_favorite?.transitionName = "restaurant_button_unset_favorite_${information.id}"
+    v?.item_restaurant_image?.transitionName = "restaurant_image_${info.id}"
+    v?.item_restaurant_text_price?.transitionName = "restaurant_text_price_${info.id}"
+    v?.item_restaurant_text_address?.transitionName = "restaurant_text_address_${info.id}"
+    v?.button_set_favorite?.transitionName = "restaurant_button_set_favorite_${info.id}"
+    v?.button_unset_favorite?.transitionName = "restaurant_button_unset_favorite_${info.id}"
 }
 
 fun Restaurant.setBasicTextContent(v: View?) {
-    v?.item_restaurant_text_price?.text = "${v?.context?.getString(R.string.restaurant_text_price)} ${information.price}"
-    v?.item_restaurant_text_address?.text = "${v?.context?.getString(R.string.restaurant_text_address)} ${information.address}"
+    v?.item_restaurant_text_price?.text = "${v?.context?.getString(R.string.restaurant_text_price)} ${info.price}"
+    v?.item_restaurant_text_address?.text = "${v?.context?.getString(R.string.restaurant_text_address)} ${info.address}"
 }
 
 fun Restaurant.setFavoriteButton(v: View?) {
@@ -54,7 +54,7 @@ fun Restaurant.setDetailActions(v: View?) {
 
 fun Restaurant.toggleFavorite() {
     if(ext == null) {
-        ext = RestaurantExtension(restaurantId = information.id)
+        ext = RestaurantExtension(restaurantId = info.id)
     }
 
     ext!!.isFavorite = !ext!!.isFavorite

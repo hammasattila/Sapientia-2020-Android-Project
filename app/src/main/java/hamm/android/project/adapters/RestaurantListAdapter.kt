@@ -1,10 +1,12 @@
 package hamm.android.project.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 //import coil.ImageLoader
 //import coil.load
@@ -18,8 +20,7 @@ import kotlinx.android.synthetic.main.item_restaurant.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
-class RestaurantRecyclerViewAdapter(private val listener: Listener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restaurant, RecyclerView.ViewHolder>(Restaurant.DIFF_CALLBACK) {
 
     companion object {
         val VIEW_TYPE_LOADING = 0
@@ -27,10 +28,7 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
         val VIEW_TYPE_RESTAURANT = 2
     }
 
-    private var dataCount: Int = 0
-    private var data: List<Restaurant> = listOf()
-
-    inner class RestaurantViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         init {
             view.setOnClickListener(this)
@@ -43,12 +41,12 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
             when (v) {
                 is CardView -> {
                     if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
-                        listener.onItemClick(v, data[adapterPosition])
+                        listener.onItemClick(v, getItem(adapterPosition))
                     }
                 }
                 is Button -> {
                     if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
-                        val restaurant = data[adapterPosition]
+                        val restaurant = getItem(adapterPosition)
                         restaurant.toggleFavorite()
                         listener.toggleFavorite(restaurant)
                     }
@@ -57,49 +55,50 @@ class RestaurantRecyclerViewAdapter(private val listener: Listener) :
         }
     }
 
-    inner class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    inner class LoadingHolder(view: View) : RecyclerView.ViewHolder(view)
 
     interface Listener {
         fun onItemClick(v: View, restaurant: Restaurant)
         fun toggleFavorite(restaurant: Restaurant)
     }
 
-    fun setData(count: Int, restaurants: List<Restaurant>) {
-        dataCount = count
-        data = restaurants
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         val layoutInflater = LayoutInflater.from(viewGroup.context)
         return when (viewType) {
-            VIEW_TYPE_LOADING -> LoadingViewHolder(layoutInflater.inflate(R.layout.item_loading, viewGroup, false))
-            else -> RestaurantViewHolder(layoutInflater.inflate(R.layout.item_restaurant, viewGroup, false))
+            VIEW_TYPE_LOADING -> LoadingHolder(layoutInflater.inflate(R.layout.item_loading, viewGroup, false))
+            else -> RestaurantHolder(layoutInflater.inflate(R.layout.item_restaurant, viewGroup, false))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is RestaurantViewHolder) {
-            holder.view.item_restaurant_text_title.text = data[position].information.name
-            holder.view.item_restaurant_image.load(data[position].information.urlImage)
-            data[position].setBasicTextContent(holder.view)
-
-            data[position].setTransitionNames(holder.view)
-            data[position].setFavoriteButton(holder.view)
+        when (holder) {
+            is RestaurantHolder -> {
+                val restaurant = getItem(position)
+                holder.itemView.item_restaurant_text_title.text = restaurant.info.name
+                holder.itemView.item_restaurant_image.load(restaurant.info.urlImage)
+                restaurant.setBasicTextContent(holder.itemView)
+                restaurant.setTransitionNames(holder.itemView)
+                restaurant.setFavoriteButton(holder.itemView)
+            }
+            is LoadingHolder -> {
+                Log.e("Load test", "Fired")
+                //listener.getMoreData()
+            }
         }
     }
 
     override fun getItemCount(): Int {
-        return data.size + when {
-            dataCount <= data.size -> 0
+
+        return currentList.size + when {
+//            dataCount <= data.size -> 0
             else -> 1
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
-            data.size -> VIEW_TYPE_LOADING
+            currentList.size -> VIEW_TYPE_LOADING
             else -> VIEW_TYPE_RESTAURANT
         }
     }
