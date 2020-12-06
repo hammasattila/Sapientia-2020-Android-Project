@@ -64,7 +64,7 @@ fun ImageView.load(url: String, onLoadingFinished: () -> Unit = {}) {
         .into(this)
 }
 
-fun ImageView.load(url: String) {
+fun ImageView.load(url: String?) {
     Glide.with(this)
         .load(url)
         .apply(RequestOptions.placeholderOf(R.drawable.placeholder_restaurant))

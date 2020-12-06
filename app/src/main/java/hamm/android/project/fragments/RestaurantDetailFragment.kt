@@ -6,9 +6,12 @@ package hamm.android.project.fragments
 //import coil.memory.MemoryCache
 //import coil.request.CachePolicy
 //import coil.request.ImageRequest
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
+import hamm.android.project.utils.IMAGE_REQUEST_CODE
 import hamm.android.project.utils.load
 import hamm.android.project.viewmodels.RestaurantDetailViewModel
 import hamm.android.project.viewmodels.RestaurantViewModel
@@ -25,7 +29,6 @@ import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_actions_detailed.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_detailed.view.*
-import java.util.*
 
 
 class RestaurantDetailFragment : Fragment() {
@@ -82,8 +85,13 @@ class RestaurantDetailFragment : Fragment() {
             it.button_open_maps.setOnClickListener { openMaps() }
             it.button_open_phone.setOnClickListener { dialNumber() }
             it.button_set_favorite.setOnClickListener { togaeFavorites() }
+            it.button_set_photo.setOnClickListener { setPhoto() }
             it.button_unset_favorite.setOnClickListener { togaeFavorites() }
         }
+    }
+
+    private fun setPhoto() {
+        startActivityForResult(Intent.createChooser(Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT), "Select the image"), IMAGE_REQUEST_CODE)
     }
 
     private fun dialNumber() {
@@ -105,4 +113,32 @@ class RestaurantDetailFragment : Fragment() {
         mRestaurantDetailViewModel.restaurant.setFavoriteButton(view)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+            data?.dataString?.let { imageUrl ->
+                view?.item_restaurant_image?.load(imageUrl)
+                mRestaurantDetailViewModel.restaurant.urlImage = imageUrl
+                mRestaurantViewModel.toggleFavorites(mRestaurantDetailViewModel.restaurant)
+            }
+        }
+    }
+
+    fun convertMediaUriToPath(uri: Uri?): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        uri?.let { uri ->
+            val cursor: Cursor? = activity?.contentResolver?.query(uri, projection, null, null, null)
+            cursor?.let { cursor ->
+                val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                cursor.moveToFirst()
+                val path = cursor.getString(columnIndex)
+                cursor.close()
+
+                return path
+            }
+        }
+
+        return null
+    }
 }

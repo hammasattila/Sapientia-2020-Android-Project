@@ -32,7 +32,7 @@ data class Restaurant(
     @SerializedName("mobile_reserve_url")
     val urlMobileReserve: String,
     @SerializedName("image_url")
-    val urlImage: String,
+    var urlImage: String,
     var isFavorite: Boolean = false,
 ) : Serializable {
     val value: String
