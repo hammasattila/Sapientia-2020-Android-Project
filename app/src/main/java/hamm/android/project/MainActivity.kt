@@ -39,19 +39,21 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.splashFragment -> bottom_nav.animate()
                     .translationY(bottom_nav.height.toFloat())
-                    .setDuration(300)
-                    .withStartAction { bottom_nav.visibility = View.INVISIBLE }
+                    .setDuration(500)
+                    .withStartAction { bottom_nav.visibility = View.GONE }
                 R.id.restaurantListFragment -> bottom_nav.animate()
                     .translationY(0.0F)
-                    .setDuration(300)
-                    .withStartAction { bottom_nav.visibility = View.VISIBLE }
+                    .setDuration(500)
+                    .withStartAction {
+                        bottom_nav.visibility = View.VISIBLE
+                    }
                 R.id.profileFragment -> bottom_nav.animate()
                     .translationY(0.0F)
-                    .setDuration(300)
+                    .setDuration(500)
                     .withStartAction { bottom_nav.visibility = View.VISIBLE }
                 else -> bottom_nav.animate()
                     .translationY(bottom_nav.height.toFloat())
-                    .setDuration(300)
+                    .setDuration(500)
                     .withEndAction { bottom_nav.visibility = View.GONE }
             }
         }

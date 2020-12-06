@@ -22,4 +22,5 @@
     <string name="restaurant_button_set_favorite">Add</string>
     <string name="restaurant_button_unset_favorite">Remove</string>
     <string name="shared_preferences_name">Sapientia-Android2020-Project-Settings.xml</string>
+    <string name="item_empty_text">It\'s quite empty here...</string>
 </resources>

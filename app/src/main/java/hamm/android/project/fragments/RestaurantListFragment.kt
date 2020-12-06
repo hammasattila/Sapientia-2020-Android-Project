@@ -68,16 +68,7 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         this.adapter = restaurantRecyclerViewAdapter
 
         val layoutManager = GridLayoutManager(context, spanCount)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (restaurantRecyclerViewAdapter.getItemViewType(position)) {
-                    RestaurantListAdapter.VIEW_TYPE_CONTROL -> spanCount
-                    RestaurantListAdapter.VIEW_TYPE_LOADING -> spanCount
-                    else -> 1
-                }
-            }
 
-        }
         this.layoutManager = layoutManager
 
         this.initPagination() {

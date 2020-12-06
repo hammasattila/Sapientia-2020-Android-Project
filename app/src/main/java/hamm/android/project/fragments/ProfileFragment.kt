@@ -55,7 +55,13 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
         binding.recyclerViewRestaurants?.adapter = adapter
         binding.recyclerViewRestaurants?.layoutManager = LinearLayoutManager(context)
         waitForTransition(binding.recyclerViewRestaurants)
-        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites -> adapter.submitList(favorites) })
+        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites ->
+            adapter.submitList(favorites)
+                binding.favoritesEmptyArt.visibility = when(favorites.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> View.GONE
+            }
+        })
     }
 
     override fun onItemClick(element: View, restaurant: Restaurant) {

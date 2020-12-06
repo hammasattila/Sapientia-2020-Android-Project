@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
 import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 
-class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, FavoritesListAdapter.RestaurantHolder>(Restaurant.DIFF_CALLBACK) {
+class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, RecyclerView.ViewHolder>(Restaurant.DIFF_CALLBACK) {
     inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         init {
             view.setOnClickListener(this)
@@ -45,24 +45,25 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Fav
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantHolder {
+    inner class EmptyHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return when (viewType) {
-            else -> RestaurantHolder(layoutInflater.inflate(R.layout.item_restaurant, parent, false))
-        }
+        return RestaurantHolder(layoutInflater.inflate(R.layout.item_restaurant, parent, false))
     }
 
-    override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
-        if (holder is RestaurantHolder) {
-            val restaurant = getItem(position)
-            holder.itemView.item_restaurant_text_title.text = restaurant.info.name
-            holder.itemView.item_restaurant_image.load(restaurant.info.urlImage)
-            restaurant.setBasicTextContent(holder.itemView)
-            restaurant.setTransitionNames(holder.itemView)
-            restaurant.setFavoriteButton(holder.itemView)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is RestaurantHolder -> {
+                val restaurant = getItem(position)
+                holder.itemView.item_restaurant_text_title.text = restaurant.info.name
+                holder.itemView.item_restaurant_image.load(restaurant.info.urlImage)
+                restaurant.setBasicTextContent(holder.itemView)
+                restaurant.setTransitionNames(holder.itemView)
+                restaurant.setFavoriteButton(holder.itemView)
+            }
         }
     }
-
 
     interface Listener {
         fun onItemClick(element: View, restaurant: Restaurant)
