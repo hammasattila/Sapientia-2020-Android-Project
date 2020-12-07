@@ -34,13 +34,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     var state: String? = null
         private set
     var city: String? = null
-        private set
     var zip: String? = null
-        private set
     var address: String? = null
-        private set
     var name: String? = null
-        private set
 
     // Options
     var page: Int = 1
@@ -60,7 +56,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         restaurants = repo.getAllRestaurantsAsync()
     }
 
-    fun curateCountry(c: String): String? {
+    fun curateCountry(c: String?): String? {
         if (c.isNullOrBlank()) {
             return null
         }
@@ -68,7 +64,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         return getClosestString(c, RestaurantRepository.countries)
     }
 
-    fun curateState(s: String): String? {
+    fun curateState(s: String?): String? {
         if (s.isNullOrBlank()) {
             return null
         }
@@ -88,10 +84,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun setFilters(
         country: String?,
         state: String?,
-        city: String?,
-        zip: String?,
-        address: String?,
-        name: String?,
         perPage: Int = this.perPage
     ): Boolean {
         // TODO("Clean the texts from white characters. For now it does the job.")
@@ -101,10 +93,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
         this.country = country
         this.state = state
-        this.city = city
-        this.zip = zip
-        this.address = address
-        this.name = name
         this.perPage = perPage
         this.page = 1
 

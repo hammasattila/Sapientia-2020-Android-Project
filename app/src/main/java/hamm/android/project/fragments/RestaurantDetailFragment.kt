@@ -8,27 +8,21 @@ package hamm.android.project.fragments
 //import coil.request.ImageRequest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
-import hamm.android.project.databinding.FragmentProfileBinding
 import hamm.android.project.databinding.FragmentRestaurantDetailBinding
 import hamm.android.project.utils.*
 import hamm.android.project.viewmodels.RestaurantDetailFragmentViewModel
-import hamm.android.project.viewmodels.MainActivityViewModel
-import hamm.android.project.viewmodels.RestaurantViewModelFactory
-import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_actions_detailed.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 
 class RestaurantDetailFragment : Fragment() {
@@ -59,7 +53,7 @@ class RestaurantDetailFragment : Fragment() {
             binding.viewModel?.restaurant?.let { restaurant ->
 
                 postponeEnterTransition()
-                it.item_restaurant_image.load(restaurant.info.urlImage) { startPostponedEnterTransition() }
+                it.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.info.urlImage) { startPostponedEnterTransition() }
                 restaurant.setBasicTextContent(it)
                 restaurant.setTransitionNames(it)
                 restaurant.setFavoriteButton(it)
@@ -67,11 +61,11 @@ class RestaurantDetailFragment : Fragment() {
             }
 
             // Click listeners
-            it.button_open_maps.setOnClickListener { openMaps() }
-            it.button_open_phone.setOnClickListener { dialNumber() }
-            it.button_set_favorite.setOnClickListener { togaeFavorites() }
-            it.button_set_photo.setOnClickListener { setPhoto() }
-            it.button_unset_favorite.setOnClickListener { togaeFavorites() }
+            it.findViewById<Button>(R.id.button_open_maps).setOnClickListener { openMaps() }
+            it.findViewById<Button>(R.id.button_open_phone).setOnClickListener { dialNumber() }
+            it.findViewById<Button>(R.id.button_set_favorite).setOnClickListener { togaeFavorites() }
+            it.findViewById<Button>(R.id.button_set_photo).setOnClickListener { setPhoto() }
+            it.findViewById<Button>(R.id.button_unset_favorite).setOnClickListener { togaeFavorites() }
         }
     }
 
@@ -107,7 +101,7 @@ class RestaurantDetailFragment : Fragment() {
 
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
             data?.dataString?.let { imageUrl ->
-                view?.item_restaurant_image?.load(imageUrl)
+                view?.findViewById<ImageView>(R.id.item_restaurant_image)?.load(imageUrl)
                 //binding.viewModel?.restaurant?.info?.urlImage? = imageUrl
                 // TODO
                 // mMainActivityViewModel.updateRestaurant(mRestaurantDetailFragmentViewModel.restaurant)

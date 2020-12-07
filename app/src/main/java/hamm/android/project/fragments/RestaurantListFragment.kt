@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
 import hamm.android.project.adapters.RestaurantListAdapter
+import hamm.android.project.databinding.FragmentRestaurantListBinding
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.transitionExtras
+import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.MainActivityViewModel
 import hamm.android.project.viewmodels.RestaurantViewModelFactory
-import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
 
 class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
 
+    private val binding by viewBinding(FragmentRestaurantListBinding::bind)
     private lateinit var mMainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,22 +38,19 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
-
-        view.floating_action_button_filter.setOnClickListener {
-            findNavController().navigate(
-                RestaurantListFragmentDirections.restaurantFilter(), FragmentNavigatorExtras(
-                    view.floating_action_button_filter to "fab_filter"
-                )
-            )
-        }
-
-        return view
+        return inflater.inflate(R.layout.fragment_restaurant_list, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        view?.recycler_view_restaurants?.initForRestaurants(this)
+        binding.floatingActionButtonFilter.setOnClickListener {
+            findNavController().navigate(
+                RestaurantListFragmentDirections.restaurantFilter(), FragmentNavigatorExtras(
+                    binding.floatingActionButtonFilter to "fab_filter"
+                )
+            )
+        }
+        binding.recyclerViewRestaurants.initForRestaurants(this)
     }
 
     override fun onItemClick(v: View, d: Restaurant) {
@@ -85,7 +84,7 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         })
     }
 
-    fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
+    private fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
         this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)

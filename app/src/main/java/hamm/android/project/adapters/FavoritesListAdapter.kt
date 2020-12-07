@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -14,17 +16,14 @@ import hamm.android.project.utils.load
 import hamm.android.project.utils.setBasicTextContent
 import hamm.android.project.utils.setFavoriteButton
 import hamm.android.project.utils.setTransitionNames
-import kotlinx.android.synthetic.main.item_restaurant.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 
 class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, RecyclerView.ViewHolder>(Restaurant.DIFF_CALLBACK) {
     inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         init {
             view.setOnClickListener(this)
-            view.button_set_favorite.setOnClickListener(this)
-            view.button_unset_favorite.setOnClickListener(this)
+            view.findViewById<Button>(R.id.button_set_favorite).setOnClickListener(this)
+            view.findViewById<Button>(R.id.button_unset_favorite).setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
@@ -56,8 +55,8 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Rec
         when (holder) {
             is RestaurantHolder -> {
                 val restaurant = getItem(position)
-                holder.itemView.item_restaurant_text_title.text = restaurant.info.name
-                holder.itemView.item_restaurant_image.load(restaurant.info.urlImage)
+                holder.itemView.findViewById<TextView>(R.id.item_restaurant_text_title).text = restaurant.info.name
+                holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.info.urlImage)
                 restaurant.setBasicTextContent(holder.itemView)
                 restaurant.setTransitionNames(holder.itemView)
                 restaurant.setFavoriteButton(holder.itemView)

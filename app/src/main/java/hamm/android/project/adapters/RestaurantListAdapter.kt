@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.*
-import kotlinx.android.synthetic.main.item_restaurant.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_actions_basic.view.*
-import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
 
 class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restaurant, RestaurantListAdapter.RestaurantHolder>(Restaurant.DIFF_CALLBACK) {
 
@@ -27,8 +26,8 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
 
         init {
             view.setOnClickListener(this)
-            view.button_set_favorite.setOnClickListener(this)
-            view.button_unset_favorite.setOnClickListener(this)
+            view.findViewById<Button>(R.id.button_set_favorite).setOnClickListener(this)
+            view.findViewById<Button>(R.id.button_unset_favorite).setOnClickListener(this)
 
         }
 
@@ -63,8 +62,8 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
 
     override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
         val restaurant = getItem(position)
-        holder.itemView.item_restaurant_text_title.text = restaurant.info.name
-        holder.itemView.item_restaurant_image.load(restaurant.info.urlImage)
+        holder.itemView.findViewById<TextView>(R.id.item_restaurant_text_title).text = restaurant.info.name
+        holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.info.urlImage)
         restaurant.setBasicTextContent(holder.itemView)
         restaurant.setTransitionNames(holder.itemView)
         restaurant.setFavoriteButton(holder.itemView)

@@ -9,52 +9,53 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import hamm.android.project.databinding.ActivityMainBinding
+import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.MainActivityViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
 
-    // private val binding by viewBinding(ActivityMainBinding::inflate)
+     private val binding by viewBinding(ActivityMainBinding::inflate)
     private lateinit var mNavController: NavController
     private lateinit var mMainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        // setContentView(binding.root)
+//        setContentView(R.layout.activity_main)
+         setContentView(binding.root)
 
         mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         mNavController = (supportFragmentManager.findFragmentById(R.id.fragment_nav_host) as NavHostFragment).navController
         setupActionBarWithNavController(mNavController, AppBarConfiguration(setOf(R.id.restaurantListFragment, R.id.profileFragment)))
-        mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
+        mNavController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.splashFragment -> supportActionBar?.hide()
                 else -> supportActionBar?.show()
             }
         }
 
-        bottom_nav.setupWithNavController(mNavController)
-        mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
+        binding.bottomNav.setupWithNavController(mNavController)
+        mNavController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.splashFragment -> bottom_nav.animate()
-                    .translationY(bottom_nav.height.toFloat())
+                R.id.splashFragment -> binding.bottomNav.animate()
+                    .translationY(binding.bottomNav.height.toFloat())
                     .setDuration(500)
-                    .withStartAction { bottom_nav.visibility = View.GONE }
-                R.id.restaurantListFragment -> bottom_nav.animate()
+                    .withStartAction { binding.bottomNav.visibility = View.GONE }
+                R.id.restaurantListFragment -> binding.bottomNav.animate()
                     .translationY(0.0F)
                     .setDuration(500)
                     .withStartAction {
-                        bottom_nav.visibility = View.VISIBLE
+                        binding.bottomNav.visibility = View.VISIBLE
                     }
-                R.id.profileFragment -> bottom_nav.animate()
+                R.id.profileFragment -> binding.bottomNav.animate()
                     .translationY(0.0F)
                     .setDuration(500)
-                    .withStartAction { bottom_nav.visibility = View.VISIBLE }
-                else -> bottom_nav.animate()
-                    .translationY(bottom_nav.height.toFloat())
+                    .withStartAction { binding.bottomNav.visibility = View.VISIBLE }
+                else -> binding.bottomNav.animate()
+                    .translationY(binding.bottomNav.height.toFloat())
                     .setDuration(500)
-                    .withEndAction { bottom_nav.visibility = View.GONE }
+                    .withEndAction { binding.bottomNav.visibility = View.GONE }
             }
         }
     }

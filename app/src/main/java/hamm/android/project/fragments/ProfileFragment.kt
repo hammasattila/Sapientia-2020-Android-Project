@@ -19,8 +19,6 @@ import hamm.android.project.utils.load
 import hamm.android.project.utils.transitionExtras
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.ProfileFragmentViewModel
-import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
-import kotlinx.android.synthetic.main.item_restaurant.view.*
 
 
 class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
