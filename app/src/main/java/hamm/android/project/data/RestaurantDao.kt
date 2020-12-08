@@ -23,6 +23,9 @@ interface RestaurantDao {
     @Query("SELECT id, name, address, city, state, area, postalCode, country, phone, lat, lng, price, urlReserve, urlMobileReserve, urlImage FROM restaurant_table JOIN restaurant_extension_table ON id = restaurantId WHERE isFavorite = 1 ORDER BY name ASC")
     fun getFavorites(): LiveData<List<Restaurant>>
 
+    @Query("SELECT COUNT(*) FROM restaurant_table WHERE id IN (:listOfIds)")
+    suspend fun isNewDataInTheList(listOfIds: List<Long>): Long
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllRestaurants(restaurants: List<RestaurantBase>)

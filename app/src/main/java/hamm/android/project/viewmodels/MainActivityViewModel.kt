@@ -72,7 +72,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     @Deprecated("It is useless. The api will return at non complete queries as well.")
-    fun curateCity(c: String): String? {
+    fun curateCity(c: String?): String? {
         if (c.isNullOrBlank()) {
             return null
         }
@@ -117,12 +117,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun getRestaurants() {
 //        TODO(Handle paging)
-//        restaurants.value?.let {
-//            if (restaurantCount <= it.size)
-//                return
-//        }
+        if (-1 == page) {
+            return
+        }
         synchronized(this.loading) {
-            if (!loading) {
+            if (loading) {
+                return
+            } else {
                 loading = true
             }
         }
@@ -139,10 +140,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             )
 //          TODO("Handle multiple filters")
             synchronized(restaurantCount) {
-                restaurantCount = count
+                page = count
             }
 
-            ++page
             loading = false
         }
     }

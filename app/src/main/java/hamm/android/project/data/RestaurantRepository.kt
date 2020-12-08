@@ -1,10 +1,12 @@
 package hamm.android.project.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import hamm.android.project.api.RetrofitInstance
 import hamm.android.project.model.Cities
 import hamm.android.project.model.Restaurant
 import hamm.android.project.model.RestaurantExtension
+import hamm.android.project.model.Restaurants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -53,9 +55,20 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         perPage: Int? = null,
         page: Int? = null
     ): Int {
-        val restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, perPage, page)
-        restaurantDao.insertAllRestaurants(restaurants.restaurants)
-        return restaurants.count
+        var newRestaurantCount: Long
+        var restaurants: Restaurants
+        var currentPage: Int = page ?: 1
+        do {
+            restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, perPage, currentPage)
+            if(restaurants.restaurants.isEmpty()) { return -1 }
+            newRestaurantCount = restaurants.restaurants.size - restaurantDao.isNewDataInTheList(restaurants.restaurants.map{ it.id })
+            Log.e("newRestaurantCount", restaurants.restaurants.map{ it.id }.toString())
+            Log.e("newRestaurantCount", newRestaurantCount.toString())
+            restaurantDao.insertAllRestaurants(restaurants.restaurants)
+            ++currentPage
+        } while(newRestaurantCount < 1)
+
+        return currentPage
     }
 
     fun getRestaurantByIdAsync(id: Int): LiveData<Restaurant> {
