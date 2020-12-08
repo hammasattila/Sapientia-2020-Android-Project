@@ -23,15 +23,10 @@ import hamm.android.project.viewmodels.RestaurantViewModelFactory
 class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
 
     private val binding by viewBinding(FragmentRestaurantListBinding::bind)
-    private lateinit var mMainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        sharedElementEnterTransition =
-            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-
-        mMainActivityViewModel = ViewModelProvider(requireActivity(), RestaurantViewModelFactory(requireActivity().application)).get(MainActivityViewModel::class.java)
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
     override fun onCreateView(
@@ -43,6 +38,9 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        activity?.let { activity ->
+            binding.dataModel = ViewModelProvider(activity).get(MainActivityViewModel::class.java)
+        }
         binding.floatingActionButtonFilter.setOnClickListener {
             findNavController().navigate(
                 RestaurantListFragmentDirections.restaurantFilter(), FragmentNavigatorExtras(
@@ -58,7 +56,7 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
     }
 
     override fun onItemToggleFavorite(restaurant: Restaurant) {
-        mMainActivityViewModel.updateRestaurant(restaurant)
+        binding.dataModel?.updateRestaurant(restaurant)
     }
 
     private fun RecyclerView.initForRestaurants(listener: RestaurantListAdapter.Listener, spanCount: Int = 2) {
@@ -71,7 +69,8 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         this.layoutManager = layoutManager
 
         this.initPagination() {
-            mMainActivityViewModel.getRestaurants()
+            binding.lottieAnimationLoading.visibility = View.VISIBLE
+            binding.dataModel?.getRestaurants()
         }
         postponeEnterTransition()
         this.viewTreeObserver.addOnPreDrawListener {
@@ -79,8 +78,9 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
             true
         }
 
-        mMainActivityViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
+        binding.dataModel?.restaurants?.observe(viewLifecycleOwner, { restaurants ->
             restaurantRecyclerViewAdapter.submitList(restaurants)
+            binding.lottieAnimationLoading.visibility = View.GONE
         })
     }
 

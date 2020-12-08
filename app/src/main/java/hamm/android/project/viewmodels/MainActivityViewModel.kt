@@ -17,8 +17,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val repo: RestaurantRepository
 
     // Members
-    @Volatile
-    var loading: Boolean = true
+    var loading: Boolean = false
         private set
 
     @Volatile
