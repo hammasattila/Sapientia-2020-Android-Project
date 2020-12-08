@@ -8,7 +8,7 @@ import java.io.Serializable
 
 data class Restaurant(
     @Embedded val info: RestaurantBase,
-    @Relation(parentColumn = "id", entityColumn = "restaurantId")
+    @Relation(parentColumn = "id", entityColumn = "restaurantId", entity = RestaurantUserData::class)
     var ext: RestaurantExtension?
 ) : Serializable {
 

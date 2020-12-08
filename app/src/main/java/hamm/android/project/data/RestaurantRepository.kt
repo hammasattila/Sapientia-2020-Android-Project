@@ -1,12 +1,10 @@
 package hamm.android.project.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
 import hamm.android.project.api.RetrofitInstance
 import hamm.android.project.model.Cities
 import hamm.android.project.model.Restaurant
 import hamm.android.project.model.RestaurantExtension
-import hamm.android.project.model.Restaurants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -22,9 +20,20 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
     }
 
     suspend fun updateRestaurantExtSync(ext: RestaurantExtension) {
-        when (ext.id) {
-            0 -> restaurantDao.insertRestaurantExt(ext)
-            else -> restaurantDao.updateRestaurantExt(ext)
+        when (ext.userData.id) {
+            0L -> {
+                val extId: Long = restaurantDao.insertRestaurantUserData(ext.userData)
+                for(i in 0 until ext.images.size) {
+                    ext.images[i].extensionId = extId
+                }
+            }
+            else -> restaurantDao.updateRestaurantUserData(ext.userData)
+        }
+
+        for(it in ext.images) {
+            if (0L == it.id) {
+                restaurantDao.insertRestaurantImage(it)
+            }
         }
     }
 

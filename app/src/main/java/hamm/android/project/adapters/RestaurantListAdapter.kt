@@ -63,7 +63,7 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
     override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
         val restaurant = getItem(position)
         holder.itemView.findViewById<TextView>(R.id.item_restaurant_text_title).text = restaurant.info.name
-        holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.info.urlImage)
+        holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.getImageUrl())
         restaurant.setBasicTextContent(holder.itemView)
         restaurant.setTransitionNames(holder.itemView)
         restaurant.setFavoriteButton(holder.itemView)

@@ -12,10 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
-import hamm.android.project.utils.load
-import hamm.android.project.utils.setBasicTextContent
-import hamm.android.project.utils.setFavoriteButton
-import hamm.android.project.utils.setTransitionNames
+import hamm.android.project.utils.*
 
 
 class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, RecyclerView.ViewHolder>(Restaurant.DIFF_CALLBACK) {
@@ -56,7 +53,7 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Rec
             is RestaurantHolder -> {
                 val restaurant = getItem(position)
                 holder.itemView.findViewById<TextView>(R.id.item_restaurant_text_title).text = restaurant.info.name
-                holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.info.urlImage)
+                holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.getImageUrl())
                 restaurant.setBasicTextContent(holder.itemView)
                 restaurant.setTransitionNames(holder.itemView)
                 restaurant.setFavoriteButton(holder.itemView)

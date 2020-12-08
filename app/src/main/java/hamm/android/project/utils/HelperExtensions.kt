@@ -1,7 +1,6 @@
 package hamm.android.project.utils
 
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.FragmentNavigator
@@ -10,6 +9,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import hamm.android.project.R
 import hamm.android.project.model.Restaurant
 import hamm.android.project.model.RestaurantExtension
+import hamm.android.project.model.RestaurantPhoto
+import hamm.android.project.model.RestaurantUserData
 
 
 fun Restaurant.transitionExtras(v: View): FragmentNavigator.Extras {
@@ -36,7 +37,7 @@ fun Restaurant.setBasicTextContent(v: View?) {
 }
 
 fun Restaurant.setFavoriteButton(v: View?) {
-    when (ext?.isFavorite ?: false) {
+    when (ext?.userData?.isFavorite ?: false) {
         true -> {
             v?.findViewById<ExtendedFloatingActionButton>(R.id.button_set_favorite)?.visibility = View.GONE
             v?.findViewById<ExtendedFloatingActionButton>(R.id.button_unset_favorite)?.visibility = View.VISIBLE
@@ -54,10 +55,28 @@ fun Restaurant.setDetailActions(v: View?) {
     v?.findViewById<ExtendedFloatingActionButton>(R.id.button_unset_photo)?.visibility = View.GONE
 }
 
-fun Restaurant.toggleFavorite() {
+fun Restaurant.touchExt() {
     if(ext == null) {
-        ext = RestaurantExtension(restaurantId = info.id)
+        ext = RestaurantExtension(RestaurantUserData(restaurantId = info.id))
+    }
+}
+
+fun Restaurant.toggleFavorite() {
+    touchExt()
+    ext!!.userData.isFavorite = !ext!!.userData.isFavorite
+}
+
+fun Restaurant.addImage(imageUrl: String) {
+    touchExt()
+    ext!!.images.add(RestaurantPhoto(0, ext!!.userData.id, imageUrl))
+}
+
+fun Restaurant.getImageUrl(): String {
+    ext?.let {ext ->
+        if (0 < ext.images.size) {
+            return ext.images[ext.images.lastIndex].imageUrl
+        }
     }
 
-    ext!!.isFavorite = !ext!!.isFavorite
+    return info.urlImage
 }

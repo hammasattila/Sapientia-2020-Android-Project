@@ -1,11 +1,5 @@
 package hamm.android.project.fragments
 
-//import coil.Coil
-//import coil.ImageLoader
-//import coil.load
-//import coil.memory.MemoryCache
-//import coil.request.CachePolicy
-//import coil.request.ImageRequest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
@@ -53,7 +47,7 @@ class RestaurantDetailFragment : Fragment() {
             binding.viewModel?.restaurant?.let { restaurant ->
 
                 postponeEnterTransition()
-                it.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.info.urlImage) { startPostponedEnterTransition() }
+                it.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.getImageUrl()) { startPostponedEnterTransition() }
                 restaurant.setBasicTextContent(it)
                 restaurant.setTransitionNames(it)
                 restaurant.setFavoriteButton(it)
@@ -102,9 +96,8 @@ class RestaurantDetailFragment : Fragment() {
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
             data?.dataString?.let { imageUrl ->
                 view?.findViewById<ImageView>(R.id.item_restaurant_image)?.load(imageUrl)
-                //binding.viewModel?.restaurant?.info?.urlImage? = imageUrl
-                // TODO
-                // mMainActivityViewModel.updateRestaurant(mRestaurantDetailFragmentViewModel.restaurant)
+                binding.viewModel?.restaurant?.addImage(imageUrl)
+                binding.viewModel?.updateRestaurant()
             }
         }
     }

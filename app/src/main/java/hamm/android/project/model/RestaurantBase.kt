@@ -8,7 +8,7 @@ import java.io.Serializable
 
 @Entity(tableName = "restaurant_table")
 data class RestaurantBase(
-    @PrimaryKey(autoGenerate = false) val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: Long,
     val name: String,
     val address: String,
     val city: String,
