@@ -24,7 +24,18 @@ interface RestaurantDao {
     fun getFavorites(): LiveData<List<Restaurant>>
 
     @Query("SELECT COUNT(*) FROM restaurant_table WHERE id IN (:listOfIds)")
-    suspend fun isNewDataInTheList(listOfIds: List<Long>): Long
+    suspend fun isNewDataInTheListSync(listOfIds: List<Long>): Long
+
+    @Query("SELECT * FROM restaurant_table WHERE country = COALESCE(:country, country) AND state = COALESCE(:state, state) AND city = COALESCE(:city, city) AND postalCode = COALESCE(:zip, postalCode) AND address = COALESCE(:address, address) AND name = COALESCE(:name, name) AND price = COALESCE(:price, price)")
+    fun getRestaurantsByFiltersAsync(
+        country: String? = null,
+        state: String? = null,
+        city: String? = null,
+        zip: String? = null,
+        address: String? = null,
+        price: Int? = null,
+        name: String? = null
+    ): LiveData<List<Restaurant>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

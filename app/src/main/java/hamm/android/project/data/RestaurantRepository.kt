@@ -25,14 +25,14 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         when (ext.userData.id) {
             0L -> {
                 val extId: Long = restaurantDao.insertRestaurantUserData(ext.userData)
-                for(i in 0 until ext.images.size) {
+                for (i in 0 until ext.images.size) {
                     ext.images[i].extensionId = extId
                 }
             }
             else -> restaurantDao.updateRestaurantUserData(ext.userData)
         }
 
-        for(it in ext.images) {
+        for (it in ext.images) {
             if (0L == it.id) {
                 restaurantDao.insertRestaurantImage(it)
             }
@@ -45,7 +45,7 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
      * @param "The filters"
      * @return Returns the number of filtered restaurants found by api.
      */
-    suspend fun getRestaurantsSync(
+    suspend fun getRestaurantsByFiltersSync(
         country: String? = "US",
         state: String? = null,
         city: String? = null,
@@ -60,15 +60,29 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         var currentPage: Int = page ?: 1
         do {
             restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, perPage, currentPage)
-            if(restaurants.restaurants.isEmpty()) { return -1 }
-            newRestaurantCount = restaurants.restaurants.size - restaurantDao.isNewDataInTheList(restaurants.restaurants.map{ it.id })
-            Log.e("newRestaurantCount", restaurants.restaurants.map{ it.id }.toString())
+            if (restaurants.restaurants.isEmpty()) {
+                return -1
+            }
+            newRestaurantCount = restaurants.restaurants.size - restaurantDao.isNewDataInTheListSync(restaurants.restaurants.map { it.id })
+            Log.e("newRestaurantCount", restaurants.restaurants.map { it.id }.toString())
             Log.e("newRestaurantCount", newRestaurantCount.toString())
             restaurantDao.insertAllRestaurants(restaurants.restaurants)
             ++currentPage
-        } while(newRestaurantCount < 1)
+        } while (newRestaurantCount < 1)
 
         return currentPage
+    }
+
+    fun getRestaurantsByFiltersAsync(
+        country: String? = "US",
+        state: String? = null,
+        city: String? = null,
+        zip: String? = null,
+        address: String? = null,
+        price: Int? = null,
+        name: String? = null
+    ): LiveData<List<Restaurant>> {
+        return restaurantDao.getRestaurantsByFiltersAsync(country, state, city, zip, address, price, name)
     }
 
     fun getRestaurantByIdAsync(id: Int): LiveData<Restaurant> {

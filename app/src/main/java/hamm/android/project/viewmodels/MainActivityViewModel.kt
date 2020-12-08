@@ -25,7 +25,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         private set
 
     //    val restaurants: MutableLiveData<ArrayList<Restaurant>> = MutableLiveData()
-    val restaurants: LiveData<List<Restaurant>>
+    var restaurants: LiveData<List<Restaurant>>
+        private set
 
     // Filter values
     var country: String? = "US"
@@ -35,6 +36,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     var city: String? = null
     var zip: String? = null
     var address: String? = null
+    var price: Int? = null
+        private set
     var name: String? = null
 
     // Options
@@ -96,6 +99,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         this.page = 1
 
         getRestaurants()
+        restaurants = repo.getRestaurantsByFiltersAsync(country, state, city, zip, address, price, name)
 
         return true
     }
@@ -128,7 +132,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             }
         }
         viewModelScope.launch {
-            val count = repo.getRestaurantsSync(
+            val count = repo.getRestaurantsByFiltersSync(
                 country = country,
                 state = state,
                 city = city,
