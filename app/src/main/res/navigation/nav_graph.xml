@@ -42,6 +42,13 @@
             android:name="restaurantName"
             app:argType="string"
             android:defaultValue="Restaurant" />
+        <action
+            android:id="@+id/restaurantImagesFragment"
+            app:destination="@id/restaurantImagesFragment"
+            app:enterAnim="@anim/anim_enter_from_right"
+            app:exitAnim="@anim/anim_exit_to_left"
+            app:popEnterAnim="@anim/anim_enter_from_left"
+            app:popExitAnim="@anim/anim_exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -68,5 +75,17 @@
             app:exitAnim="@anim/anim_exit_to_left"
             app:popEnterAnim="@anim/anim_enter_from_left"
             app:popExitAnim="@anim/anim_exit_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/restaurantImagesFragment"
+        android:name="hamm.android.project.fragments.RestaurantImagesFragment"
+        android:label="{restaurantName}'s images"
+        tools:layout="@layout/fragment_restaurant_images" >
+        <argument
+            android:name="restaurantName"
+            app:argType="string" />
+        <argument
+            android:name="ext"
+            app:argType="hamm.android.project.model.RestaurantExtension" />
     </fragment>
 </navigation>

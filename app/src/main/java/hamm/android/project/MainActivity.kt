@@ -1,70 +1,81 @@
 package hamm.android.project
 
+import android.Manifest
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import hamm.android.project.viewmodels.RestaurantViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import hamm.android.project.databinding.ActivityMainBinding
+import hamm.android.project.utils.viewBinding
+import hamm.android.project.viewmodels.MainActivityViewModel
+
 
 class MainActivity : AppCompatActivity() {
 
 
-    // private val binding by viewBinding(ActivityMainBinding::inflate)
+     private val binding by viewBinding(ActivityMainBinding::inflate)
     private lateinit var mNavController: NavController
-    private lateinit var mViewModel: RestaurantViewModel
+    private lateinit var mMainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        // setContentView(binding.root)
+//        setContentView(R.layout.activity_main)
+         setContentView(binding.root)
 
-        mViewModel = ViewModelProvider(this).get(RestaurantViewModel::class.java)
+        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         mNavController = (supportFragmentManager.findFragmentById(R.id.fragment_nav_host) as NavHostFragment).navController
         setupActionBarWithNavController(mNavController, AppBarConfiguration(setOf(R.id.restaurantListFragment, R.id.profileFragment)))
-        mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
+        mNavController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.splashFragment -> supportActionBar?.hide()
                 else -> supportActionBar?.show()
             }
         }
 
-        bottom_nav.setupWithNavController(mNavController)
-        mNavController.addOnDestinationChangedListener { controller, destination, arguments ->
+        binding.bottomNav.setupWithNavController(mNavController)
+        mNavController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.splashFragment -> bottom_nav.animate()
-                    .translationY(bottom_nav.height.toFloat())
-                    .setDuration(300)
-                    .withStartAction { bottom_nav.visibility = View.INVISIBLE }
-                R.id.restaurantListFragment -> bottom_nav.animate()
+                R.id.splashFragment -> binding.bottomNav.animate()
+                    .translationY(binding.bottomNav.height.toFloat())
+                    .setDuration(500)
+                    .withStartAction { binding.bottomNav.visibility = View.GONE }
+                R.id.restaurantListFragment -> binding.bottomNav.animate()
                     .translationY(0.0F)
-                    .setDuration(300)
-                    .withStartAction { bottom_nav.visibility = View.VISIBLE }
-                R.id.profileFragment -> bottom_nav.animate()
+                    .setDuration(500)
+                    .withStartAction {
+                        binding.bottomNav.visibility = View.VISIBLE
+                    }
+                R.id.profileFragment -> binding.bottomNav.animate()
                     .translationY(0.0F)
-                    .setDuration(300)
-                    .withStartAction { bottom_nav.visibility = View.VISIBLE }
-                else -> bottom_nav.animate()
-                    .translationY(bottom_nav.height.toFloat())
-                    .setDuration(300)
-                    .withEndAction { bottom_nav.visibility = View.GONE }
+                    .setDuration(500)
+                    .withStartAction { binding.bottomNav.visibility = View.VISIBLE }
+                else -> binding.bottomNav.animate()
+                    .translationY(binding.bottomNav.height.toFloat())
+                    .setDuration(500)
+                    .withEndAction { binding.bottomNav.visibility = View.GONE }
             }
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+    }
+
     override fun onBackPressed() {
-        if (!mViewModel.loading) {
+        if (!mMainActivityViewModel.loading) {
             super.onBackPressed()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (!mViewModel.loading) {
+        if (!mMainActivityViewModel.loading) {
             return mNavController.navigateUp() || super.onSupportNavigateUp()
         }
 

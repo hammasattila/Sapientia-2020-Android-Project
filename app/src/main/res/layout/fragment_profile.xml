@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="hamm.android.project.viewmodels.ProfileFragmentViewModel" />
@@ -179,6 +178,8 @@
                         android:layout_height="match_parent"
                         tools:itemCount="10"
                         tools:listitem="@layout/item_restaurant" />
+
+                    <include layout="@layout/item_empty" android:id="@+id/favorites_empty_art"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

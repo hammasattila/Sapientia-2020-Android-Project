@@ -9,17 +9,19 @@
     <string name="floating_action_button_filter">Clipart for filtering.</string>
     <string name="restaurant_text_price">Price:</string>
     <string name="restaurant_text_address">Address:</string>
-    <string name="restaurant_text_city">City:</string>
-    <string name="restaurant_text_area">Area:</string>
-    <string name="restaurant_text_state">State</string>
-    <string name="restaurant_text_zip">Postal code:</string>
-    <string name="restaurant_text_phone">Phone:</string>
-    <string name="restaurant_text_coordinates">Coordinates:</string>
-    <string name="restaurant_text_web">Webpage:</string>
-    <string name="restaurant_text_web_mobile">Mobile page:</string>
+    <string name="restaurant_text_city">City: %s</string>
+    <string name="restaurant_text_area">Area: %s</string>
+    <string name="restaurant_text_state">State: %s</string>
+    <string name="restaurant_text_zip">Postal code: %s</string>
+    <string name="restaurant_text_phone">Phone: %s</string>
+    <string name="restaurant_text_coordinates">Coordinates: (%f, %f)</string>
+    <string name="restaurant_text_web">Webpage: %s</string>
+    <string name="restaurant_text_web_mobile">Mobile page: %s</string>
     <string name="restaurant_text_price_transition">restaurant_text_price</string>
     <string name="restaurant_image_transition">restaurant_image</string>
     <string name="restaurant_button_set_favorite">Add</string>
     <string name="restaurant_button_unset_favorite">Remove</string>
     <string name="shared_preferences_name">Sapientia-Android2020-Project-Settings.xml</string>
+    <string name="item_empty_text">It\'s quite empty here&#8230;</string>
+    <string name="button_remove_image_text">Remove</string>
 </resources>

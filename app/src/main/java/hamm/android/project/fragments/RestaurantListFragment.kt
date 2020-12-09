@@ -12,84 +12,85 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
-import hamm.android.project.adapters.RestaurantRecyclerViewAdapter
+import hamm.android.project.adapters.RestaurantListAdapter
+import hamm.android.project.databinding.FragmentRestaurantListBinding
 import hamm.android.project.model.Restaurant
-import hamm.android.project.utils.initPagination
-import hamm.android.project.viewmodels.RestaurantViewModel
-import hamm.android.project.viewmodels.RestaurantViewModelFactory
-import kotlinx.android.synthetic.main.fragment_restaurant_list.view.*
+import hamm.android.project.utils.transitionExtras
+import hamm.android.project.utils.viewBinding
+import hamm.android.project.viewmodels.MainActivityViewModel
 
+class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
 
-class RestaurantListFragment : Fragment(), RestaurantRecyclerViewAdapter.Listener {
-
-    private lateinit var mViewModel: RestaurantViewModel
+    private val binding by viewBinding(FragmentRestaurantListBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        sharedElementEnterTransition =
-            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-
-        mViewModel = ViewModelProvider(requireActivity(), RestaurantViewModelFactory(requireActivity().application)).get(RestaurantViewModel::class.java)
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
-
-        view.floating_action_button_filter.setOnClickListener {
-            findNavController().navigate(
-                RestaurantListFragmentDirections.restaurantFilter(), FragmentNavigatorExtras(
-                    view.floating_action_button_filter to "fab_filter"
-                )
-            )
-        }
-
-        return view
+        return inflater.inflate(R.layout.fragment_restaurant_list, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        view?.recycler_view_restaurants?.initForRestaurants(this)
+        activity?.let { activity ->
+            binding.dataModel = ViewModelProvider(activity).get(MainActivityViewModel::class.java)
+        }
+        binding.floatingActionButtonFilter.setOnClickListener {
+            findNavController().navigate(
+                RestaurantListFragmentDirections.restaurantFilter(), FragmentNavigatorExtras(
+                    binding.floatingActionButtonFilter to "fab_filter"
+                )
+            )
+        }
+        binding.recyclerViewRestaurants.initForRestaurants(this)
     }
 
-    override fun onItemClick(v: View, d: Restaurant) {
-        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.name), d.transitionExtras(v))
+    override fun onItemClick(v: View, restaurant: Restaurant) {
+        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(restaurant, restaurant.info.name), restaurant.transitionExtras(v))
     }
 
-    override fun toggleFavorite(restaurant: Restaurant) {
-        mViewModel.toggleFavorites(restaurant)
+    override fun onItemToggleFavorite(restaurant: Restaurant) {
+        binding.dataModel?.updateRestaurant(restaurant)
     }
 
-    private fun RecyclerView.initForRestaurants(listener: RestaurantRecyclerViewAdapter.Listener, spanCount: Int = 2) {
+    private fun RecyclerView.initForRestaurants(listener: RestaurantListAdapter.Listener, spanCount: Int = 2) {
 
-        val restaurantRecyclerViewAdapter = RestaurantRecyclerViewAdapter(listener)
+        val restaurantRecyclerViewAdapter = RestaurantListAdapter(listener)
         this.adapter = restaurantRecyclerViewAdapter
 
         val layoutManager = GridLayoutManager(context, spanCount)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (restaurantRecyclerViewAdapter.getItemViewType(position)) {
-                    RestaurantRecyclerViewAdapter.VIEW_TYPE_CONTROL -> spanCount
-                    RestaurantRecyclerViewAdapter.VIEW_TYPE_LOADING -> spanCount
-                    else -> 1
-                }
-            }
 
-        }
         this.layoutManager = layoutManager
 
-        this.initPagination() { mViewModel.getRestaurants() }
+        this.initPagination() {
+            binding.lottieAnimationLoading.visibility = View.VISIBLE
+            binding.dataModel?.getRestaurants()
+        }
         postponeEnterTransition()
         this.viewTreeObserver.addOnPreDrawListener {
             startPostponedEnterTransition()
             true
         }
 
-        mViewModel.restaurants.observe(viewLifecycleOwner, { restaurants ->
-            restaurantRecyclerViewAdapter.setData(mViewModel.restaurantCount, restaurants)
+        binding.dataModel?.restaurants?.observe(viewLifecycleOwner, { restaurants ->
+            restaurantRecyclerViewAdapter.submitList(restaurants)
+            binding.lottieAnimationLoading.visibility = View.GONE
+        })
+    }
+
+    private fun RecyclerView.initPagination(paginationCallback: () -> Unit = {}) {
+        this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    paginationCallback()
+                }
+            }
         })
     }
 }

@@ -11,21 +11,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
 import hamm.android.project.data.RestaurantRepository
+import hamm.android.project.databinding.FragmentRestaurantFilterBinding
 import hamm.android.project.utils.delayedCheckForLoading
-import hamm.android.project.viewmodels.RestaurantViewModel
-import hamm.android.project.viewmodels.RestaurantViewModelFactory
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_restaurant_filter.view.*
+import hamm.android.project.utils.viewBinding
+import hamm.android.project.viewmodels.MainActivityViewModel
+import hamm.android.project.viewmodels.RestaurantFilterFragmentViewModel
 
 class RestaurantFilterFragment : Fragment() {
 
-    private lateinit var mViewModel: RestaurantViewModel
+    private val binding by viewBinding(FragmentRestaurantFilterBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        sharedElementEnterTransition =
-            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
     override fun onCreateView(
@@ -34,115 +32,102 @@ class RestaurantFilterFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_restaurant_filter, container, false)
 
-        // Get ViewModel.
-        mViewModel =
-            ViewModelProvider(
-                requireActivity(),
-                RestaurantViewModelFactory(requireActivity().application)
-            )
-                .get(RestaurantViewModel::class.java)
+//        // Click listeners
+//        view.floating_action_button_filter.setOnClickListener { v ->
+//            val country = mMainActivityViewModel.curateCountry(view.spinner_country.selectedItem.toString())
+//            view.spinner_country.setSelection(
+//                RestaurantRepository.countries.indexOf(
+//                    mMainActivityViewModel.country
+//                )
+//            )
+//
+//            val state = mMainActivityViewModel.curateState(view.auto_complete_text_view_state.text.toString())
+//            view.auto_complete_text_view_state.setText(state)
+//            val stateCode = RestaurantRepository.getStateCode(state)
+//
+//            // val city = mMainActivityViewModel.curateCity(view.auto_complete_text_view_city.text.toString())
+//            val city = view.auto_complete_text_view_city.text.toString()
+//
+//            val zip = view.edit_text_view_zip.text.toString()
+//
+//            val address = view.edit_text_view_address.text.toString()
+//
+//            val name = view.edit_text_view_name.text.toString()
+//
+//            val perPage: Int = view.spinner_per_page.selectedItem as Int
+//
+//            view.floating_action_button_filter.animate()
+//                .alpha(0.0F)
+//                .scaleX(0.0F)
+//                .scaleY(0.0F)
+//                .setDuration(100)
+//                .withStartAction { view.lottie_loading.visibility = View.VISIBLE }
+//                .withEndAction { view.floating_action_button_filter.visibility = View.INVISIBLE }
+//
+//            mMainActivityViewModel.setFilters(country, stateCode, city, zip, address, name, perPage)
+//            delayedCheckForLoading(mMainActivityViewModel) {
+//                view.floating_action_button_filter.animate()
+//                    .alpha(1.0F)
+//                    .scaleX(1.0F)
+//                    .scaleY(1.0F)
+//                    .setDuration(100)
+//                    .withStartAction { view.floating_action_button_filter.visibility = View.VISIBLE }
+//                    .withEndAction { findNavController().popBackStack() }
+//            }
+//        }
+
+        return view
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        binding.viewModel = ViewModelProvider(this).get(RestaurantFilterFragmentViewModel::class.java)
+        binding.dataModel = activity?.let { ViewModelProvider(it).get(MainActivityViewModel::class.java) }
 
         // Init filters.
-        //Country
-        view.spinner_country.adapter = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            RestaurantViewModel.countries
-        )
-        view.spinner_country.setSelection(
-            RestaurantViewModel.countries.indexOf(
-                mViewModel.country
-            )
-        )
+        context?.let { context ->
+            binding.viewModel?.let { viewModel ->
+                binding.spinnerCountry.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, viewModel.countries)
+            }
+            binding.autoCompleteTextViewState.setAdapter(ArrayAdapter(context, android.R.layout.simple_list_item_1, RestaurantRepository.states))
+            binding.autoCompleteTextViewCity.setAdapter(ArrayAdapter(context, android.R.layout.simple_list_item_1, RestaurantRepository.cities))
+        }
 
-        // State
-        view.auto_complete_text_view_state.setAdapter(
-            ArrayAdapter<String>(
-                requireContext(),
-                android.R.layout.simple_list_item_1,
-                RestaurantViewModel.states
-            )
-        )
-        view.auto_complete_text_view_state.setText(RestaurantViewModel.mapOfStates[mViewModel.state])
+        binding.spinnerCountry.setSelection(RestaurantRepository.countries.indexOf(binding.dataModel?.country))
+        binding.autoCompleteTextViewState.setText(RestaurantRepository.mapOfStates[binding.dataModel?.state])
 
-        // City
-        view.auto_complete_text_view_city.setAdapter(
-            ArrayAdapter<String>(
-                requireContext(),
-                android.R.layout.simple_list_item_1,
-                mViewModel.cities
-            )
-        )
-        view.auto_complete_text_view_city.setText(mViewModel.city)
+        binding.floatingActionButtonFilter.setOnClickListener { applayFilters() }
+    }
 
-        // Zip
-        view.edit_text_view_zip.setText(mViewModel.zip)
+    fun applayFilters() {
+        val country = RestaurantRepository.curateCountry(binding.spinnerCountry.selectedItem.toString())
+        binding.spinnerCountry.setSelection(RestaurantRepository.countries.indexOf(country))
 
-        // Address
-        view.edit_text_view_address.setText(mViewModel.address)
+        val state = RestaurantRepository.curateState(binding.autoCompleteTextViewState.text.toString())
+        binding.autoCompleteTextViewState.setText(state)
+        val stateCode = RestaurantRepository.getStateCode(state)
 
-        // Name
-        view.edit_text_view_name.setText(mViewModel.name)
+        binding.floatingActionButtonFilter.animate()
+            .alpha(0.0F)
+            .scaleX(0.0F)
+            .scaleY(0.0F)
+            .setDuration(100)
+            .withStartAction { binding.lottieLoading.visibility = View.VISIBLE }
+            .withEndAction { binding.floatingActionButtonFilter.visibility = View.INVISIBLE }
 
-        // Per page
-        view.spinner_per_page.adapter = ArrayAdapter<Int>(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            RestaurantViewModel.numberOfRestaurantsPerPage
-        )
-        view.spinner_per_page.setSelection(
-            RestaurantViewModel.numberOfRestaurantsPerPage.indexOf(
-                mViewModel.perPage
-            ), true
-        )
-
-
-        // Click listeners
-        view.floating_action_button_filter.setOnClickListener { v ->
-            val country = mViewModel.curateCountry(view.spinner_country.selectedItem.toString())
-            view.spinner_country.setSelection(
-                RestaurantViewModel.countries.indexOf(
-                    mViewModel.country
-                )
-            )
-
-            val state = mViewModel.curateState(view.auto_complete_text_view_state.text.toString())
-            view.auto_complete_text_view_state.setText(state)
-            val stateCode = RestaurantViewModel.getStateCode(state)
-
-            // val city = mViewModel.curateCity(view.auto_complete_text_view_city.text.toString())
-            val city = view.auto_complete_text_view_city.text.toString()
-
-            val zip = view.edit_text_view_zip.text.toString()
-
-            val address = view.edit_text_view_address.text.toString()
-
-            val name = view.edit_text_view_name.text.toString()
-
-            val perPage: Int = view.spinner_per_page.selectedItem as Int
-
-            view.floating_action_button_filter.animate()
-                .alpha(0.0F)
-                .scaleX(0.0F)
-                .scaleY(0.0F)
-                .setDuration(100)
-                .withStartAction { view.lottie_loading.visibility = View.VISIBLE }
-                .withEndAction { view.floating_action_button_filter.visibility = View.INVISIBLE }
-
-            mViewModel.setFilters(country, stateCode, city, zip, address, name, perPage)
-            delayedCheckForLoading(mViewModel) {
-                view.floating_action_button_filter.animate()
+        when (binding.dataModel?.setFilters(country, stateCode)) {
+            true -> delayedCheckForLoading(binding.dataModel) {
+                binding.floatingActionButtonFilter.animate()
                     .alpha(1.0F)
                     .scaleX(1.0F)
                     .scaleY(1.0F)
                     .setDuration(100)
-                    .withStartAction { view.floating_action_button_filter.visibility = View.VISIBLE }
+                    .withStartAction { binding.floatingActionButtonFilter.visibility = View.VISIBLE }
                     .withEndAction { findNavController().popBackStack() }
             }
         }
-
-        return view
-
     }
 
 }

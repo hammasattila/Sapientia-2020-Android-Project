@@ -3,9 +3,11 @@
     <item
         android:id="@+id/restaurantListFragment"
         android:icon="@drawable/ic_round_list_24"
-        android:title="@string/bottom_nav_item_list" />
+        android:title="@string/bottom_nav_item_list"
+        android:menuCategory="system" />
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_round_person_24"
-        android:title="@string/bottom_nav_item_profile" />
+        android:title="@string/bottom_nav_item_profile"
+        android:menuCategory="system" />
 </menu>

@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import hamm.android.project.model.Restaurant
+import hamm.android.project.model.RestaurantBase
+import hamm.android.project.model.RestaurantUserData
+import hamm.android.project.model.RestaurantPhoto
 
-@Database(entities = [Restaurant::class], version = 1, exportSchema = false)
+@Database(entities = [RestaurantBase::class, RestaurantUserData::class, RestaurantPhoto::class], version = 4, exportSchema = false)
 abstract class RestaurantDatabase: RoomDatabase() {
     abstract fun restaurantDao(): RestaurantDao
 

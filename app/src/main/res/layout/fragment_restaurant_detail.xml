@@ -1,40 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.RestaurantDetailFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
-        android:id="@+id/item_restaurant_scroll_view"
+    <data>
+        <variable
+            name="viewModel"
+            type="hamm.android.project.viewmodels.RestaurantDetailFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".fragments.RestaurantDetailFragment">
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/item_restaurant_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
 
-            <include layout="@layout/layout_restaurant_information_basic" />
-
-            <include layout="@layout/layout_restaurant_information_detailed" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <include layout="@layout/layout_restaurant_actions_basic" />
+                <include layout="@layout/layout_restaurant_information_basic" />
 
-                <include layout="@layout/layout_restaurant_actions_detailed" />
+                <TextView
+                    android:id="@+id/item_restaurant_text_city"
+                    style="@style/item_restaurant_text"
+                    android:text="@{@string/restaurant_text_city(viewModel.restaurant.info.city)}"
+                    app:drawableStartCompat="@drawable/ic_twotone_location_24" />
+
+                <TextView
+                    android:id="@+id/item_restaurant_text_area"
+                    style="@style/item_restaurant_text"
+                    android:text="@{@string/restaurant_text_area(viewModel.restaurant.info.area)}"
+                    app:drawableStartCompat="@drawable/ic_twotone_explore_24" />
+
+                <TextView
+                    android:id="@+id/item_restaurant_text_state"
+                    style="@style/item_restaurant_text"
+                    android:text="@{@string/restaurant_text_state(viewModel.restaurant.info.stateName)}"
+                    app:drawableStartCompat="@drawable/ic_twotone_map_24" />
+
+                <TextView
+                    android:id="@+id/item_restaurant_text_zip"
+                    style="@style/item_restaurant_text"
+                    android:text="@{@string/restaurant_text_zip(viewModel.restaurant.info.postalCode)}"
+                    app:drawableStartCompat="@drawable/ic_twotone_email_24" />
+
+                <TextView
+                    android:id="@+id/item_restaurant_text_phone"
+                    style="@style/item_restaurant_text"
+                    android:text='@{@string/restaurant_text_phone(viewModel.restaurant.info.phone)}'
+                    app:drawableStartCompat="@drawable/ic_twotone_contact_phone_24" />
+
+                <TextView
+                    android:id="@+id/item_restaurant_text_coordinates"
+                    style="@style/item_restaurant_text"
+                    android:text="@{@string/restaurant_text_coordinates(viewModel.restaurant.info.lng, viewModel.restaurant.info.lat)}"
+                    app:drawableStartCompat="@drawable/ic_twotone_gps_location_24" />
+
+                <TextView
+                    android:id="@+id/item_restaurant_text_web"
+                    style="@style/item_restaurant_text"
+                    android:text="@{@string/restaurant_text_web(viewModel.restaurant.info.urlReserve)}"
+                    app:drawableStartCompat="@drawable/ic_twotone_language_24" />
+
+
+                <TextView
+                    android:id="@+id/item_restaurant_text_web_mobile"
+                    style="@style/item_restaurant_text"
+                    android:text="@{@string/restaurant_text_web_mobile(viewModel.restaurant.info.urlMobileReserve)}"
+                    app:drawableStartCompat="@drawable/ic_twotone_book_online_24" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/layout_restaurant_actions_basic" />
+
+                    <include layout="@layout/layout_restaurant_actions_detailed" />
+                </LinearLayout>
+
             </LinearLayout>
+        </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

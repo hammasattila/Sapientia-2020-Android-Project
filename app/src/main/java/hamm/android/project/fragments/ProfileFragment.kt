@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
@@ -17,10 +16,9 @@ import hamm.android.project.adapters.FavoritesListAdapter
 import hamm.android.project.databinding.FragmentProfileBinding
 import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.load
+import hamm.android.project.utils.transitionExtras
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.ProfileFragmentViewModel
-import kotlinx.android.synthetic.main.layout_restaurant_information_basic.view.*
-import kotlinx.android.synthetic.main.item_restaurant.view.*
 
 
 class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
@@ -51,23 +49,28 @@ class ProfileFragment : Fragment(), FavoritesListAdapter.Listener {
     }
 
     private fun initFavoriteList() {
-        val adapter = FavoritesListAdapter(this@ProfileFragment)
+        val adapter = FavoritesListAdapter(this)
         binding.recyclerViewRestaurants?.adapter = adapter
         binding.recyclerViewRestaurants?.layoutManager = LinearLayoutManager(context)
-//        binding.recyclerViewRestaurants?.viewTreeObserver.addOnPreDrawListener { startPostponedEnterTransition(); true }
         waitForTransition(binding.recyclerViewRestaurants)
-        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites -> adapter.submitList(favorites) })
+        binding.viewModel?.favoriteRestaurants?.observe(viewLifecycleOwner, { favorites ->
+            adapter.submitList(favorites)
+                binding.favoritesEmptyArt.visibility = when(favorites.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> View.GONE
+            }
+        })
     }
 
     override fun onItemClick(element: View, restaurant: Restaurant) {
-        findNavController().navigate(ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.name), restaurant.transitionExtras(element))
+        findNavController().navigate(ProfileFragmentDirections.restaurantDetailFragment(restaurant, restaurant.info.name), restaurant.transitionExtras(element))
     }
 
     override fun onToggleFavorite(element: View, restaurant: Restaurant) {
         binding.viewModel?.toggleFavorite(restaurant)
     }
 
-    fun waitForTransition(targetView: View) {
+    private fun waitForTransition(targetView: View) {
         postponeEnterTransition()
         targetView.doOnPreDraw { startPostponedEnterTransition() }
     }
