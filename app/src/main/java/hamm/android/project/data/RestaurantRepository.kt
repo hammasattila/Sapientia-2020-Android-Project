@@ -17,12 +17,12 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         }
     }
 
-    suspend fun updateRestaurantExtSync(ext: RestaurantExtension) {
+    suspend fun updateRestaurantExtSync(ext: RestaurantExtension): RestaurantExtension {
         when (ext.userData.id) {
             0L -> {
-                val extId: Long = restaurantDao.insertRestaurantUserData(ext.userData)
+                ext.userData.id = restaurantDao.insertRestaurantUserData(ext.userData)
                 for (i in 0 until ext.images.size) {
-                    ext.images[i].extensionId = extId
+                    ext.images[i].extensionId = ext.userData.id
                 }
             }
             else -> restaurantDao.updateRestaurantUserData(ext.userData)
@@ -30,9 +30,11 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
 
         for (it in ext.images) {
             if (0L == it.id) {
-                restaurantDao.insertRestaurantImage(it)
+                it.id = restaurantDao.insertRestaurantImage(it)
             }
         }
+
+        return ext
     }
 
     //    TODO("Replace 'US' with something")
@@ -194,7 +196,7 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
                 return null
             }
 
-            return getClosestString(s, RestaurantRepository.states)
+            return getClosestString(s, states)
         }
 
         @Deprecated("It is useless. The api will return at non complete queries as well.")
@@ -203,7 +205,7 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
                 return null
             }
 
-            return getClosestString(c, RestaurantRepository.cities)
+            return getClosestString(c, cities)
         }
     }
 

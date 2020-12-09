@@ -11,12 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import hamm.android.project.R
 import hamm.android.project.databinding.FragmentRestaurantDetailBinding
 import hamm.android.project.utils.*
 import hamm.android.project.viewmodels.RestaurantDetailFragmentViewModel
+import java.io.File
 
 
 class RestaurantDetailFragment : Fragment() {
@@ -52,14 +54,23 @@ class RestaurantDetailFragment : Fragment() {
                 restaurant.setTransitionNames(it)
                 restaurant.setFavoriteButton(it)
                 restaurant.setDetailActions(it)
-            }
 
-            // Click listeners
-            it.findViewById<Button>(R.id.button_open_maps).setOnClickListener { openMaps() }
-            it.findViewById<Button>(R.id.button_open_phone).setOnClickListener { dialNumber() }
-            it.findViewById<Button>(R.id.button_set_favorite).setOnClickListener { togaeFavorites() }
-            it.findViewById<Button>(R.id.button_set_photo).setOnClickListener { setPhoto() }
-            it.findViewById<Button>(R.id.button_unset_favorite).setOnClickListener { togaeFavorites() }
+                // Click listeners
+                it.findViewById<Button>(R.id.button_open_maps).setOnClickListener { openMaps() }
+                it.findViewById<Button>(R.id.button_open_phone).setOnClickListener { dialNumber() }
+                it.findViewById<Button>(R.id.button_set_favorite).setOnClickListener { togaeFavorites() }
+                it.findViewById<Button>(R.id.button_set_photo).setOnClickListener { setPhoto() }
+                it.findViewById<Button>(R.id.button_unset_favorite).setOnClickListener { togaeFavorites() }
+                val restaurantImage = it.findViewById<ImageView>(R.id.item_restaurant_image)
+                restaurant.ext?.let { ext ->
+                    if (0 < ext.images.size) {
+                        restaurantImage.isClickable = true
+                        restaurantImage.setOnClickListener {
+                            findNavController().navigate(RestaurantDetailFragmentDirections.restaurantImagesFragment(restaurant.info.name, ext))
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -94,10 +105,18 @@ class RestaurantDetailFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-            data?.dataString?.let { imageUrl ->
-                view?.findViewById<ImageView>(R.id.item_restaurant_image)?.load(imageUrl)
-                binding.viewModel?.restaurant?.addImage(imageUrl)
-                binding.viewModel?.updateRestaurant()
+//            data?.dataString?.let { imageUrl ->
+//                view?.findViewById<ImageView>(R.id.item_restaurant_image)?.load(imageUrl)
+//                binding.viewModel?.restaurant?.addImage(imageUrl)
+//                binding.viewModel?.updateRestaurant()
+//            }
+            data?.data?.let { it ->
+                context?.let {context ->
+                    val path = FileUtil.from(context, it).path
+                    view?.findViewById<ImageView>(R.id.item_restaurant_image)?.load(path)
+                    binding.viewModel?.restaurant?.addImage(path)
+                    binding.viewModel?.updateRestaurant()
+                }
             }
         }
     }

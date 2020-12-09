@@ -15,7 +15,7 @@ import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.*
 
 
-class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, RecyclerView.ViewHolder>(Restaurant.DIFF_CALLBACK) {
+class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, FavoritesListAdapter.RestaurantHolder>(Restaurant.DIFF_CALLBACK) {
     inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         init {
             view.setOnClickListener(this)
@@ -26,12 +26,12 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Rec
         override fun onClick(v: View?) {
             when (v) {
                 is CardView -> {
-                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
                         listener.onItemClick(v, getItem(adapterPosition))
                     }
                 }
                 is Button -> {
-                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
                         listener.onToggleFavorite(v, getItem(adapterPosition))
                     }
                 }
@@ -41,24 +41,19 @@ class FavoritesListAdapter(val listener: Listener) : ListAdapter<Restaurant, Rec
 
     }
 
-    inner class EmptyHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return RestaurantHolder(layoutInflater.inflate(R.layout.item_restaurant, parent, false))
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is RestaurantHolder -> {
-                val restaurant = getItem(position)
-                holder.itemView.findViewById<TextView>(R.id.item_restaurant_text_title).text = restaurant.info.name
-                holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.getImageUrl())
-                restaurant.setBasicTextContent(holder.itemView)
-                restaurant.setTransitionNames(holder.itemView)
-                restaurant.setFavoriteButton(holder.itemView)
-            }
-        }
+    override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
+        val restaurant = getItem(position)
+        holder.itemView.findViewById<TextView>(R.id.item_restaurant_text_title).text = restaurant.info.name
+        holder.itemView.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.getImageUrl())
+        restaurant.setBasicTextContent(holder.itemView)
+        restaurant.setTransitionNames(holder.itemView)
+        restaurant.setFavoriteButton(holder.itemView)
+
     }
 
     interface Listener {

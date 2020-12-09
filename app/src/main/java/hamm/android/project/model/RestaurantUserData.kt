@@ -5,7 +5,7 @@ import java.io.Serializable
 
 @Entity(tableName = "restaurant_extension_table")
 data class RestaurantUserData(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "extensionId") val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "extensionId") var id: Long = 0,
     val restaurantId: Long,
     var isFavorite: Boolean = false,
 ) : Serializable {
@@ -14,5 +14,9 @@ data class RestaurantUserData(
                 id == other.id &&
                 restaurantId == other.restaurantId &&
                 isFavorite == other.isFavorite
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
     }
 }

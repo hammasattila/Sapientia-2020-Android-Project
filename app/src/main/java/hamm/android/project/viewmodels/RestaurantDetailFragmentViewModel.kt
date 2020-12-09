@@ -19,7 +19,7 @@ class RestaurantDetailFragmentViewModel(application: Application): AndroidViewMo
 
     fun updateRestaurant() {
         viewModelScope.launch {
-            repo.updateRestaurantExtSync(restaurant.ext!!)
+            restaurant.ext = repo.updateRestaurantExtSync(restaurant.ext!!)
         }
     }
 }

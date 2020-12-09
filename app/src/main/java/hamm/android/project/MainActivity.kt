@@ -1,8 +1,11 @@
 package hamm.android.project
 
+import android.Manifest
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -12,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import hamm.android.project.databinding.ActivityMainBinding
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.MainActivityViewModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,6 +62,10 @@ class MainActivity : AppCompatActivity() {
                     .withEndAction { binding.bottomNav.visibility = View.GONE }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     override fun onBackPressed() {
