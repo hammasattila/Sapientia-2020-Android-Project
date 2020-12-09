@@ -16,7 +16,6 @@ import hamm.android.project.utils.delayedCheckForLoading
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.MainActivityViewModel
 import hamm.android.project.viewmodels.RestaurantFilterFragmentViewModel
-import hamm.android.project.viewmodels.RestaurantViewModelFactory
 
 class RestaurantFilterFragment : Fragment() {
 

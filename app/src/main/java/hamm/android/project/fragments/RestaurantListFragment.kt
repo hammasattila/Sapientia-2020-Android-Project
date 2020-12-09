@@ -18,7 +18,6 @@ import hamm.android.project.model.Restaurant
 import hamm.android.project.utils.transitionExtras
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.MainActivityViewModel
-import hamm.android.project.viewmodels.RestaurantViewModelFactory
 
 class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
 
@@ -51,8 +50,8 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         binding.recyclerViewRestaurants.initForRestaurants(this)
     }
 
-    override fun onItemClick(v: View, d: Restaurant) {
-        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(d, d.info.name), d.transitionExtras(v))
+    override fun onItemClick(v: View, restaurant: Restaurant) {
+        findNavController().navigate(RestaurantListFragmentDirections.restaurantDetail(restaurant, restaurant.info.name), restaurant.transitionExtras(v))
     }
 
     override fun onItemToggleFavorite(restaurant: Restaurant) {

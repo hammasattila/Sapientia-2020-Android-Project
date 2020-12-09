@@ -70,6 +70,32 @@ class RestaurantDetailFragment : Fragment() {
                         }
                     }
                 }
+
+
+                binding.viewModel!!.getRestaurantById(restaurant.info.id).observe(viewLifecycleOwner, {
+                    binding.viewModel!!.restaurant = it
+                    setContent()
+                })
+            }
+        }
+    }
+
+    private fun setContent() {
+        view?.let {
+            binding.viewModel?.restaurant?.let { restaurant ->
+                it.findViewById<ImageView>(R.id.item_restaurant_image).load(restaurant.getImageUrl())
+                restaurant.setBasicTextContent(it)
+                restaurant.setFavoriteButton(it)
+
+                val restaurantImage = it.findViewById<ImageView>(R.id.item_restaurant_image)
+                restaurant.ext?.let { ext ->
+                    if (0 < ext.images.size) {
+                        restaurantImage.isClickable = true
+                        restaurantImage.setOnClickListener {
+                            findNavController().navigate(RestaurantDetailFragmentDirections.restaurantImagesFragment(restaurant.info.name, ext))
+                        }
+                    }
+                }
             }
         }
     }
@@ -111,7 +137,7 @@ class RestaurantDetailFragment : Fragment() {
 //                binding.viewModel?.updateRestaurant()
 //            }
             data?.data?.let { it ->
-                context?.let {context ->
+                context?.let { context ->
                     val path = FileUtil.from(context, it).path
                     view?.findViewById<ImageView>(R.id.item_restaurant_image)?.load(path)
                     binding.viewModel?.restaurant?.addImage(path)

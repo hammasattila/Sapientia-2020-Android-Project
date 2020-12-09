@@ -10,7 +10,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import hamm.android.project.R
 import hamm.android.project.viewmodels.MainActivityViewModel
-import hamm.android.project.viewmodels.RestaurantViewModelFactory
 import hamm.android.project.utils.delayedCheckForLoading
 
 class SplashFragment : Fragment() {

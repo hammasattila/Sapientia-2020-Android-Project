@@ -61,11 +61,17 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             return false
         }
 
-        this.country = country
-        this.state = state
-        this.page = 1
+        this.country = if (country.isNullOrBlank()) null else country
+        this.state = if (state.isNullOrBlank()) null else state
+        city = if (city.isNullOrBlank()) null else city
+        zip = if (zip.isNullOrBlank()) null else zip
+        address = if (address.isNullOrBlank()) null else address
+        price = if (price == 0) null else price
+        name = if (name.isNullOrBlank()) null else name
+        page = 1
 
         getRestaurants()
+
         restaurants = repo.getRestaurantsByFiltersAsync(country, state, city, zip, address, price, name)
 
         return true

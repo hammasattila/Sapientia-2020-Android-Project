@@ -20,7 +20,7 @@ import hamm.android.project.utils.*
 
 class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restaurant, RestaurantListAdapter.RestaurantHolder>(Restaurant.DIFF_CALLBACK) {
 
-    private var isLoading: Boolean = false;
+    private var isLoading: Boolean = false
 
     inner class RestaurantHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -34,12 +34,12 @@ class RestaurantListAdapter(private val listener: Listener) : ListAdapter<Restau
         override fun onClick(v: View?) {
             when (v) {
                 is CardView -> {
-                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
                         listener.onItemClick(v, getItem(adapterPosition))
                     }
                 }
                 is Button -> {
-                    if (adapterPosition != RecyclerView.NO_POSITION && v != null) {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
                         val restaurant = getItem(adapterPosition)
                         restaurant.toggleFavorite()
                         restaurant.setFavoriteButton(v.parent as View)

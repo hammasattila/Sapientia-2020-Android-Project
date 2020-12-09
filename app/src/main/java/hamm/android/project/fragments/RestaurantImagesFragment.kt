@@ -1,18 +1,17 @@
-package hamm.android.project.model
+package hamm.android.project.fragments
 
 import android.os.Bundle
-import android.text.Layout
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout.HORIZONTAL
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hamm.android.project.R
 import hamm.android.project.adapters.ImageAdapter
+import hamm.android.project.model.RestaurantPhoto
 import hamm.android.project.viewmodels.RestaurantImagesFragmentViewModel
 
 class RestaurantImagesFragment : Fragment(), ImageAdapter.Listener {
@@ -20,6 +19,10 @@ class RestaurantImagesFragment : Fragment(), ImageAdapter.Listener {
     private val args: RestaurantImagesFragmentArgs by navArgs()
     private lateinit var mViewModel: RestaurantImagesFragmentViewModel
     private lateinit var mViewPagerAdapter: ImageAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
      override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +50,11 @@ class RestaurantImagesFragment : Fragment(), ImageAdapter.Listener {
     }
 
     override fun onImageRemove(image: RestaurantPhoto) {
+        mViewModel.removeImage(image)
+
         mViewModel.images = mViewModel.images.filter{ it != image }
         mViewPagerAdapter.submitList(mViewModel.images)
     }
+
+
 }

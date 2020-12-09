@@ -13,7 +13,7 @@ interface RestaurantDao {
 
     @Transaction
     @Query("SELECT * FROM restaurant_table WHERE id = :id")
-    fun getRestaurantById(id: Int): LiveData<Restaurant>
+    fun getRestaurantById(id: Long): LiveData<Restaurant>
 
     @Query("DELETE FROM restaurant_table WHERE id NOT IN (SELECT id FROM restaurant_extension_table)")
     suspend fun deleteUnnecessaryRestaurants()
@@ -60,5 +60,6 @@ interface RestaurantDao {
 
     @Delete
     suspend fun deleteRestaurantImage(image: RestaurantPhoto)
+
 
 }

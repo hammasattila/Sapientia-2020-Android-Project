@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/restaurantImagesFragment"
-        android:name="hamm.android.project.model.RestaurantImagesFragment"
+        android:name="hamm.android.project.fragments.RestaurantImagesFragment"
         android:label="{restaurantName}'s images"
         tools:layout="@layout/fragment_restaurant_images" >
         <argument

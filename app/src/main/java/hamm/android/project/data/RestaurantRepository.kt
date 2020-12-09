@@ -2,10 +2,7 @@ package hamm.android.project.data
 
 import androidx.lifecycle.LiveData
 import hamm.android.project.api.RetrofitInstance
-import hamm.android.project.model.Cities
-import hamm.android.project.model.Restaurant
-import hamm.android.project.model.RestaurantExtension
-import hamm.android.project.model.Restaurants
+import hamm.android.project.model.*
 import hamm.android.project.utils.getClosestString
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -92,12 +89,16 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         return restaurantDao.getRestaurantsByFiltersAsync(country, state, city, zip, address, price, name)
     }
 
-    fun getRestaurantByIdAsync(id: Int): LiveData<Restaurant> {
+    fun getRestaurantByIdAsync(id: Long): LiveData<Restaurant> {
         return restaurantDao.getRestaurantById(id)
     }
 
     fun getFavoritesAsync(): LiveData<List<Restaurant>> {
         return restaurantDao.getFavorites()
+    }
+
+    suspend fun deleteImage(image: RestaurantPhoto) {
+        restaurantDao.deleteRestaurantImage(image)
     }
 
 
