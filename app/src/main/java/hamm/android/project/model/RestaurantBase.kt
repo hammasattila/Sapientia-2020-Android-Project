@@ -26,7 +26,8 @@ data class RestaurantBase(
     @SerializedName("mobile_reserve_url")
     val urlMobileReserve: String,
     @SerializedName("image_url")
-    var urlImage: String
+    val urlImage: String,
+    var page: Int = 1
 ) : Serializable {
     val value: String
         get() = "$".repeat(price)

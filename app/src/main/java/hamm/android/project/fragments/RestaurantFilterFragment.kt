@@ -91,7 +91,6 @@ class RestaurantFilterFragment : Fragment() {
         context?.let { context ->
             binding.viewModel?.let { viewModel ->
                 binding.spinnerCountry.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, viewModel.countries)
-                binding.spinnerPerPage.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, viewModel.perPage)
             }
             binding.autoCompleteTextViewState.setAdapter(ArrayAdapter(context, android.R.layout.simple_list_item_1, RestaurantRepository.states))
             binding.autoCompleteTextViewCity.setAdapter(ArrayAdapter(context, android.R.layout.simple_list_item_1, RestaurantRepository.cities))
@@ -99,19 +98,17 @@ class RestaurantFilterFragment : Fragment() {
 
         binding.spinnerCountry.setSelection(RestaurantRepository.countries.indexOf(binding.dataModel?.country))
         binding.autoCompleteTextViewState.setText(RestaurantRepository.mapOfStates[binding.dataModel?.state])
-        binding.spinnerPerPage.setSelection(RestaurantRepository.numberOfRestaurantsPerPage.indexOf(binding.dataModel?.perPage), true)
 
         binding.floatingActionButtonFilter.setOnClickListener { applayFilters() }
     }
 
     fun applayFilters() {
-        val country = binding.dataModel?.curateCountry(binding.spinnerCountry.selectedItem.toString())
-        binding.spinnerCountry.setSelection(RestaurantRepository.countries.indexOf(binding.dataModel?.country))
+        val country = RestaurantRepository.curateCountry(binding.spinnerCountry.selectedItem.toString())
+        binding.spinnerCountry.setSelection(RestaurantRepository.countries.indexOf(country))
 
-        val state = binding.dataModel?.curateState(binding.autoCompleteTextViewState.text.toString())
+        val state = RestaurantRepository.curateState(binding.autoCompleteTextViewState.text.toString())
         binding.autoCompleteTextViewState.setText(state)
         val stateCode = RestaurantRepository.getStateCode(state)
-        val perPage: Int = binding.spinnerPerPage.selectedItem as Int
 
         binding.floatingActionButtonFilter.animate()
             .alpha(0.0F)
@@ -121,7 +118,7 @@ class RestaurantFilterFragment : Fragment() {
             .withStartAction { binding.lottieLoading.visibility = View.VISIBLE }
             .withEndAction { binding.floatingActionButtonFilter.visibility = View.INVISIBLE }
 
-        when (binding.dataModel?.setFilters(country, stateCode, perPage)) {
+        when (binding.dataModel?.setFilters(country, stateCode)) {
             true -> delayedCheckForLoading(binding.dataModel) {
                 binding.floatingActionButtonFilter.animate()
                     .alpha(1.0F)

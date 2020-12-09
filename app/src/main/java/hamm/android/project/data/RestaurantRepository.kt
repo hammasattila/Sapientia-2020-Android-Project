@@ -1,20 +1,16 @@
 package hamm.android.project.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import hamm.android.project.api.RetrofitInstance
 import hamm.android.project.model.Cities
 import hamm.android.project.model.Restaurant
 import hamm.android.project.model.RestaurantExtension
 import hamm.android.project.model.Restaurants
+import hamm.android.project.utils.getClosestString
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class RestaurantRepository(private val restaurantDao: RestaurantDao) {
-    fun getAllRestaurantsAsync(): LiveData<List<Restaurant>> {
-        return restaurantDao.getAllRestaurants()
-    }
-
     suspend fun updateRestaurantSync(restaurant: Restaurant) {
         restaurant.ext?.let {
             updateRestaurantExtSync(it)
@@ -52,20 +48,29 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         zip: String? = null,
         address: String? = null,
         name: String? = null,
-        perPage: Int? = null,
         page: Int? = null
     ): Int {
         var newRestaurantCount: Long
         var restaurants: Restaurants
         var currentPage: Int = page ?: 1
         do {
-            restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, perPage, currentPage)
+            restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, 100, currentPage)
             if (restaurants.restaurants.isEmpty()) {
                 return -1
             }
-            newRestaurantCount = restaurants.restaurants.size - restaurantDao.isNewDataInTheListSync(restaurants.restaurants.map { it.id })
-            Log.e("newRestaurantCount", restaurants.restaurants.map { it.id }.toString())
-            Log.e("newRestaurantCount", newRestaurantCount.toString())
+            newRestaurantCount = restaurants.restaurants.size - restaurantDao.isNewDataInTheListForAppliedFilterSync(
+                restaurants.restaurants.map { it.id },
+                country,
+                state,
+                city,
+                zip,
+                address,
+                null,
+                name
+            )
+            for (it in restaurants.restaurants) {
+                it.page = currentPage
+            }
             restaurantDao.insertAllRestaurants(restaurants.restaurants)
             ++currentPage
         } while (newRestaurantCount < 1)
@@ -96,28 +101,7 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
 
     companion object {
         val numberOfRestaurantsPerPage = listOf(5, 10, 15, 25, 50, 100)
-        val countries = listOf(
-            "AE",
-            "AW",
-            "CA",
-            "CH",
-            "CN",
-            "CR",
-            "GP",
-            "HK",
-            "KN",
-            "KY",
-            "MC",
-            "MO",
-            "MX",
-            "MY",
-            "PT",
-            "SA",
-            "SG",
-            "SV",
-            "US",
-            "VI"
-        )
+        val countries = listOf("AE", "AW", "CA", "CH", "CN", "CR", "GP", "HK", "KN", "KY", "MC", "MO", "MX", "MY", "PT", "SA", "SG", "SV", "US", "VI")
         val mapOfStates = mapOf(
             "AL" to "Alabama",
             "AK" to "Alaska",
@@ -175,7 +159,6 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         val cities get() = mCities
 
         init {
-//            TODO(Should be a better solution...)
             GlobalScope.launch {
                 mCities = getCitiesSync().cities
             }
@@ -196,6 +179,31 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
             } catch (e: IndexOutOfBoundsException) {
                 return null
             }
+        }
+
+        fun curateCountry(c: String?): String? {
+            if (c.isNullOrBlank()) {
+                return null
+            }
+
+            return getClosestString(c, countries)
+        }
+
+        fun curateState(s: String?): String? {
+            if (s.isNullOrBlank()) {
+                return null
+            }
+
+            return getClosestString(s, RestaurantRepository.states)
+        }
+
+        @Deprecated("It is useless. The api will return at non complete queries as well.")
+        fun curateCity(c: String?): String? {
+            if (c.isNullOrBlank()) {
+                return null
+            }
+
+            return getClosestString(c, RestaurantRepository.cities)
         }
     }
 

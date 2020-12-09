@@ -42,51 +42,19 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     // Options
     var page: Int = 1
-    var perPage: Int = RestaurantRepository.numberOfRestaurantsPerPage[0]
-        private set(perPage) {
-            field = when (RestaurantRepository.numberOfRestaurantsPerPage.contains(perPage)) {
-                true -> perPage
-                else -> getClosestInt(perPage, RestaurantRepository.numberOfRestaurantsPerPage)
-            }
-        }
+
 
 
     init {
         val restaurantDao = RestaurantDatabase.getDatabase(application).restaurantDao()
         repo = RestaurantRepository(restaurantDao)
         getRestaurants()
-        restaurants = repo.getAllRestaurantsAsync()
-    }
-
-    fun curateCountry(c: String?): String? {
-        if (c.isNullOrBlank()) {
-            return null
-        }
-
-        return getClosestString(c, RestaurantRepository.countries)
-    }
-
-    fun curateState(s: String?): String? {
-        if (s.isNullOrBlank()) {
-            return null
-        }
-
-        return getClosestString(s, RestaurantRepository.states)
-    }
-
-    @Deprecated("It is useless. The api will return at non complete queries as well.")
-    fun curateCity(c: String?): String? {
-        if (c.isNullOrBlank()) {
-            return null
-        }
-
-        return getClosestString(c, RestaurantRepository.cities)
+        restaurants = repo.getRestaurantsByFiltersAsync()
     }
 
     fun setFilters(
         country: String?,
-        state: String?,
-        perPage: Int = this.perPage
+        state: String?
     ): Boolean {
         // TODO("Clean the texts from white characters. For now it does the job.")
         if (!checkFilters(name, address, state, city, zip, country)) {
@@ -95,7 +63,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
         this.country = country
         this.state = state
-        this.perPage = perPage
         this.page = 1
 
         getRestaurants()
@@ -120,9 +87,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun getRestaurants() {
-//        TODO(Handle paging)
-        if (-1 == page) {
-            return
+        synchronized(restaurantCount) {
+            if (-1 == page) {
+                return
+            }
         }
         synchronized(this.loading) {
             if (loading) {
@@ -139,8 +107,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 zip = zip,
                 address = address,
                 name = name,
-                page = page,
-                perPage = perPage
+                page = page
             )
 //          TODO("Handle multiple filters")
             synchronized(restaurantCount) {
