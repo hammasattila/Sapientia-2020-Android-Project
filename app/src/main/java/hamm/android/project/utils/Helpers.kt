@@ -47,17 +47,17 @@ fun ImageView.load(url: String, onLoadingFinished: () -> Unit = {}) {
         .into(this)
 }
 
-fun ImageView.load(url: String?) {
+fun ImageView.load(url: String?, placeholder: Int = R.drawable.placeholder_restaurant) {
     Glide.with(this)
         .load(url)
-        .apply(RequestOptions.placeholderOf(R.drawable.placeholder_restaurant))
+        .apply(RequestOptions.placeholderOf(placeholder))
         .into(this)
 }
 
-fun ImageView.load(id: Int) {
+fun ImageView.load(id: Int, placeholder: Int = R.drawable.placeholder_restaurant) {
     Glide.with(this)
         .load(id)
-        .apply(RequestOptions.placeholderOf(R.drawable.placeholder_restaurant))
+        .apply(RequestOptions.placeholderOf(placeholder))
         .into(this)
 }
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="hamm.android.project.viewmodels.ProfileFragmentViewModel" />
@@ -29,7 +30,7 @@
                 android:breakStrategy="balanced"
                 android:maxLines="1"
                 android:text='@{"Hi " + viewModel.user.name + "!"}'
-                android:textSize="128dp"
+                android:textSize="128sp"
 
                 app:autoSizeTextType="uniform"
                 app:textAllCaps="true" />
@@ -46,18 +47,37 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:id="@+id/image_view_profile_avatar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/image_view_profile_avatar"-->
+                    <!--                        android:layout_width="256dp"-->
+                    <!--                        android:layout_height="256dp"-->
+                    <!--                        android:layout_margin="16dp"-->
+                    <!--                        -->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                        app:layout_constraintTop_toTopOf="parent"-->
+                    <!--                        app:layout_constraintWidth_percent="0.6"-->
+                    <!--                        tools:src="@tools:sample/avatars" />-->
 
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/image_container"
+                        android:layout_width="256dp"
+                        android:layout_height="256dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
 
+                        app:cardCornerRadius="128dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.6"
-                        tools:src="@tools:sample/avatars" />
+                        app:layout_constraintWidth_percent="0.6">
+
+                        <ImageView
+                            android:id="@+id/image_view_profile_avatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
+                    </androidx.cardview.widget.CardView>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_profile_name"
@@ -68,7 +88,7 @@
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/image_view_profile_avatar">
+                        app:layout_constraintTop_toBottomOf="@+id/image_container">
 
                         <EditText
                             android:id="@+id/edit_text_text_profile_name"
@@ -179,7 +199,9 @@
                         tools:itemCount="10"
                         tools:listitem="@layout/item_restaurant" />
 
-                    <include layout="@layout/item_empty" android:id="@+id/favorites_empty_art"/>
+                    <include
+                        android:id="@+id/favorites_empty_art"
+                        layout="@layout/item_empty" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
