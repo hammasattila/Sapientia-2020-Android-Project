@@ -163,6 +163,7 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
 
         init {
             GlobalScope.launch {
+//                TODO(INTERNAL SERVER ERROR)
                 mCities = getCitiesSync().cities
             }
         }
@@ -176,7 +177,6 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
             if (state.isNullOrBlank()) {
                 return null
             }
-//            TODO
             try {
                 return mapOfStates.filterValues { it == state }.keys.elementAt(0)
             } catch (e: IndexOutOfBoundsException) {

@@ -48,6 +48,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     init {
         val restaurantDao = RestaurantDatabase.getDatabase(application).restaurantDao()
         repo = RestaurantRepository(restaurantDao)
+//        TODO("INTERNAL SERVER ERROR")
         getRestaurants()
         restaurants = repo.getRestaurantsByFiltersAsync()
     }

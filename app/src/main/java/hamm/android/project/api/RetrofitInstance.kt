@@ -15,7 +15,7 @@ object RetrofitInstance {
         val okHttp = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
         Retrofit.Builder()
-            .baseUrl("https://opentable.herokuapp.com/api/")
+            .baseUrl("https://ratpark-api.imok.space/")
             .addConverterFactory(GsonConverterFactory.create(/*GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()*/))
             .client(okHttp)
             .build()
