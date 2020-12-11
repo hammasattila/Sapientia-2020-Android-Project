@@ -5,7 +5,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,14 +19,14 @@ import hamm.android.project.viewmodels.MainActivityViewModel
 class MainActivity : AppCompatActivity() {
 
 
-     private val binding by viewBinding(ActivityMainBinding::inflate)
+    private val binding by viewBinding(ActivityMainBinding::inflate)
     private lateinit var mNavController: NavController
     private lateinit var mMainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
-         setContentView(binding.root)
+        setContentView(binding.root)
 
         mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         mNavController = (supportFragmentManager.findFragmentById(R.id.fragment_nav_host) as NavHostFragment).navController
@@ -46,16 +45,12 @@ class MainActivity : AppCompatActivity() {
                     .translationY(binding.bottomNav.height.toFloat())
                     .setDuration(500)
                     .withStartAction { binding.bottomNav.visibility = View.GONE }
-                R.id.restaurantListFragment -> binding.bottomNav.animate()
+                R.id.restaurantListFragment, R.id.profileFragment -> binding.bottomNav.animate()
                     .translationY(0.0F)
                     .setDuration(500)
                     .withStartAction {
                         binding.bottomNav.visibility = View.VISIBLE
                     }
-                R.id.profileFragment -> binding.bottomNav.animate()
-                    .translationY(0.0F)
-                    .setDuration(500)
-                    .withStartAction { binding.bottomNav.visibility = View.VISIBLE }
                 else -> binding.bottomNav.animate()
                     .translationY(binding.bottomNav.height.toFloat())
                     .setDuration(500)
