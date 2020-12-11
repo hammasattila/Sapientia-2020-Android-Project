@@ -34,15 +34,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     var state: String? = null
         private set
     var city: String? = null
+    val cities: MutableList<String> = mutableListOf()
     var zip: String? = null
     var address: String? = null
     var price: Int? = null
-        private set
     var name: String? = null
 
     // Options
     var page: Int = 1
-
 
 
     init {
@@ -72,8 +71,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         page = 1
 
         getRestaurants()
-
-        restaurants = repo.getRestaurantsByFiltersAsync(country, state, city, zip, address, price, name)
+        restaurants = repo.getRestaurantsByFiltersAsync(country, state, cities.reduceOrNull { acc, s -> "$acc$s" }, zip, address, price, name)
 
         return true
     }
@@ -106,22 +104,30 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 loading = true
             }
         }
+
+        val cities = if (0 < this.cities.size) this.cities else listOf(null)
+
         viewModelScope.launch {
-            val count = repo.getRestaurantsByFiltersSync(
-                country = country,
-                state = state,
-                city = city,
-                zip = zip,
-                address = address,
-                name = name,
-                page = page
-            )
-//          TODO("Handle multiple filters")
-            synchronized(restaurantCount) {
-                page = count
+            var p = -1
+            for (c in cities) {
+                val count = repo.getRestaurantsByFiltersSync(
+                    country = country,
+                    state = state,
+                    city = c,
+                    zip = zip,
+                    address = address,
+                    name = name,
+                    page = page
+                )
+
+                p = if (0 < p) if (p < count) p else count else count
             }
 
             loading = false
+
+            synchronized(page) {
+                page = p
+            }
         }
     }
 

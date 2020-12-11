@@ -7,6 +7,7 @@ import hamm.android.project.model.Restaurant
 import hamm.android.project.model.RestaurantBase
 import hamm.android.project.model.RestaurantPhoto
 import hamm.android.project.model.RestaurantUserData
+import hamm.android.project.utils.SELECTION
 
 @Dao
 interface RestaurantDao {
@@ -22,7 +23,7 @@ interface RestaurantDao {
     @Query("SELECT id, name, address, city, state, area, postalCode, country, phone, lat, lng, price, urlReserve, urlMobileReserve, urlImage, page FROM restaurant_table JOIN restaurant_extension_table ON id = restaurantId WHERE isFavorite = 1 ORDER BY name ASC")
     fun getFavorites(): LiveData<List<Restaurant>>
 
-    @Query("SELECT COUNT(*) FROM restaurant_table WHERE id IN (:listOfIds) AND country = COALESCE(:country, country) AND state = COALESCE(:state, state) AND city = COALESCE(:city, city) AND postalCode = COALESCE(:zip, postalCode) AND address = COALESCE(:address, address) AND name = COALESCE(:name, name) AND price = COALESCE(:price, price)")
+    @Query("SELECT COUNT(*) FROM restaurant_table WHERE id IN (:listOfIds) AND $SELECTION")
     suspend fun isNewDataInTheListForAppliedFilterSync(
         listOfIds: List<Long>,
         country: String? = null,
@@ -34,7 +35,7 @@ interface RestaurantDao {
         name: String? = null
     ): Long
 
-    @Query("SELECT * FROM restaurant_table WHERE country = COALESCE(:country, country) AND state = COALESCE(:state, state) AND city = COALESCE(:city, city) AND postalCode = COALESCE(:zip, postalCode) AND address = COALESCE(:address, address) AND name = COALESCE(:name, name) AND price = COALESCE(:price, price) ORDER BY page ASC")
+    @Query("SELECT * FROM restaurant_table WHERE $SELECTION ORDER BY page ASC")
     fun getRestaurantsByFiltersAsync(
         country: String? = null,
         state: String? = null,

@@ -46,6 +46,7 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         city: String? = null,
         zip: String? = null,
         address: String? = null,
+        price: Int? = null,
         name: String? = null,
         page: Int? = null
     ): Int {
@@ -64,7 +65,7 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
                 city,
                 zip,
                 address,
-                null,
+                price,
                 name
             )
             for (it in restaurants.restaurants) {

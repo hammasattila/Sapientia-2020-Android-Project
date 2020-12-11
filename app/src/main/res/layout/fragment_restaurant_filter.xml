@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="hamm.android.project.viewmodels.RestaurantFilterFragmentViewModel" />
+
         <variable
             name="dataModel"
             type="hamm.android.project.viewmodels.MainActivityViewModel" />
@@ -33,23 +35,44 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="State"
+            android:hint="@string/hint_state"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_country" />
 
-        <AutoCompleteTextView
-            android:id="@+id/auto_complete_text_view_city"
-            android:layout_width="0dp"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_cities"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
-            android:hint="City"
-            android:text="@={dataModel.city}"
+            android:layout_marginTop="16dp"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/auto_complete_text_view_state" />
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_complete_text_view_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_city"
+            android:text="@={dataModel.city}"
+
+            app:layout_constraintEnd_toStartOf="@+id/button_add_city_filter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chip_group_cities" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_add_city_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_text_add"
+
+            app:icon="@drawable/ic_round_add_24"
+            app:layout_constraintBottom_toBottomOf="@+id/auto_complete_text_view_city"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/auto_complete_text_view_city"
+            app:layout_constraintTop_toTopOf="@+id/auto_complete_text_view_city" />
 
 
         <EditText
@@ -57,8 +80,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
+            android:hint="@string/hint_postal_code"
             android:inputType="number"
-            android:hint="Postal code"
             android:text="@={dataModel.zip}"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Address"
+            android:hint="@string/hint_address"
             android:text="@={dataModel.address}"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,22 +106,33 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:hint="Restaurant name"
+            android:hint="@string/hint_restaurant_name"
             android:text="@={dataModel.name}"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_view_address" />
 
+        <Spinner
+            android:id="@+id/spinner_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:entries="@array/price_range"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_view_name" />
+
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floating_action_button_filter"
-            android:transitionName="fab_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:clickable="true"
-            android:text="Apply filters"
+            android:text="@string/button_apply_filters"
+            android:transitionName="fab_filter"
 
             app:icon="@drawable/ic_outline_filter_alt_24"
             app:layout_constraintBottom_toBottomOf="parent"

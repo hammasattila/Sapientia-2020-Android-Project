@@ -24,4 +24,11 @@
     <string name="shared_preferences_name">Sapientia-Android2020-Project-Settings.xml</string>
     <string name="item_empty_text">It\'s quite empty here&#8230;</string>
     <string name="button_remove_image_text">Remove</string>
+    <string name="hint_state">State</string>
+    <string name="hint_city">City</string>
+    <string name="hint_postal_code">Postal code</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_restaurant_name">Restaurant name</string>
+    <string name="button_apply_filters">Apply filters</string>
+    <string name="button_text_add">Add</string>
 </resources>
