@@ -1,6 +1,7 @@
 package hamm.android.project.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import hamm.android.project.R
 import hamm.android.project.adapters.RestaurantListAdapter
 import hamm.android.project.databinding.FragmentRestaurantListBinding
 import hamm.android.project.model.Restaurant
+import hamm.android.project.utils.delayedCheckForLoading
 import hamm.android.project.utils.transitionExtras
 import hamm.android.project.utils.viewBinding
 import hamm.android.project.viewmodels.MainActivityViewModel
@@ -70,6 +72,14 @@ class RestaurantListFragment : Fragment(), RestaurantListAdapter.Listener {
         this.initPagination() {
             binding.lottieAnimationLoading.visibility = View.VISIBLE
             binding.dataModel?.getRestaurants()
+
+            delayedCheckForLoading(binding.dataModel) {
+                try {
+                    binding.lottieAnimationLoading.visibility = View.GONE
+                } catch (e: Exception) {
+                    Log.i("View", "left the context.")
+                }
+            }
         }
         postponeEnterTransition()
         this.viewTreeObserver.addOnPreDrawListener {
