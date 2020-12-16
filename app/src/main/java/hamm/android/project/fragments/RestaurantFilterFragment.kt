@@ -85,7 +85,7 @@ class RestaurantFilterFragment : Fragment() {
         val inflater = LayoutInflater.from(context)
         val chip = inflater.inflate(R.layout.item_chip, null, false) as Chip
         chip.text = city
-        chip.setOnCloseIconClickListener { view -> binding.chipGroupCities.removeView(view) }
+        chip.setOnCloseIconClickListener { view -> binding.chipGroupCities.removeView(view); binding.dataModel?.cities?.removeIf { it == city } }
         binding.chipGroupCities.addView(chip)
     }
 
