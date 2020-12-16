@@ -54,8 +54,12 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         var restaurants: Restaurants
         var currentPage: Int = page ?: 1
         do {
-            restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, 100, currentPage)
-            if (restaurants.restaurants.isEmpty()) {
+            try {
+                restaurants = RetrofitInstance.api.getRestaurants(country, state, city, zip, address, name, 100, currentPage)
+                if (restaurants.restaurants.isEmpty()) {
+                    return -1
+                }
+            } catch (e: Exception) {
                 return -1
             }
             newRestaurantCount = restaurants.restaurants.size - restaurantDao.isNewDataInTheListForAppliedFilterSync(
@@ -105,7 +109,8 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
 
     companion object {
         val numberOfRestaurantsPerPage = listOf(5, 10, 15, 25, 50, 100)
-        val countries = listOf("AE", "AW", "CA", "CH", "CN", "CR", "GP", "HK", "KN", "KY", "MC", "MO", "MX", "MY", "PT", "SA", "SG", "SV", "US", "VI")
+        private var mCountries: List<String> = listOf("AE", "AW", "CA", "CH", "CN", "CR", "GP", "HK", "KN", "KY", "MC", "MO", "MX", "MY", "PT", "SA", "SG", "SV", "US", "VI")
+        val countries get() = mCountries
         val mapOfStates = mapOf(
             "AL" to "Alabama",
             "AK" to "Alaska",
@@ -163,10 +168,20 @@ class RestaurantRepository(private val restaurantDao: RestaurantDao) {
         val cities get() = mCities
 
         init {
-            GlobalScope.launch {
-//                TODO(INTERNAL SERVER ERROR)
-                mCities = getCitiesSync().cities
+            try {
+                GlobalScope.launch {
+                    mCities = getCitiesSync().cities
+                }
+                GlobalScope.launch {
+                    mCountries = getCountriesSync().countries
+                }
+            } catch (e: Exception) {
+
             }
+        }
+
+        private suspend fun getCountriesSync(): Countries {
+            return RetrofitInstance.api.getCountries()
         }
 
 
