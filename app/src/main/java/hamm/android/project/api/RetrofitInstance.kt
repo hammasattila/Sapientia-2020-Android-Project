@@ -36,14 +36,16 @@ object RetrofitInstance {
                         .build()
                 }
 
+                Log.d("${request.method} <----------------", "${request.url.toString()} {${response.body?.contentLength().toString()}bytes}")
+
                 response
             })
             .build()
 
 
         Retrofit.Builder()
-//            .baseUrl("https://ratpark-api.imok.space/")
-            .baseUrl("http://192.168.0.16:6969/")
+            .baseUrl("https://ratpark-api.imok.space/")
+//            .baseUrl("http://192.168.0.16:6969/")
             .addConverterFactory(GsonConverterFactory.create(/*GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()*/))
             .client(okHttp)
             .build()
