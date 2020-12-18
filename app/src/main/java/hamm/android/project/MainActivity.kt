@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         mNavController = (supportFragmentManager.findFragmentById(R.id.fragment_nav_host) as NavHostFragment).navController
-        setupActionBarWithNavController(mNavController, AppBarConfiguration(setOf(R.id.restaurantListFragment, R.id.profileFragment)))
+        setupActionBarWithNavController(mNavController, AppBarConfiguration(setOf(R.id.restaurantListFragment, R.id.profileFragment, R.id.appInfoFragment)))
         mNavController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.splashFragment -> supportActionBar?.hide()
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                     .translationY(binding.bottomNav.height.toFloat())
                     .setDuration(500)
                     .withStartAction { binding.bottomNav.visibility = View.GONE }
-                R.id.restaurantListFragment, R.id.profileFragment -> binding.bottomNav.animate()
+                R.id.restaurantListFragment, R.id.profileFragment, R.id.appInfoFragment -> binding.bottomNav.animate()
                     .translationY(0.0F)
                     .setDuration(500)
                     .withStartAction {

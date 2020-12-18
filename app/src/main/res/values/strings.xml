@@ -31,4 +31,10 @@
     <string name="hint_restaurant_name">Restaurant name</string>
     <string name="button_apply_filters">Apply filters</string>
     <string name="button_text_add">Add</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dictum nisl eget posuere hendrerit. Pellentesque elementum elementum dui. Integer fringilla convallis lectus vel finibus. Aliquam vehicula velit eget ante hendrerit, ac mollis enim tincidunt. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In eget auctor arcu. Integer ac turpis quis elit vestibulum mollis et ut est. Mauris euismod turpis sed dolor semper, vel dapibus eros dignissim. Ut diam ex, posuere ac ipsum eget, tincidunt placerat mi. Donec ornare ante massa, id molestie nulla euismod ut. Ut et nulla lectus.</string>
+    <string name="bottom_nav_item_about">About</string>
+    <string name="about_app_title">About the app</string>
+    <string name="learn_more">Learn more</string>
+    <string name="about_api_title">About API</string>
 </resources>

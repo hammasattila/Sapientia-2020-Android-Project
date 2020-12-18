@@ -10,4 +10,10 @@
         android:icon="@drawable/ic_round_person_24"
         android:title="@string/bottom_nav_item_profile"
         android:menuCategory="system" />
+
+    <item
+        android:id="@+id/appInfoFragment"
+        android:icon="@drawable/ic_round_info_24"
+        android:title="@string/bottom_nav_item_about"
+        android:menuCategory="system" />
 </menu>
