@@ -31,10 +31,27 @@
     <string name="hint_restaurant_name">Restaurant name</string>
     <string name="button_apply_filters">Apply filters</string>
     <string name="button_text_add">Add</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dictum nisl eget posuere hendrerit. Pellentesque elementum elementum dui. Integer fringilla convallis lectus vel finibus. Aliquam vehicula velit eget ante hendrerit, ac mollis enim tincidunt. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In eget auctor arcu. Integer ac turpis quis elit vestibulum mollis et ut est. Mauris euismod turpis sed dolor semper, vel dapibus eros dignissim. Ut diam ex, posuere ac ipsum eget, tincidunt placerat mi. Donec ornare ante massa, id molestie nulla euismod ut. Ut et nulla lectus.</string>
     <string name="bottom_nav_item_about">About</string>
+
     <string name="about_app_title">About the app</string>
+    <string name="about_app">
+        This year isn’t about going to restaurants, meanwhile we can explore some of  them at home and make an order, to get some good food and let our home made “specialties” rest for a while.
+        During Android courses we had to do a little app as a project, where we  can explore restaurants and expand the data we have from the REST API with our experience.
+        The goal was to have an app which works well, where the user can have a profile,  get data from the API as mentioned, list it, view it one by one, and store the modifications in a local database.
+        You can learn more about this project on GitHub.
+    </string>
+    <string name="about_api_title">About the API</string>
+    <string name="about_api">
+        Unfortunately the original "OpenTable" API collapsed. So a dummy API which functioned as the original was created using Node.js an SQLite database.
+        The rest API offers the same functionality as the original. The data set is recovered from a Room Database which served as a local cache.
+        Sadly this collection is smaller then the original and there may be some smaller bugs here and there.
+        The code and the data is available on GitHub, go check it out.
+    </string>
+    <string name="about_api_imok">
+        As mentioned earlier the original api collapsed and became unusable but fortunately the development team at I\'M OK (cool guys by the way 😁) allowed us to upload our dummy api to one of their dev servers.
+        This way was reachable 24/7 during the development of the application. Feel free to visit their WebSite to learn more about them and their projects.
+    </string>
     <string name="learn_more">Learn more</string>
-    <string name="about_api_title">About API</string>
+    <string name="restaurant_text_country">Country:</string>
+    <string name="price_category">Price category:</string>
 </resources>

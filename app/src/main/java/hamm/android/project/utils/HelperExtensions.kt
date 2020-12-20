@@ -32,7 +32,7 @@ fun Restaurant.setTransitionNames(v: View?) {
 }
 
 fun Restaurant.setBasicTextContent(v: View?) {
-    v?.findViewById<TextView>(R.id.item_restaurant_text_price)?.text = "${v?.context?.getString(R.string.restaurant_text_price)} ${info.price}"
+    v?.findViewById<TextView>(R.id.item_restaurant_text_price)?.text = "${v?.context?.getString(R.string.restaurant_text_price)} ${info.value}"
     v?.findViewById<TextView>(R.id.item_restaurant_text_address)?.text = "${v?.context?.getString(R.string.restaurant_text_address)} ${info.address}"
 }
 

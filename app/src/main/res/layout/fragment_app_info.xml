@@ -41,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:justificationMode="inter_word"
-                        android:text="@string/lorem_ipsum" />
+                        android:text="@string/about_app" />
 
                     <Button
                         android:id="@+id/button_github"
@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:justificationMode="inter_word"
-                        android:text="@string/lorem_ipsum" />
+                        android:text="@string/about_api" />
 
                     <Button
                         android:id="@+id/button_github_api"
@@ -91,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:justificationMode="inter_word"
-                        android:text="@string/lorem_ipsum" />
+                        android:text="@string/about_api_imok" />
 
                     <Button
                         android:id="@+id/button_imok"
